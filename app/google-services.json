@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "686940710424",
+    "firebase_url": "https://wirwo2-f4eae-default-rtdb.firebaseio.com",
+    "project_id": "wirwo2-f4eae",
+    "storage_bucket": "wirwo2-f4eae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:686940710424:android:718833382681445f80c56d",
+        "android_client_info": {
+          "package_name": "com.example.wirwo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjoVMe7K7DQ8t7Z2MPSyFGSq7ukiBpaLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
