@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">WIRWO</string>
+    <string name="dashboard_text">Ciao, User! Check your Wireless Worms Today!</string>
+    <string name="data_analysis">Data Analysis</string>
+    <string name="faqs">FAQs</string>
+    <string name="home">Home</string>
+    <string name="history">History</string>
+    <string name="settings">Settings</string>
+    <string name="logout">LOGOUT</string>
+    <string name="logOut">Logout</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="dashboard_1">Dashboard</string>
+    <string name="dashboard_2">DASHBOARD</string>
+    <string name="data_analysis_1">DATA ANALYSIS</string>
+    <string name="history_1">HISTORY</string>
+    <string name="faqs_1">FAQs</string>
+    <string name="log_out">Log Out</string>
+    <string name="settings_1">SETTINGS</string>
+    <string name="user">User</string>
+    <string name="user_1">User</string>
+    <string name="view_profile">View Profile</string>
+    <string name="log_out_1">Log-out</string>
 </resources>

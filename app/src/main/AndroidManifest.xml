@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".SigninActivity" />
+        <activity android:name=".Dashboard" />
     </application>
 
 </manifest>

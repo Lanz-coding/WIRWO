@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="170dp"
+    android:layout_height="350dp"
+    android:background="#102820">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:id="@+id/profile_layout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/profile_button"
+                android:layout_margin="10dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/view_profile_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="User"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16dp" />
+
+                <TextView
+                                        android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-5dp"
+                    android:fontFamily="@font/montserrat_light"
+                    android:text="View Profile"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="170dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="1dp"
+            android:background="#FFFFFF"/>
+
+        <LinearLayout
+            android:id="@+id/dashboard_button"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="27.5dp"
+                android:layout_height="27.5dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/icon_dashboard"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="DASHBOARD"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/data_analytics_button"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="27.5dp"
+                android:layout_height="27.5dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/icon_data_analytics"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="DATA ANALYTICS"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/history_button"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="27.5dp"
+                android:layout_height="27.5dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/icon_history"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="HISTORY"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/faqs_button"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="27.5dp"
+                android:layout_height="27.5dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/icon_faqs"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="FAQs"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/settings_button"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="27.5dp"
+                android:layout_height="27.5dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/icon_settings"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="SETTINGS"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="170dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="#FFFFFF"/>
+
+        <LinearLayout
+            android:id="@+id/logout_button"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="27.5dp"
+                android:layout_height="27.5dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/icon_log_out"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="LOG-OUT"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
