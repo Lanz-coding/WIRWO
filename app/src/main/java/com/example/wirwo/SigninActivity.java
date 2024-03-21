@@ -73,7 +73,7 @@ public class SigninActivity extends Activity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(SigninActivity.this, "SignUp Successful", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(SigninActivity.this, LoginActivity.class));
+                            startActivity(new Intent(SigninActivity.this, Dashboard.class));
                         } else {
                             Toast.makeText(SigninActivity.this, "SignUp Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }

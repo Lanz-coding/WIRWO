@@ -73,7 +73,7 @@ public class LoginActivity extends Activity {
                             @Override
                             public void onSuccess(AuthResult authResult) {
                                 Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(LoginActivity.this, StartActivity.class));
+                                startActivity(new Intent(LoginActivity.this, Dashboard.class));
                                 finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
