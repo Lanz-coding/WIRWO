@@ -4,168 +4,179 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
     android:background="#CABA9C"
     tools:context=".SigninActivity">
 
-    <View
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="68sp"
-        android:layout_marginTop="-40sp"
-        android:layout_marginBottom="175sp"
+        android:layout_height="70dp"
         android:background="#4D2D18"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/PopupMenuOverlay">
 
-    <TextView
-        android:id="@+id/textView3"
+        <ImageView
+            android:id="@+id/overlay_image"
+            android:layout_width="152dp"
+            android:layout_height="59dp"
+            android:layout_gravity="center"
+            android:contentDescription=""
+            android:elevation="2dp"
+            android:src="@drawable/wirwo_wordmark_1"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            app:layout_constraintStart_toStartOf="@id/toolbar"
+            app:layout_constraintTop_toTopOf="@id/toolbar"
+            tools:ignore="ContentDescription,HardcodedText" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10sp"
-        android:layout_marginTop="-225sp"
-        android:layout_marginBottom="60sp"
-        android:text="WIRWO 2.0"
-        android:textColor="#CABA9C"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        />
+        android:orientation="vertical"
+        >
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30sp"
-        app:cardCornerRadius="30sp"
-        android:layout_marginBottom="50sp"
-        android:layout_marginTop="100sp"
-        app:cardElevation="20sp"
-        android:backgroundTint="#4C6444">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100sp"
-            android:layout_marginTop="10sp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/loginText"
-                android:layout_width="wrap_content"
-                android:layout_height="113sp"
-                android:layout_marginStart="16sp"
-                android:text="Create\nAccount"
-                android:textColor="@color/white"
-                android:textSize="36sp"
-                android:textStyle="bold"
-                />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="113sp"
-                android:layout_height="97sp"
-                android:layout_marginLeft="50sp"
-                android:src="@drawable/wirwo"
-                />
-
-            <!-- Add margin to create space between ImageView and TextView -->
-
-        </LinearLayout>
-
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="24sp"
-            android:focusable="true">
+            android:layout_margin="30sp"
+            app:cardCornerRadius="30sp"
+            android:layout_marginBottom="50sp"
+            android:layout_marginTop="1050dp"
+            app:cardElevation="20sp"
+            android:backgroundTint="#4C6444">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/signin_username"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100sp"
+                android:layout_marginTop="10sp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/loginText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="113sp"
+                    android:layout_marginStart="16sp"
+                    android:text="Create\nAccount"
+                    android:textColor="@color/white"
+                    android:textSize="36sp"
+                    android:textStyle="bold"
+                    />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="113sp"
+                    android:layout_height="97sp"
+                    android:layout_marginLeft="50sp"
+                    android:src="@drawable/wirwo"
+                    />
+
+                <!-- Add margin to create space between ImageView and TextView -->
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:layout_marginBottom="-5dp"
-                android:background="@drawable/custom_edittext"
-                android:backgroundTint="@color/white"
-                app:passwordToggleEnabled="false"
-                app:hintEnabled="true">
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="24sp"
+                android:focusable="true">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/signin_username1"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/signin_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/baseline_person_24"
-                    android:drawablePadding="8sp"
-                    android:hint="Username"
-                    android:inputType="text"
-                    android:padding="8sp"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/create_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20sp"
-                android:background="@drawable/custom_edittext"
-                android:backgroundTint="@color/white"
-                app:passwordToggleEnabled="true"
-                app:passwordToggleTint="@color/black">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/create_password1"
-                    android:layout_width="match_parent"
-                    android:layout_height="40sp"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginBottom="-5dp"
+                    android:background="@drawable/custom_edittext"
                     android:backgroundTint="@color/white"
-                    android:drawableLeft="@drawable/baseline_lock_24"
-                    android:drawablePadding="8sp"
-                    android:hint="Create Password"
-                    android:inputType="textPassword"
-                    android:padding="8sp"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    app:passwordToggleEnabled="false"
+                    app:hintEnabled="true">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/signin_username1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/baseline_person_24"
+                        android:drawablePadding="8sp"
+                        android:hint="Username"
+                        android:inputType="text"
+                        android:padding="8sp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/confirm_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20sp"
-                android:background="@drawable/custom_edittext"
-                android:backgroundTint="@color/white"
-                app:passwordToggleEnabled="true"
-                app:passwordToggleTint="@color/black">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/confirm_password1"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/create_password"
                     android:layout_width="match_parent"
-                    android:layout_height="40sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:background="@drawable/custom_edittext"
                     android:backgroundTint="@color/white"
-                    android:drawableLeft="@drawable/baseline_lock_24"
-                    android:drawablePadding="8sp"
-                    android:hint="Confirm Password"
-                    android:inputType="textPassword"
-                    android:padding="8sp"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    app:passwordToggleEnabled="true"
+                    app:passwordToggleTint="@color/black">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/create_password1"
+                        android:layout_width="match_parent"
+                        android:layout_height="40sp"
+                        android:backgroundTint="@color/white"
+                        android:drawableLeft="@drawable/baseline_lock_24"
+                        android:drawablePadding="8sp"
+                        android:hint="Create Password"
+                        android:inputType="textPassword"
+                        android:padding="8sp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
 
-            <Button
-                android:id="@+id/signin_button"
-                android:layout_width="match_parent"
-                android:layout_height="60sp"
-                android:layout_marginTop="10sp"
-                android:backgroundTint="#102820"
-                android:text="REGISTER"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                app:cornerRadius="20sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/confirm_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:background="@drawable/custom_edittext"
+                    android:backgroundTint="@color/white"
+                    app:passwordToggleEnabled="true"
+                    app:passwordToggleTint="@color/black">
 
-    </androidx.cardview.widget.CardView>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/confirm_password1"
+                        android:layout_width="match_parent"
+                        android:layout_height="40sp"
+                        android:backgroundTint="@color/white"
+                        android:drawableLeft="@drawable/baseline_lock_24"
+                        android:drawablePadding="8sp"
+                        android:hint="Confirm Password"
+                        android:inputType="textPassword"
+                        android:padding="8sp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
 
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/signin_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="60sp"
+                    android:layout_marginTop="10sp"
+                    android:backgroundTint="#102820"
+                    android:text="REGISTER"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:cornerRadius="20sp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
 </LinearLayout>
