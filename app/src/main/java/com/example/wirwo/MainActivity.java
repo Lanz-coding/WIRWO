@@ -27,7 +27,10 @@ public class MainActivity extends Activity {
                 // Create an Intent to start LoginActivity
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
+
+
 }

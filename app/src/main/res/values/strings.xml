@@ -20,4 +20,7 @@
     <string name="user_1">User</string>
     <string name="view_profile">View Profile</string>
     <string name="log_out_1">Log-out</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="main_menu">Main Menu</string>
 </resources>

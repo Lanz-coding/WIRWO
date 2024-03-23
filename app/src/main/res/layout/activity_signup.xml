@@ -8,61 +8,63 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="#CABA9C"
-    tools:context=".LoginActivity">
+    tools:context=".SigninActivity">
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="68dp"
-        android:layout_marginTop="-100dp"
-        android:layout_marginBottom="80dp"
-        android:background="#4D2D18" />
+        android:layout_height="68sp"
+        android:layout_marginTop="-40sp"
+        android:layout_marginBottom="175sp"
+        android:background="#4D2D18"
+        />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="-130dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="-225sp"
+        android:layout_marginBottom="60sp"
         android:text="WIRWO 2.0"
         android:textColor="#CABA9C"
-        android:textSize="25dp"
-        android:textStyle="bold" />
+        android:textSize="25sp"
+        android:textStyle="bold"
+        />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        app:cardCornerRadius="30dp"
-        android:layout_marginBottom="50dp"
-        android:layout_marginTop="100dp"
-        app:cardElevation="20dp"
+        android:layout_margin="30sp"
+        app:cardCornerRadius="30sp"
+        android:layout_marginBottom="50sp"
+        android:layout_marginTop="100sp"
+        app:cardElevation="20sp"
         android:backgroundTint="#4C6444">
-
-
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="100sp"
+            android:layout_marginTop="10sp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/loginText"
                 android:layout_width="wrap_content"
-                android:layout_height="113dp"
-                android:layout_marginStart="16dp"
+                android:layout_height="113sp"
+                android:layout_marginStart="16sp"
                 android:text="Create\nAccount"
                 android:textColor="@color/white"
                 android:textSize="36sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                />
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="113dp"
-                android:layout_height="97dp"
-                android:layout_marginLeft="50dp"
-                android:src="@drawable/wirwo"/>
+                android:layout_width="113sp"
+                android:layout_height="97sp"
+                android:layout_marginLeft="50sp"
+                android:src="@drawable/wirwo"
+                />
 
             <!-- Add margin to create space between ImageView and TextView -->
 
@@ -70,99 +72,100 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="440dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="24sp"
+            android:focusable="true">
 
-            <EditText
-                android:id="@+id/signin_email"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signin_username"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="110dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:layout_marginBottom="-5dp"
                 android:background="@drawable/custom_edittext"
                 android:backgroundTint="@color/white"
-                android:drawableLeft="@drawable/baseline_person_24"
-                android:drawablePadding="8dp"
-                android:hint="Email"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
+                app:passwordToggleEnabled="false"
+                app:hintEnabled="true">
 
-            <EditText
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signin_username1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/baseline_person_24"
+                    android:drawablePadding="8sp"
+                    android:hint="Username"
+                    android:inputType="text"
+                    android:padding="8sp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/create_password"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
                 android:background="@drawable/custom_edittext"
                 android:backgroundTint="@color/white"
-                android:drawableLeft="@drawable/baseline_lock_24"
-                android:drawablePadding="8dp"
-                android:hint="Create a Password"
-                android:inputType="textPassword"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/black">
 
-            <EditText
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/create_password1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:backgroundTint="@color/white"
+                    android:drawableLeft="@drawable/baseline_lock_24"
+                    android:drawablePadding="8sp"
+                    android:hint="Create Password"
+                    android:inputType="textPassword"
+                    android:padding="8sp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/confirm_password"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
                 android:background="@drawable/custom_edittext"
                 android:backgroundTint="@color/white"
-                android:drawableLeft="@drawable/baseline_lock_24"
-                android:drawablePadding="8dp"
-                android:hint="Confirm Password"
-                android:inputType="textPassword"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/confirm_password1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:backgroundTint="@color/white"
+                    android:drawableLeft="@drawable/baseline_lock_24"
+                    android:drawablePadding="8sp"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword"
+                    android:padding="8sp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/signin_button"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="20dp"
+                android:layout_height="60sp"
+                android:layout_marginTop="10sp"
                 android:backgroundTint="#102820"
                 android:text="REGISTER"
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                app:cornerRadius="20dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="31dp"
-                    android:layout_marginLeft="39dp"
-                    android:layout_marginTop="15dp"
-                    android:text="Already have an account?"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/login"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="15dp"
-                    android:text="Log-in"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                app:cornerRadius="20sp" />
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-
 
 </LinearLayout>

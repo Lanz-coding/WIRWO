@@ -1,31 +1,29 @@
 package com.example.wirwo;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import androidx.annotation.NonNull;
+public class SigninActivity extends AppCompatActivity {
 
-public class SigninActivity extends Activity {
-
-    private EditText emailEditText;
-    private EditText passwordEditText;
-    private EditText confirmPasswordEditText;
+    private TextInputEditText usernameEditText;
+    private TextInputEditText passwordEditText;
+    private TextInputEditText confirmEditText;
     private Button registerButton;
-    private TextView loginTextView;
-
-    // Firebase authentication
     private FirebaseAuth auth;
 
     @Override
@@ -36,12 +34,19 @@ public class SigninActivity extends Activity {
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
 
-        // Finding views by their IDs
-        emailEditText = findViewById(R.id.signin_email);
-        passwordEditText = findViewById(R.id.create_password);
-        confirmPasswordEditText = findViewById(R.id.confirm_password);
+        // Find views by their IDs
+        usernameEditText = findViewById(R.id.signin_username1);
+        passwordEditText = findViewById(R.id.create_password1);
+        confirmEditText = findViewById(R.id.confirm_password1);
         registerButton = findViewById(R.id.signin_button);
-        loginTextView = findViewById(R.id.login);
+
+        // Set initial state of register button
+        registerButton.setEnabled(false);
+
+        // Add TextWatchers to monitor EditText fields
+        usernameEditText.addTextChangedListener(textWatcher);
+        passwordEditText.addTextChangedListener(textWatcher);
+        confirmEditText.addTextChangedListener(textWatcher);
 
         // Setting click listener for the register button
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -52,60 +57,60 @@ public class SigninActivity extends Activity {
                 showLoading();
 
                 // Retrieve user input
-                final String user = emailEditText.getText().toString().trim();
-                final String pass = passwordEditText.getText().toString().trim();
-
-                // Validate input
-                if (user.isEmpty()){
-                    emailEditText.setError("Email cannot be empty");
-                    hideLoading();
-                    return;
-                }
-                if (pass.isEmpty()){
-                    passwordEditText.setError("Password cannot be empty");
-                    hideLoading();
-                    return;
-                }
+                final String username = usernameEditText.getText().toString().trim();
+                final String password = passwordEditText.getText().toString().trim();
+                final String confirmPassword = confirmEditText.getText().toString().trim();
 
                 // Perform user authentication using Firebase
-                auth.createUserWithEmailAndPassword(user, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(SigninActivity.this, "SignUp Successful", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(SigninActivity.this, Dashboard.class));
-                        } else {
-                            Toast.makeText(SigninActivity.this, "SignUp Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                        hideLoading();
-                    }
-                });
-            }
-        });
-
-        // Setting click listener for the login text view
-        loginTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Action to perform when the login text view is clicked
-                // Create an Intent to start the LoginActivity
-                Intent intent = new Intent(SigninActivity.this, LoginActivity.class);
-                startActivity(intent);
+                auth.createUserWithEmailAndPassword(username + "@wirwo.com", password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(SigninActivity.this, "SignUp Successful", Toast.LENGTH_SHORT).show();
+                                    // Handle successful registration, for example, navigate to another activity
+                                    Intent intent = new Intent(SigninActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(SigninActivity.this, "SignUp Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    // Handle failed registration, for example, show an error message
+                                }
+                                hideLoading();
+                            }
+                        });
             }
         });
     }
 
+    // Method to show loading indicator
     private void showLoading() {
-        // Show loading indicator (if needed)
-        // For example, you can show a progress dialog or change the UI to indicate loading
-        // In this example, let's just disable the register button
         registerButton.setEnabled(false);
     }
 
+    // Method to hide loading indicator
     private void hideLoading() {
-        // Hide loading indicator (if needed)
-        // For example, you can hide a progress dialog or revert UI changes made during loading
-        // In this example, let's just enable the register button
         registerButton.setEnabled(true);
     }
+
+    // TextWatcher to monitor changes in EditText fields
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String username = usernameEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString().trim();
+            String confirmPassword = confirmEditText.getText().toString().trim();
+
+            boolean isValidUsername = !username.isEmpty();
+            boolean isValidPassword = !password.isEmpty();
+            boolean isValidConfirmPassword = !confirmPassword.isEmpty() && password.equals(confirmPassword);
+
+            registerButton.setEnabled(isValidUsername && isValidPassword && isValidConfirmPassword);
+        }
+    };
 }

@@ -1,193 +1,175 @@
 package com.example.wirwo;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.ProgressBar;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.example.wirwo.LoginActivity;
 
+public class Dashboard extends Activity {
 
-public class Dashboard extends AppCompatActivity {
-
-
+    private static final String PREFS_NAME = "MyPrefsFile";
+    private static final String POPUP_FLAG = "popupShown";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_main);
 
+        ImageView toolbarNavigationIcon = findViewById(R.id.toolbar_navigation_icon);
+        toolbarNavigationIcon.setOnClickListener(v -> ShowPopUp(toolbarNavigationIcon));
+
+        // Check if the popup has been shown before
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        boolean popupShown = settings.getBoolean(POPUP_FLAG, false);
+
+        if (!popupShown) {
+            // Show the popup if it hasn't been shown before
+            ShowPopUp(toolbarNavigationIcon);
+            // Set the flag to true to indicate that the popup has been shown
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean(POPUP_FLAG, true);
+            editor.apply();
+        }
 
         // Retrieve views using their IDs
-        ImageView toolbarNavigationIcon = findViewById(R.id.toolbar_navigation_icon);
-        ImageView overlayImage = findViewById(R.id.overlay_image);
         Switch waterPumpSwitch = findViewById(R.id.waterPumpSwitch);
         Switch ventiSwitch = findViewById(R.id.ventiSwitch);
-        TextView dashboardTitle = findViewById(R.id.dashboard_title);
-        TextView soiltempText = findViewById(R.id.soiltemp_text);
-        TextView moistureText = findViewById(R.id.moisture_text);
-        TextView humidityText = findViewById(R.id.humidity_text);
-        TextView airtempText = findViewById(R.id.airtemp_text);
-        ProgressBar soiltempProgressBar = findViewById(R.id.soiltemp_bar);
-        ProgressBar moistureProgressBar = findViewById(R.id.moisture_bar);
-        ProgressBar humidityProgressBar = findViewById(R.id.humidity_bar);
-        ProgressBar airtempProgressBar = findViewById(R.id.airtemp_bar);
-
 
         // Set OnCheckedChangeListener for the water pump switch
-        waterPumpSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // Water pump switch is turned on
-                    Toast.makeText(Dashboard.this, "Water Pump is turned on", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Water pump switch is turned off
-                    Toast.makeText(Dashboard.this, "Water Pump is turned off", Toast.LENGTH_SHORT).show();
-                }
+        waterPumpSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Water pump switch is turned on
+                Toast.makeText(Dashboard.this, "Water Pump is turned on", Toast.LENGTH_SHORT).show();
+            } else {
+                // Water pump switch is turned off
+                Toast.makeText(Dashboard.this, "Water Pump is turned off", Toast.LENGTH_SHORT).show();
             }
         });
 
         // Set OnCheckedChangeListener for the ventilation switch
-        ventiSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        ventiSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Ventilation switch is turned on
+                Toast.makeText(Dashboard.this, "Ventilation is turned on", Toast.LENGTH_SHORT).show();
+            } else {
+                // Ventilation switch is turned off
+                Toast.makeText(Dashboard.this, "Ventilation is turned off", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void ShowPopUp(View anchorView) {
+        // Inflate the popup menu layout
+        View popupView = LayoutInflater.from(this).inflate(R.layout.custom_menu_popup, null);
+
+        // Create a PopupWindow with the inflated layout
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // Allows touches outside of the PopupWindow to dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // Show the popup menu anchored to the toolbar navigation icon
+        popupWindow.showAsDropDown(anchorView);
+
+        // Handle clicks on popup menu items
+        handlePopupMenuClicks(popupView);
+    }
+
+    private void handlePopupMenuClicks(View popupView) {
+        // Find the views within the popup menu and set click listeners
+        LinearLayout profileLayout = popupView.findViewById(R.id.profile_layout);
+        LinearLayout dashboardButton = popupView.findViewById(R.id.dashboard_button);
+        LinearLayout dataAnalyticsButton = popupView.findViewById(R.id.data_analytics_button);
+        LinearLayout historyButton = popupView.findViewById(R.id.history_button);
+        LinearLayout faqsButton = popupView.findViewById(R.id.faqs_button);
+        LinearLayout settingsButton = popupView.findViewById(R.id.settings_button);
+        LinearLayout logoutButton = popupView.findViewById(R.id.logout_button);
+
+        // Set click listeners for each menu item
+        profileLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // Ventilation switch is turned on
-                    Toast.makeText(Dashboard.this, "Ventilation is turned on", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Ventilation switch is turned off
-                    Toast.makeText(Dashboard.this, "Ventilation is turned off", Toast.LENGTH_SHORT).show();
-                }
+            public void onClick(View v) {
+                // Handle profile layout click event
+                Toast.makeText(Dashboard.this, "Profile clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
+        dashboardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle dashboard button click event
+                Toast.makeText(Dashboard.this, "Dashboard clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        dataAnalyticsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle data analytics button click event
+                Toast.makeText(Dashboard.this, "Data Analytics clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        historyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle history button click event
+                Toast.makeText(Dashboard.this, "History clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        faqsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle FAQs button click event
+                Toast.makeText(Dashboard.this, "FAQs clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle settings button click event
+                Toast.makeText(Dashboard.this, "Settings clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle logout button click event
+                AlertDialog.Builder builder = new AlertDialog.Builder(Dashboard.this);
+                builder.setTitle("Logout");
+                builder.setMessage("Are you sure you want to logout?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Redirect to the login activity
+                        Intent intent = new Intent(Dashboard.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish(); // Finish the current activity to prevent going back to it on back press
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Dismiss the dialog if "No" is clicked
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
     }
-
-    private boolean isPopupShowing = false;
-    private PopupWindow popupWindow;
-
-    public void ShowPopUp(View view) {
-        if (!isPopupShowing) {
-            // Inflate the custom popup window layout
-            View popupView = LayoutInflater.from(this).inflate(R.layout.custom_menu_popup, null);
-
-            // Create a PopupWindow object
-            popupWindow = new PopupWindow(
-                    popupView,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            );
-
-            // Find buttons inside the popup window
-            LinearLayout txt0 = popupView.findViewById(R.id.profile_layout);
-            LinearLayout txt1 = popupView.findViewById(R.id.dashboard_button);
-            LinearLayout txt2 = popupView.findViewById(R.id.data_analytics_button);
-            LinearLayout txt3 = popupView.findViewById(R.id.history_button);
-            LinearLayout txt4 = popupView.findViewById(R.id.faqs_button);
-            LinearLayout txt5 = popupView.findViewById(R.id.settings_button);
-            LinearLayout txt6 = popupView.findViewById(R.id.logout_button);
-
-            // Set click listeners for buttons
-            txt0.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Handle button1 click
-                    Toast.makeText(Dashboard.this, "Profile", Toast.LENGTH_SHORT).show();
-                    // Dismiss the popup window
-                    popupWindow.dismiss();
-                }
-            });
-
-            txt1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Handle button1 click
-                    Toast.makeText(Dashboard.this, "Dashboard", Toast.LENGTH_SHORT).show();
-                    // Dismiss the popup window
-                    popupWindow.dismiss();
-                }
-            });
-
-            txt2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Handle button1 click
-                    Toast.makeText(Dashboard.this, "Data Analytics", Toast.LENGTH_SHORT).show();
-                    // Dismiss the popup window
-                    popupWindow.dismiss();
-                }
-            });
-
-            txt3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Handle button1 click
-                    Toast.makeText(Dashboard.this, "History", Toast.LENGTH_SHORT).show();
-                    // Dismiss the popup window
-                    popupWindow.dismiss();
-                }
-            });
-
-            txt4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Handle button1 click
-                    Toast.makeText(Dashboard.this, "FAQs", Toast.LENGTH_SHORT).show();
-                    // Dismiss the popup window
-                    popupWindow.dismiss();
-                }
-            });
-
-            txt5.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Handle button1 click
-                    Toast.makeText(Dashboard.this, "Settings", Toast.LENGTH_SHORT).show();
-                    // Dismiss the popup window
-                    popupWindow.dismiss();
-                }
-            });
-
-            txt6.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Handle button1 click
-                    Toast.makeText(Dashboard.this, "Log-out", Toast.LENGTH_SHORT).show();
-                    // Dismiss the popup window
-                    popupWindow.dismiss();
-                }
-            });
-
-            // Implement click listeners for other buttons similarly...
-
-            // Show the popup window at a specific location on the screen
-            // For example, show it below the toolbar navigation icon
-            View toolbarNavigationIcon = findViewById(R.id.toolbar_navigation_icon);
-            popupWindow.showAsDropDown(toolbarNavigationIcon);
-            isPopupShowing = true;
-
-            // Set a dismiss listener to detect when the popup is dismissed by clicking outside
-            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    isPopupShowing = false;
-                }
-            });
-        } else {
-            // If popup is already showing, dismiss it
-            popupWindow.dismiss();
-            isPopupShowing = false;
-        }
-    }
-
 }

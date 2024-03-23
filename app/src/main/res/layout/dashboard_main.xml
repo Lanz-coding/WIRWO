@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".Dashboard"
     tools:ignore="HardcodedText, ContentDescription">
+
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -14,13 +14,14 @@
         android:layout_height="70dp"
         android:background="#4D2D18"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/PopupMenuOverlay">
 
-        <!-- Add a navigation icon for the drawer -->
+        <!-- Remove android:onClick attribute from here -->
         <ImageView
             android:id="@+id/toolbar_navigation_icon"
-            android:onClick="ShowPopUp"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="start"
@@ -28,6 +29,12 @@
             android:paddingStart="16dp"
             android:src="@drawable/button_navbar"
             tools:ignore="RtlSymmetry" />
+        <include
+            android:id="@+id/custom_menu_popup"
+            layout="@layout/custom_menu_popup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/overlay_image"
@@ -44,7 +51,6 @@
             tools:ignore="ContentDescription,HardcodedText" />
 
     </androidx.appcompat.widget.Toolbar>
-
 
     <FrameLayout
         android:id="@+id/mascot_area"
