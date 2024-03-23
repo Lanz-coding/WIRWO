@@ -30,7 +30,7 @@ public class Dashboard extends Activity {
         toolbarNavigationIcon.setOnClickListener(v -> ShowPopUp(toolbarNavigationIcon));
 
         // Check if the popup has been shown before
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         boolean popupShown = settings.getBoolean(POPUP_FLAG, false);
 
         if (!popupShown) {
@@ -50,10 +50,10 @@ public class Dashboard extends Activity {
         waterPumpSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 // Water pump switch is turned on
-                Toast.makeText(Dashboard.this, "Water Pump is turned on", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Water Pump is turned on", Toast.LENGTH_SHORT).show();
             } else {
                 // Water pump switch is turned off
-                Toast.makeText(Dashboard.this, "Water Pump is turned off", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Water Pump is turned off", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -61,10 +61,10 @@ public class Dashboard extends Activity {
         ventiSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 // Ventilation switch is turned on
-                Toast.makeText(Dashboard.this, "Ventilation is turned on", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Ventilation is turned on", Toast.LENGTH_SHORT).show();
             } else {
                 // Ventilation switch is turned off
-                Toast.makeText(Dashboard.this, "Ventilation is turned off", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Ventilation is turned off", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -97,79 +97,52 @@ public class Dashboard extends Activity {
         LinearLayout logoutButton = popupView.findViewById(R.id.logout_button);
 
         // Set click listeners for each menu item
-        profileLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle profile layout click event
-                Toast.makeText(Dashboard.this, "Profile clicked", Toast.LENGTH_SHORT).show();
-            }
+        profileLayout.setOnClickListener(v -> {
+            // Handle profile layout click event
+            Toast.makeText(Dashboard.this, "Profile clicked", Toast.LENGTH_SHORT).show();
         });
 
-        dashboardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle dashboard button click event
-                Toast.makeText(Dashboard.this, "Dashboard clicked", Toast.LENGTH_SHORT).show();
-            }
+        dashboardButton.setOnClickListener(v -> {
+            // Handle dashboard button click event
+            Toast.makeText(Dashboard.this, "Dashboard clicked", Toast.LENGTH_SHORT).show();
         });
 
-        dataAnalyticsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle data analytics button click event
-                Toast.makeText(Dashboard.this, "Data Analytics clicked", Toast.LENGTH_SHORT).show();
-            }
+        dataAnalyticsButton.setOnClickListener(v -> {
+            // Handle data analytics button click event
+            Toast.makeText(Dashboard.this, "Data Analytics clicked", Toast.LENGTH_SHORT).show();
         });
 
-        historyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle history button click event
-                Toast.makeText(Dashboard.this, "History clicked", Toast.LENGTH_SHORT).show();
-            }
+        historyButton.setOnClickListener(v -> {
+            // Handle history button click event
+            Toast.makeText(Dashboard.this, "History clicked", Toast.LENGTH_SHORT).show();
         });
 
-        faqsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle FAQs button click event
-                Toast.makeText(Dashboard.this, "FAQs clicked", Toast.LENGTH_SHORT).show();
-            }
+        faqsButton.setOnClickListener(v -> {
+            // Handle FAQs button click event
+            Toast.makeText(Dashboard.this, "FAQs clicked", Toast.LENGTH_SHORT).show();
         });
 
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle settings button click event
-                Toast.makeText(Dashboard.this, "Settings clicked", Toast.LENGTH_SHORT).show();
-            }
+        settingsButton.setOnClickListener(v -> {
+            // Handle settings button click event
+            Toast.makeText(Dashboard.this, "Settings clicked", Toast.LENGTH_SHORT).show();// You can add your code here to handle the settings button click event
         });
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle logout button click event
-                AlertDialog.Builder builder = new AlertDialog.Builder(Dashboard.this);
-                builder.setTitle("Logout");
-                builder.setMessage("Are you sure you want to logout?");
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Redirect to the login activity
-                        Intent intent = new Intent(Dashboard.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish(); // Finish the current activity to prevent going back to it on back press
-                    }
-                });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Dismiss the dialog if "No" is clicked
-                        dialog.dismiss();
-                    }
-                });
-                builder.show();
-            }
+        logoutButton.setOnClickListener(v -> {
+            // Handle logout button click event
+            AlertDialog.Builder builder = new AlertDialog.Builder(Dashboard.this);
+            builder.setTitle("Logout");
+            builder.setMessage("Are you sure you want to logout?");
+            builder.setPositiveButton("Yes", (dialog, which) -> {
+                // Redirect to the login activity
+                Intent intent = new Intent(Dashboard.this, LoginActivity.class);
+                startActivity(intent);
+                finish(); // Finish the current activity to prevent going back to it on back press
+            });
+            builder.setNegativeButton("No", (dialog, which) -> {
+                // Dismiss the dialog if "No" is clicked
+                dialog.dismiss();
+            });
+            builder.show();
         });
     }
 }
