@@ -71,52 +71,56 @@
             android:layout_width="match_parent"
             android:layout_height="431dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
             android:orientation="vertical"
             android:padding="24dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/login_username"
-                android:layout_width="291dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="60dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/custom_edittext"
                 android:backgroundTint="@color/white"
+                app:boxBackgroundMode="none"
                 app:passwordToggleEnabled="false"
-                app:hintEnabled="true">
+                app:hintEnabled="false"
+                android:gravity="center">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/login_username1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:drawableLeft="@drawable/baseline_person_24"
                     android:drawablePadding="8sp"
                     android:fontFamily="@font/montserrat_regular"
-                    android:hint="Username"
                     android:inputType="text"
+                    android:hint="Username"
                     android:padding="8sp"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
+
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/login_password"
-                android:layout_width="291dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
+                android:id="@+id/confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/custom_edittext"
                 android:backgroundTint="@color/white"
-                android:textColorHint="@color/black"
-                app:passwordToggleEnabled="true"
-                app:passwordToggleTint="@color/black">
+                android:gravity="center"
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false"
+                app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/login_password1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-40dp"
-                    android:backgroundTint="@color/white"
-                    android:drawableLeft="@drawable/baseline_lock_24"
+                    android:backgroundTint="#CABA9C"
+                    android:drawableStart="@drawable/baseline_lock_24"
                     android:drawablePadding="8sp"
                     android:fontFamily="@font/montserrat_regular"
                     android:hint="Password"
@@ -126,6 +130,8 @@
                     android:textSize="16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"

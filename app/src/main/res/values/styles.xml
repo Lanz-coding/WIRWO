@@ -4,6 +4,10 @@
         <item name="android:thumbTint">#8A6240</item>
         <item name="android:trackTint">#4D2D18</item>
     </style>
+
+    <!-- Define your default app color -->
+    <color name="defaultAppColor">#4D2D18</color>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Other theme attributes -->
 
