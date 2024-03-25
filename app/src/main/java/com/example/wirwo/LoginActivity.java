@@ -159,13 +159,16 @@ public class LoginActivity extends Activity {
                 Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, Dashboard.class);
                 startActivity(intent);
+                finish(); // Finish LoginActivity so the user cannot come back to it using the back button
             } else {
                 // Login failed, display error message
                 Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                // Since login failed, you might want to keep the user on the login screen
+                // You don't need to do anything here because the login button is already enabled
+                // and the user can try logging in again
             }
-
-            // Enable the login button after login attempt
-            loginButton.setEnabled(true);
         }
+
+
     }
 }

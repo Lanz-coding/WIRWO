@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- Define your switch style -->
     <style name="SwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="android:thumbTint">#8A6240</item>
         <item name="android:trackTint">#4D2D18</item>
     </style>
 
+    <!-- Define your custom switch style -->
+    <style name="rememberMeSwitch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:thumbTint">#4C6444</item> <!-- Toggle color -->
+        <item name="android:trackTint">#FFFFFF</item>
+    </style>
+
     <!-- Define your default app color -->
     <color name="defaultAppColor">#4D2D18</color>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Other theme attributes -->
-
-        <!-- Define the popup overlay style -->
-        <item name="popupMenuStyle">@style/PopupMenuOverlay</item>
-    </style>
-
+    <!-- Define your popup menu overlay style -->
     <style name="PopupMenuOverlay" parent="Widget.AppCompat.PopupMenu.Overflow">
         <item name="android:popupBackground">@color/colorPopupMenuBackground</item>
     </style>
-
 </resources>

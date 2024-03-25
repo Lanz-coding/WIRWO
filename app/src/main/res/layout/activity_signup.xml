@@ -59,6 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="SIGN UP"
+                    android:fontFamily="@font/montserrat_bold"
                     android:textColor="@color/white"
                     android:textSize="36sp"
                     android:textStyle="bold"
@@ -70,6 +71,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="-10dp"
                     android:text="Sign up to start using WIRWO 2.0 services!"
+                    android:fontFamily="@font/montserrat_regular"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="14sp"
@@ -77,87 +79,106 @@
                     />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/signin_username"
+                    android:id="@+id/username_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/custom_edittext"
-                    android:backgroundTint="@color/white"
-                    app:boxBackgroundMode="none"
-                    app:passwordToggleEnabled="false"
-                    app:hintEnabled="false"
-                    android:gravity="center">
+                    android:layout_height="60dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="Create Username"
+                    app:startIconDrawable="@drawable/baseline_person_24"
+                    app:startIconTint="@color/darkGreen"
+                    app:startIconContentDescription="Create Username"
+                    app:boxBackgroundMode="outline"
+                    app:boxBackgroundColor="#FFFFFF"
+                    app:boxStrokeColor="#006400"
+                    app:boxStrokeWidth="2dp"
+                    app:boxCornerRadiusTopStart="24dp"
+                    app:cursorColor="@color/darkGreen"
+                    app:hintTextColor="@color/darkGreen"
+                    android:textColorHint="@color/darkGreen"
+                    app:boxCornerRadiusTopEnd="24dp"
+                    app:boxCornerRadiusBottomStart="24dp"
+                    app:endIconMode="clear_text"
+                    app:boxCornerRadiusBottomEnd="24dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/signin_username1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/baseline_person_24"
-                        android:drawablePadding="8dp"
-                        android:hint="Username"
                         android:inputType="text"
-                        android:padding="8dp"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:paddingStart="40dp"
+                        android:drawablePadding="1dp"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/create_password"
+                    android:id="@+id/password_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/custom_edittext"
-                    android:backgroundTint="@color/white"
-                    app:boxBackgroundMode="none"
-                    app:passwordToggleEnabled="true"
-                    app:hintEnabled="false"
-                    android:gravity="center"
-                    app:passwordToggleTint="@color/black">
+                    android:layout_height="60dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="Create a Password"
+                    app:startIconDrawable="@drawable/baseline_lock_24"
+                    app:startIconTint="@color/darkGreen"
+                    app:startIconContentDescription="Create a Password"
+                    app:boxBackgroundMode="outline"
+                    app:boxBackgroundColor="#FFFFFF"
+                    app:boxStrokeColor="@color/darkGreen"
+                    app:boxStrokeWidth="2dp"
+                    app:boxCornerRadiusTopStart="24dp"
+                    app:cursorColor="@color/darkGreen"
+                    app:hintTextColor="@color/darkGreen"
+                    android:textColorHint="@color/darkGreen"
+                    app:boxCornerRadiusTopEnd="24dp"
+                    app:boxCornerRadiusBottomStart="24dp"
+                    app:endIconMode="password_toggle"
+                    app:boxCornerRadiusBottomEnd="24dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/create_password1"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:backgroundTint="@color/white"
-                        android:drawableLeft="@drawable/baseline_lock_24"
-                        android:drawablePadding="8dp"
-                        android:hint="Create Password"
+                        android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:padding="8dp"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:paddingStart="40dp"
+                        android:drawablePadding="1dp"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/confirm_password"
+                    android:id="@+id/confirm_password_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/custom_edittext"
-                    android:backgroundTint="@color/white"
-                    app:boxBackgroundMode="none"
-                    app:passwordToggleEnabled="true"
-                    app:hintEnabled="false"
-                    android:gravity="center"
-                    app:passwordToggleTint="@color/black">
+                    android:layout_height="60dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="Confirm Password"
+                    app:startIconDrawable="@drawable/baseline_lock_24"
+                    app:startIconTint="@color/darkGreen"
+                    app:startIconContentDescription="Confirm Password"
+                    app:boxBackgroundMode="outline"
+                    app:boxBackgroundColor="#FFFFFF"
+                    app:boxStrokeColor="@color/darkGreen"
+                    app:boxStrokeWidth="2dp"
+                    app:boxCornerRadiusTopStart="24dp"
+                    app:cursorColor="@color/darkGreen"
+                    app:hintTextColor="@color/darkGreen"
+                    android:textColorHint="@color/darkGreen"
+                    app:boxCornerRadiusTopEnd="24dp"
+                    app:boxCornerRadiusBottomStart="24dp"
+                    app:endIconMode="password_toggle"
+                    app:boxCornerRadiusBottomEnd="24dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/confirm_password1"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:backgroundTint="@color/white"
-                        android:drawableLeft="@drawable/baseline_lock_24"
-                        android:drawablePadding="8dp"
-                        android:hint="Confirm Password"
+                        android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:padding="8dp"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:paddingStart="40dp"
+                        android:drawablePadding="1dp"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
+
 
                 <Button
                     android:id="@+id/signin_button"
@@ -166,6 +187,7 @@
                     android:layout_marginTop="10dp"
                     android:backgroundTint="#102820"
                     android:text="REGISTER"
+                    android:fontFamily="@font/montserrat_bold"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:cornerRadius="20dp" />

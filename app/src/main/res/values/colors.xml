@@ -3,4 +3,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="colorPopupMenuBackground">#FFFFFF</color>
+    <color name="colorPrimary">#102820</color>
+    <color name="colorPrimaryDark">#102820</color>
+    <color name="colorAccent">#CABA9C</color>
+    <color name="darkGreen">#102820</color>
+    <color name="lighterGreen">#4c6444</color>
+    <color name="bgBeige">#CABA9C</color>
+    <color name="brown">#8A6240</color>
+    <color name="darkBrown">#4D2D18</color>
+
 </resources>
