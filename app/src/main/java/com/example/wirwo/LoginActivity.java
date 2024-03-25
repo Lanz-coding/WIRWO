@@ -73,11 +73,12 @@ public class LoginActivity extends Activity {
         // Setting click listener for the create account text view
         createAccountTextView.setOnClickListener(v -> {
             // Action to perform when the create account text view is clicked
-            // Create an Intent to start the SigninActivity (replace with your Signin activity name)
+            // Create an Intent to start the SigninActivity
             Intent intent = new Intent(LoginActivity.this, SigninActivity.class);
             startActivity(intent);
-            finish();
+            finish(); // Finish LoginActivity so the user cannot come back to it using the back button
         });
+
     }
 
     private void login() {

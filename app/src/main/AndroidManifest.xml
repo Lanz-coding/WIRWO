@@ -24,7 +24,6 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".SigninActivity" />
         <activity android:name=".Dashboard" />
-        <activity android:name=".CustomMenuActivity"/>
     </application>
 
 </manifest>
