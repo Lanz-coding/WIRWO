@@ -113,4 +113,13 @@ public class SigninActivity extends AppCompatActivity {
             registerButton.setEnabled(isValidUsername && isValidPassword && isValidConfirmPassword);
         }
     };
+
+    public void onBackPressed() {
+        // Handle back button click
+        super.onBackPressed();
+        Intent intent = new Intent(SigninActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish(); // Optional, depends on your navigation flow
+    }
+
 }
