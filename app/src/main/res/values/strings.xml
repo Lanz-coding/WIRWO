@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">WIRWO</string>
+    <string name="channel_name">General Notifications</string>
+    <string name="channel_description">Receive general updates and notifications from YourAppName.</string>
     <string name="dashboard_text">Ciao, User! Check your Wireless Worms Today!</string>
     <string name="data_analysis">Data Analysis</string>
     <string name="faqs">FAQs</string>
