@@ -9,10 +9,8 @@
     </style>
 
     <!-- Define your switch style -->
-    <style name="SwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
-        <item name="android:thumbTint">#8A6240</item>
-        <item name="android:trackTint">#4D2D18</item>
-    </style>
+
+
 
     <!-- Define your custom switch style -->
     <style name="rememberMeSwitch" parent="Widget.AppCompat.CompoundButton.Switch">

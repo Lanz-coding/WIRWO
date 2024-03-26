@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="170dp"
     android:layout_height="350dp"
     android:background="#102820">
 
     <LinearLayout
+        android:id="@+id/parentLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -24,7 +24,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/profile_button"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:contentDescription="@string/todo" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -37,18 +38,19 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="7dp"
                     android:fontFamily="@font/montserrat_bold"
-                    android:text="User"
+                    android:text="@string/user1"
                     android:textColor="#FFFFFF"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginTop="-5dp"
                     android:fontFamily="@font/montserrat_light"
-                    android:text="View Profile"
+                    android:text="@string/view_profile_1"
                     android:textColor="#FFFFFF"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
 
             </LinearLayout>
 
@@ -66,13 +68,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="27.5dp"
                 android:layout_height="27.5dp"
                 android:layout_margin="10dp"
-                android:src="@drawable/icon_dashboard"/>
+                android:src="@drawable/icon_dashboard"
+                android:contentDescription="@string/todo1" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -80,22 +84,25 @@
                 android:layout_marginStart="5dp"
                 android:gravity="center"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="DASHBOARD"
+                android:text="@string/dashboard1"
                 android:textColor="#FFFFFF"
-                android:textSize="10sp"/>
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/data_analytics_button"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="27.5dp"
                 android:layout_height="27.5dp"
                 android:layout_margin="10dp"
-                android:src="@drawable/icon_data_analytics"/>
+                android:src="@drawable/icon_data_analytics"
+                android:contentDescription="@string/todo3" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -103,9 +110,10 @@
                 android:layout_marginStart="5dp"
                 android:gravity="center"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="DATA ANALYTICS"
+                android:text="@string/data_analytics"
                 android:textColor="#FFFFFF"
-                android:textSize="10sp"/>
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
         </LinearLayout>
 
         <LinearLayout
@@ -114,13 +122,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="27.5dp"
                 android:layout_height="27.5dp"
                 android:layout_margin="10dp"
-                android:src="@drawable/icon_history"/>
+                android:src="@drawable/icon_history"
+                android:contentDescription="@string/todo2" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -128,9 +138,10 @@
                 android:layout_marginStart="5dp"
                 android:gravity="center"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="HISTORY"
+                android:text="@string/history1"
                 android:textColor="#FFFFFF"
-                android:textSize="10sp"/>
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
         </LinearLayout>
 
         <LinearLayout
@@ -139,13 +150,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="27.5dp"
                 android:layout_height="27.5dp"
                 android:layout_margin="10dp"
-                android:src="@drawable/icon_faqs"/>
+                android:src="@drawable/icon_faqs"
+                android:contentDescription="@string/todo4" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -153,9 +166,10 @@
                 android:layout_marginStart="5dp"
                 android:gravity="center"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="FAQs"
+                android:text="@string/faqs1"
                 android:textColor="#FFFFFF"
-                android:textSize="10sp"/>
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
         </LinearLayout>
 
         <LinearLayout
@@ -164,13 +178,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="27.5dp"
                 android:layout_height="27.5dp"
                 android:layout_margin="10dp"
-                android:src="@drawable/icon_settings"/>
+                android:src="@drawable/icon_settings"
+                android:contentDescription="@string/todo6" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -178,9 +194,10 @@
                 android:layout_marginStart="5dp"
                 android:gravity="center"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="SETTINGS"
+                android:text="@string/settings1"
                 android:textColor="#FFFFFF"
-                android:textSize="10sp"/>
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
         </LinearLayout>
 
         <View
@@ -195,13 +212,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="27.5dp"
                 android:layout_height="27.5dp"
                 android:layout_margin="10dp"
-                android:src="@drawable/icon_log_out"/>
+                android:src="@drawable/icon_log_out"
+                android:contentDescription="@string/todo5" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -209,9 +228,10 @@
                 android:layout_marginStart="5dp"
                 android:gravity="center"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="LOG-OUT"
+                android:text="@string/log_out1"
                 android:textColor="#FFFFFF"
-                android:textSize="10sp"/>
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
         </LinearLayout>
 
     </LinearLayout>
