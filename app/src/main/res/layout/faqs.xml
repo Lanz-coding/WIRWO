@@ -22,23 +22,30 @@
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/PopupMenuOverlay">
 
+
             <ImageView
-                android:id="@+id/left_back_arrow"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:id="@+id/toolbar_navigation_icon"
+                android:onClick="ShowPopUp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="start"
                 android:contentDescription=""
                 android:paddingStart="16dp"
-                android:src="@drawable/baseline_keyboard_arrow_left_24"
+                android:src="@drawable/button_navbar"
                 tools:ignore="RtlSymmetry" />
-
+            <include
+                android:id="@+id/custom_menu_popup"
+                layout="@layout/custom_menu_popup"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
 
 
             <TextView
                 android:id="@+id/faqs_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="8dp"
                 android:contentDescription=""
                 android:elevation="2dp"
@@ -46,8 +53,8 @@
                 android:textSize="25sp"
                 android:fontFamily="@font/montserrat_bold"
                 android:textColor="#ffffff"
-                app:layout_constraintStart_toEndOf="@id/left_back_arrow"
-                app:layout_constraintTop_toTopOf="@id/left_back_arrow"
+                app:layout_constraintStart_toEndOf="@id/toolbar_navigation_icon"
+                app:layout_constraintTop_toTopOf="@id/toolbar_navigation_icon"
                 tools:ignore="ContentDescription,HardcodedText" />
 
         </androidx.appcompat.widget.Toolbar>
