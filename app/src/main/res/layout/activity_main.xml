@@ -33,7 +33,7 @@
                 android:layout_height="44dp"
                 android:layout_marginTop="10dp"
                 android:text="CONNECT. COMPOST. CULTIVATE."
-                android:fontFamily="@font/montserrat_light"
+                android:fontFamily="@font/montserrat_regular"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="20dp"
