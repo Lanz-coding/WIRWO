@@ -120,5 +120,6 @@ public class faqs extends Activity {
             isPopupShowing = false;
         }
 
+
     }
     }

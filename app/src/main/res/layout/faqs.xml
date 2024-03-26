@@ -20,26 +20,19 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/PopupMenuOverlay">
-
 
             <ImageView
                 android:id="@+id/toolbar_navigation_icon"
-                android:onClick="ShowPopUp"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="start"
                 android:contentDescription=""
+                android:onClick="ShowPopUp"
                 android:paddingStart="16dp"
                 android:src="@drawable/button_navbar"
                 tools:ignore="RtlSymmetry" />
-            <include
-                android:id="@+id/custom_menu_popup"
-                layout="@layout/custom_menu_popup"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
-
 
             <TextView
                 android:id="@+id/faqs_text"
@@ -49,15 +42,16 @@
                 android:layout_marginTop="8dp"
                 android:contentDescription=""
                 android:elevation="2dp"
-                android:text="FAQS"
-                android:textSize="25sp"
                 android:fontFamily="@font/montserrat_bold"
+                android:text="FAQS"
                 android:textColor="#ffffff"
+                android:textSize="25sp"
                 app:layout_constraintStart_toEndOf="@id/toolbar_navigation_icon"
                 app:layout_constraintTop_toTopOf="@id/toolbar_navigation_icon"
                 tools:ignore="ContentDescription,HardcodedText" />
 
         </androidx.appcompat.widget.Toolbar>
+
 
         <LinearLayout
             android:layout_width="match_parent"
