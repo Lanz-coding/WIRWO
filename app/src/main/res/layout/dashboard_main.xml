@@ -121,9 +121,12 @@
                 tools:ignore="UselessParent, UseSwitchCompatOrMaterialXml">
 
                 <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/waterPumpContainer"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -136,19 +139,22 @@
                         android:textColor="#8A6240"
                         android:textSize="15sp" />
 
-                    <Switch
+                    <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/waterPumpSwitch"
-                        style="@style/SwitchStyle"
                         android:layout_width="wrap_content"
-                        android:layout_height="16dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="-13dp"
                         android:checked="true"
+                        app:trackTint="#D3D3D3"
+                        app:thumbTint="@color/brown"
                         tools:ignore="TouchTargetSizeCheck" />
-
 
                 </LinearLayout>
 
                 <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/ventiContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -165,13 +171,15 @@
                         android:textColor="#8A6240"
                         android:textSize="15sp" />
 
-                    <Switch
+                    <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/ventiSwitch"
-                        style="@style/SwitchStyle"
-                        android:layout_width="50dp"
-                        android:layout_height="26dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="-13dp"
                         android:checked="true"
+                        app:trackTint="#D3D3D3"
+                        app:thumbTint="@color/brown"
                         tools:ignore="TouchTargetSizeCheck" />
 
                 </LinearLayout>
@@ -420,7 +428,7 @@
                     </LinearLayout>
 
                 </LinearLayout>
- =
+
                 <LinearLayout
                     android:id="@+id/airtemp_container"
                     android:layout_width="match_parent"
