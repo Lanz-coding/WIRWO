@@ -25,4 +25,21 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="main_menu">Main Menu</string>
+    <string name="todo">TODO</string>
+    <string name="user1">User</string>
+    <string name="view_profile_1">View Profile</string>
+    <string name="todo1">TODO</string>
+    <string name="dashboard1">DASHBOARD</string>
+    <string name="data_analytics">DATA ANALYTICS</string>
+    <string name="todo2">TODO1</string>
+    <string name="history1">HISTORY</string>
+    <string name="todo3">TODO</string>
+    <string name="todo4">TODO</string>
+    <string name="faqs1">FAQs</string>
+    <string name="log_out1">LOG-OUT</string>
+    <string name="todo5">TODO</string>
+    <string name="settings1">SETTINGS</string>
+    <string name="todo6">TODO</string>
+
+
 </resources>
