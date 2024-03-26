@@ -26,6 +26,7 @@
         <activity android:name=".SigninActivity" />
         <activity android:name=".Dashboard" />
         <activity android:name=".faqs"/>
+        <activity android:name=".SettingsActivity"/>
     </application>
 
 </manifest>

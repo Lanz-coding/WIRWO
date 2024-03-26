@@ -11,15 +11,20 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
-public class faqs extends Activity {
+public class SettingsActivity extends Activity {
 
     private PopupWindowHelper popupMenuHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.faqs);
+        setContentView(R.layout.activity_settings);
 
         // Initialize PopupMenuHelper with context of your activity
         popupMenuHelper = new PopupWindowHelper(this);
@@ -29,5 +34,5 @@ public class faqs extends Activity {
             popupMenuHelper.showPopup(v);
         });
     }
-
 }
+
