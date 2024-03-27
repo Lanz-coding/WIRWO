@@ -2,16 +2,28 @@ package com.example.wirwo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Dashboard extends Activity {
 
     private FirebaseAuth auth;
+    private DatabaseReference mDatabase;
     private PopupWindowHelper popupMenuHelper;
+
+    private TextView soilTempText, airTempText, humidityText, moistureText;
+    private ProgressBar soilTempBar, airTempBar, humidityBar, moistureBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,11 +33,24 @@ public class Dashboard extends Activity {
         // Initialize FirebaseAuth instance
         auth = FirebaseAuth.getInstance();
 
-        // Get reference to TextView
-        TextView welcomeText = findViewById(R.id.welcome_text);
+        // Get references to TextViews and ProgressBars
+        soilTempText = findViewById(R.id.soiltemp_meter);
+        soilTempBar = findViewById(R.id.soiltemp_bar);
+        airTempText = findViewById(R.id.airtemp_meter);
+        airTempBar = findViewById(R.id.airtemp_bar);
+        humidityText = findViewById(R.id.humidity_meter);
+        humidityBar = findViewById(R.id.humidity_bar);
+        moistureText = findViewById(R.id.moisture_meter);
+        moistureBar = findViewById(R.id.moisture_bar);
+
+        // Get an instance of Firebase Database
+        mDatabase = FirebaseDatabase.getInstance().getReference("SensorData");
 
         // Get current user
         FirebaseUser currentUser = auth.getCurrentUser();
+
+        // Get reference to TextView
+        TextView welcomeText = findViewById(R.id.welcome_text);
 
         // Check if user is not null
         if (currentUser != null) {
@@ -81,6 +106,44 @@ public class Dashboard extends Activity {
         findViewById(R.id.toolbar_navigation_icon).setOnClickListener(v -> {
             // Call showPopup() method to show the popup
             popupMenuHelper.showPopup(v);
+        });
+
+        // Add ValueEventListener to listen for changes in Firebase Database
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // Extract sensor data from snapshot
+                    Double soilTemp = snapshot.child("Temperature_DS18B20").getValue(Double.class);
+                    Double airTemp = snapshot.child("Temperature").getValue(Double.class);
+                    Double humidity = snapshot.child("Humidity").getValue(Double.class);
+                    Double moisture = snapshot.child("Soil_Moisture").getValue(Double.class);
+
+                    // Update TextViews and ProgressBars with sensor data
+                    if (soilTemp != null) {
+                        soilTempText.setText(String.valueOf(soilTemp) + "°C");
+                        soilTempBar.setProgress((int) Math.round(soilTemp)); // Assuming progress bar max is 100
+                    }
+                    if (airTemp != null) {
+                        airTempText.setText(String.valueOf(airTemp) + "°C");
+                        airTempBar.setProgress((int) Math.round(airTemp)); // Assuming progress bar max is 100
+                    }
+                    if (humidity != null) {
+                        humidityText.setText(String.valueOf(humidity) + "%");
+                        humidityBar.setProgress(humidity.intValue()); // Assuming progress bar max is 100
+                    }
+                    if (moisture != null) {
+                        moistureText.setText(String.valueOf(moisture) + "%");
+                        moistureBar.setProgress(moisture.intValue()); // Assuming progress bar max is 100
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle database errors
+                Toast.makeText(Dashboard.this, "Error fetching sensor data", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }
