@@ -1,8 +1,10 @@
 package com.example.wirwo;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,9 @@ public class PopupWindowHelper {
 
     private FirebaseAuth auth;
 
+    // Reference to the currently active LinearLayout in the popup
+    private LinearLayout activeItem;
+
     public PopupWindowHelper(Context context) {
         this.context = context;
         // Initialize FirebaseAuth instance
@@ -36,17 +41,32 @@ public class PopupWindowHelper {
             // Get reference to TextView
             TextView usernameText = popupView.findViewById(R.id.view_profile_text);
 
-            // Get current user
+            // Initialize FirebaseAuth instance
+            auth = FirebaseAuth.getInstance();
+
             FirebaseUser currentUser = auth.getCurrentUser();
 
             // Check if user is not null
             if (currentUser != null) {
-                // Retrieve the display name of the current user
+                // Extract the email address
+                String email = currentUser.getEmail();
 
-                // Apply the retrieved display name to the TextView
-                String text = currentUser.getDisplayName();
-                usernameText.setText(text);
+                // If email is not null, extract the username (prefix before "@")
+                if (email != null) {
+                    int index = email.indexOf('@');
+                    if (index != -1) {
+                        String username = email.substring(0, index);
+                        usernameText.setText(username);
+                    } else {
+                        // Handle case where email doesn't contain "@" symbol
+                        usernameText.setText("User"); // Or set a default message
+                    }
+                } else {
+                    // Handle case where currentUser.getEmail() is null
+                    usernameText.setText("User"); // Or set a default message
+                }
             } else {
+                // Set default text if user is null
                 String text = "User";
                 usernameText.setText(text);
             }
@@ -68,6 +88,16 @@ public class PopupWindowHelper {
             LinearLayout settings = popupView.findViewById(R.id.settings_button);
             LinearLayout logout = popupView.findViewById(R.id.logout_button);
 
+            // Update 'activeItem' based on the current activity (replace with your logic)
+            String currentActivity = ((Activity) context).getLocalClassName();
+            if (currentActivity.equals("Dashboard")) {
+                activeItem = dashboard;
+            } else if (currentActivity.equals("faqs")) {
+                activeItem = faqs;
+            } else if (currentActivity.equals("SettingsActivity")){
+                activeItem = settings;
+            }
+
             // Set click listeners for buttons
             profile.setOnClickListener(v -> {
                 // Handle button1 click
@@ -75,7 +105,6 @@ public class PopupWindowHelper {
                 // Dismiss the popup window
                 popupWindow.dismiss();
             });
-
 
             settings.setOnClickListener(v -> {
                 try {
@@ -119,6 +148,30 @@ public class PopupWindowHelper {
                 // Dismiss the popup window
                 popupWindow.dismiss();
             });
+
+            logout.setOnClickListener(v -> {
+                // Sign out the user from Firebase
+                auth.signOut();
+
+                // Display success message (optional)
+                Toast.makeText(context, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
+
+                // Close the popup window
+                popupWindow.dismiss();
+
+                // Optionally, redirect user to login activity
+                Intent intent = new Intent(context, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(intent);
+            });
+
+
+            // Set a darker background color for the active item
+            if (activeItem != null) {
+                int color = Color.parseColor("#102820");  // Parse hex code to integer color value
+                activeItem.setBackgroundColor(color);
+            }
+
 
             // Implement click listeners for other buttons similarly...
 

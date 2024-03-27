@@ -42,6 +42,7 @@ public class LoginActivity extends Activity {
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASSWORD = "password";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +80,16 @@ public class LoginActivity extends Activity {
             finish(); // Finish LoginActivity so the user cannot come back to it using the back button
         });
 
+        // Pre-populate fields if "Remember Me" is checked
+        String savedUsername = sharedPreferences.getString(KEY_USERNAME, "");
+        String savedPassword = sharedPreferences.getString(KEY_PASSWORD, "");
+        usernameEditText.setText(savedUsername);
+        passwordEditText.setText(savedPassword);
+
+        // Check switch state for debugging purposes (remove later)
+        if (rememberMeSwitch.isChecked()) {
+            Toast.makeText(LoginActivity.this, "Remember Me is checked", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void login() {

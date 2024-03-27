@@ -147,7 +147,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="-13dp"
-                        android:checked="true"
                         app:trackTint="#D3D3D3"
                         app:thumbTint="@color/brown"
                         tools:ignore="TouchTargetSizeCheck" />
@@ -179,7 +178,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="-13dp"
-                        android:checked="true"
                         app:trackTint="#D3D3D3"
                         app:thumbTint="@color/brown"
                         tools:ignore="TouchTargetSizeCheck" />
