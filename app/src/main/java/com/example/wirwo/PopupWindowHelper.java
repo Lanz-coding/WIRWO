@@ -36,17 +36,32 @@ public class PopupWindowHelper {
             // Get reference to TextView
             TextView usernameText = popupView.findViewById(R.id.view_profile_text);
 
-            // Get current user
+            // Initialize FirebaseAuth instance
+            auth = FirebaseAuth.getInstance();
+
             FirebaseUser currentUser = auth.getCurrentUser();
 
             // Check if user is not null
             if (currentUser != null) {
-                // Retrieve the display name of the current user
+                // Extract the email address
+                String email = currentUser.getEmail();
 
-                // Apply the retrieved display name to the TextView
-                String text = currentUser.getDisplayName();
-                usernameText.setText(text);
+                // If email is not null, extract the username (prefix before "@")
+                if (email != null) {
+                    int index = email.indexOf('@');
+                    if (index != -1) {
+                        String username = email.substring(0, index);
+                        usernameText.setText(username);
+                    } else {
+                        // Handle case where email doesn't contain "@" symbol
+                        usernameText.setText("User"); // Or set a default message
+                    }
+                } else {
+                    // Handle case where currentUser.getEmail() is null
+                    usernameText.setText("User"); // Or set a default message
+                }
             } else {
+                // Set default text if user is null
                 String text = "User";
                 usernameText.setText(text);
             }

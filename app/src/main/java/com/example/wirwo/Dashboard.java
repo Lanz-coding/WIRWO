@@ -29,12 +29,26 @@ public class Dashboard extends Activity {
 
         // Check if user is not null
         if (currentUser != null) {
-            // Retrieve the display name of the current user
-            String currentUserName = currentUser.getDisplayName();
+            // Extract the email address
+            String email = currentUser.getEmail();
 
-            // Apply the retrieved display name to the TextView
-            String text = "Ciao, " + currentUserName + ", Check your Wireless Worms Today!";
-            welcomeText.setText(text);
+            // If email is not null, extract the username (prefix before "@")
+            if (email != null) {
+                int index = email.indexOf('@');
+                if (index != -1) {
+                    String username = email.substring(0, index);
+                    welcomeText.setText("Ciao, " + username + "! Check your Wireless Worms Today!");
+                } else {
+                    // Handle case where email doesn't contain "@" symbol
+                    welcomeText.setText("Ciao, User! Check your Wireless Worms Today!");
+                }
+            } else {
+                // Handle case where currentUser.getEmail() is null
+                welcomeText.setText("Ciao, User! Check your Wireless Worms Today!");
+            }
+        } else {
+            // Set default text if user is null
+            welcomeText.setText("Welcome, please sign in to proceed.");
         }
 
         // Initialize PopupMenuHelper with context of your activity
