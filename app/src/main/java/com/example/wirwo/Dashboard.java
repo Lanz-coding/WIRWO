@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 public class Dashboard extends Activity {
 
     private FirebaseAuth auth;
@@ -120,11 +121,13 @@ public class Dashboard extends Activity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
+
                     // Extract sensor data from snapshot
                     Double soilTemp = snapshot.child("Temperature_DS18B20").getValue(Double.class);
                     Double airTemp = snapshot.child("Temperature").getValue(Double.class);
                     Double humidity = snapshot.child("Humidity").getValue(Double.class);
                     Double moisture = snapshot.child("Soil_Moisture").getValue(Double.class);
+
 
                     // Update TextViews and ProgressBars with sensor data
                     if (soilTemp != null) {
@@ -142,6 +145,14 @@ public class Dashboard extends Activity {
                     if (moisture != null) {
                         moistureText.setText(String.valueOf(moisture) + "%");
                         moistureBar.setProgress(moisture.intValue()); // Assuming progress bar max is 100
+                    }
+
+                    boolean ventiChecked = snapshot.child("LED_Control").getValue(boolean.class);
+
+                    if (ventiChecked == true) {
+                        ventiSwitch.setChecked(true);
+                    } else {
+                        ventiSwitch.setChecked(false);
                     }
                 }
             }
