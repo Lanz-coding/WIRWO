@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class PopupWindowHelper {
 
@@ -16,14 +20,37 @@ public class PopupWindowHelper {
     private boolean isPopupShowing = false;
     private Context context;
 
+    private FirebaseAuth auth;
+
     public PopupWindowHelper(Context context) {
         this.context = context;
+        // Initialize FirebaseAuth instance
+        auth = FirebaseAuth.getInstance();
     }
 
     public void showPopup(View anchorView) {
         if (!isPopupShowing) {
             // Inflate the custom popup window layout
             View popupView = LayoutInflater.from(context).inflate(R.layout.custom_menu_popup, null);
+
+            // Get reference to TextView
+            TextView usernameText = popupView.findViewById(R.id.view_profile_text);
+
+            // Get current user
+            FirebaseUser currentUser = auth.getCurrentUser();
+
+            // Check if user is not null
+            if (currentUser != null) {
+                // Retrieve the display name of the current user
+
+                // Apply the retrieved display name to the TextView
+                String text = currentUser.getDisplayName();
+                usernameText.setText(text);
+            } else {
+                String text = "User";
+                usernameText.setText(text);
+            }
+
 
             // Create a PopupWindow object
             popupWindow = new PopupWindow(
