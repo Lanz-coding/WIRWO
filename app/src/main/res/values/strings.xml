@@ -40,6 +40,10 @@
     <string name="todo5">TODO</string>
     <string name="settings1">SETTINGS</string>
     <string name="todo6">TODO</string>
+    <string name="app_des">Data Analysis</string>
+    <string name="soil_and_air_condition_sensor">SOIL AND AIR CONDITION SENSOR</string>
+    <string name="app_name">WirWo_2.0</string>
+    <string name="app_name2">WIRWO 2.0</string>
 
 
 </resources>
