@@ -20,6 +20,10 @@ public class Dashboard extends Activity {
 
     private FirebaseAuth auth;
     private DatabaseReference mDatabase;
+
+    private SwitchMaterial ventiSwitch;
+    private String LED_CONTROL_PATH = "LED_Control"; // Separate node for LED control
+    private DatabaseReference ledControlRef;
     private PopupWindowHelper popupMenuHelper;
 
     private TextView soilTempText, airTempText, humidityText, moistureText;
@@ -92,14 +96,17 @@ public class Dashboard extends Activity {
             }
         });
 
-        // Set OnCheckedChangeListener for the ventilation switch
+        ledControlRef = mDatabase.child(LED_CONTROL_PATH); // New DatabaseReference for LED control
+
         ventiSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                // Ventilation switch is turned on
-                Toast.makeText(Dashboard.this, "Ventilation is turned on", Toast.LENGTH_SHORT).show();
+                // Ventilation switch is turned on, send "true" to Firebase
+                turnOnLED();
+                Toast.makeText(Dashboard.this, "Ventilation is turned on and LED is lit", Toast.LENGTH_SHORT).show();
             } else {
-                // Ventilation switch is turned off
-                Toast.makeText(Dashboard.this, "Ventilation is turned off", Toast.LENGTH_SHORT).show();
+                // Ventilation switch is turned off, send "false" to Firebase
+                turnOffLED();
+                Toast.makeText(Dashboard.this.getApplicationContext(), "Ventilation is turned off and LED is off", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -146,4 +153,13 @@ public class Dashboard extends Activity {
             }
         });
     }
+
+    private void turnOnLED() {
+        ledControlRef.setValue(true);
+    }
+
+    private void turnOffLED() {
+        ledControlRef.setValue(false);
+    }
+
 }
