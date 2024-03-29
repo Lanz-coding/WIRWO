@@ -43,6 +43,9 @@
     <string name="app_des">Data Analysis</string>
     <string name="soil_and_air_condition_sensor">SOIL AND AIR CONDITION SENSOR</string>
     <string name="app_name2">WIRWO 2.0</string>
+    <string name="navigation_toolbar">navigation toolbar</string>
+    <string name="soil_moisture">SOIL MOISTURE</string>
+    <string name="air_temperature">AIR TEMPERATURE</string>
 
 
 </resources>

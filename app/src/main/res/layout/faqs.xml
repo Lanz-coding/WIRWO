@@ -15,6 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="70dp"
+            app:layout_collapseMode="pin"
             android:background="#4D2D18"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -29,7 +30,6 @@
                 android:layout_height="50dp"
                 android:layout_gravity="start"
                 android:contentDescription=""
-                android:onClick="ShowPopUp"
                 android:paddingStart="16dp"
                 android:src="@drawable/button_navbar"
                 tools:ignore="RtlSymmetry" />
@@ -77,7 +77,7 @@
                 android:layout_height="3000dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
-                android:background="#efd7b3"
+                android:background="#628b4c"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbar">
@@ -92,7 +92,7 @@
                     android:elevation="2dp"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="What is the WIRWO 2.0 Vermicomposter App?"
-                    android:textColor="#4d2d18"
+                    android:textColor="#ffffff"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:ignore="ContentDescription,HardcodedText,MissingConstraints,TextSizeCheck" />
@@ -100,7 +100,7 @@
                 <TextView
                     android:id="@+id/answer_1"
                     android:layout_width="330dp"
-                    android:layout_height="227dp"
+                    android:layout_height="244dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="78dp"
                     android:contentDescription=""
@@ -111,7 +111,7 @@
                     android:text="The WIRWO App is a mobile application that helps you monitor and control your vermicomposting system.
 It allows you to view real-time sensor readings, receive alerts for critical conditions, and remotely control actuators (if available) to optimize the environment for your worms."
                     android:textAlignment="textStart"
-                    android:textColor="#4d2d18"
+                    android:textColor="#ffffff"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:ignore="ContentDescription,HardcodedText,MissingConstraints,TextSizeCheck" />
@@ -119,14 +119,14 @@ It allows you to view real-time sensor readings, receive alerts for critical con
                 <TextView
                     android:id="@+id/question_2"
                     android:layout_width="336dp"
-                    android:layout_height="58dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="300dp"
                     android:contentDescription=""
                     android:elevation="2dp"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="How do I create an account?"
-                    android:textColor="#4d2d18"
+                    android:textColor="#ffffff"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:ignore="ContentDescription,HardcodedText,MissingConstraints,TextSizeCheck" />
@@ -134,9 +134,9 @@ It allows you to view real-time sensor readings, receive alerts for critical con
                 <TextView
                     android:id="@+id/answer_2"
                     android:layout_width="330dp"
-                    android:layout_height="733dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="330dp"
+                    android:layout_marginTop="335dp"
                     android:contentDescription=""
                     android:elevation="2dp"
                     android:fontFamily="@font/montserrat_regular"
@@ -144,14 +144,14 @@ It allows you to view real-time sensor readings, receive alerts for critical con
                     android:padding="8dp"
                     android:text="There are two ways to access the app, depending on whether you already have an account."
                     android:textAlignment="textStart"
-                    android:textColor="#4d2d18"
+                    android:textColor="#ffffff"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:ignore="ContentDescription,HardcodedText,MissingConstraints,TextSizeCheck" />
 
                 <TextView
                     android:id="@+id/answer_2_1"
-                    android:layout_width="330dp"
+                    android:layout_width="340dp"
                     android:layout_height="1595dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="415dp"
@@ -173,11 +173,10 @@ It allows you to view real-time sensor readings, receive alerts for critical con
 \n\nTips:
 \nIf you are having trouble logging in, make sure you are using the correct username and password. Passwords are case-sensitive, so double-check that your caps lock key is off.
 Some apps offer the option to remember your login credentials. This can be convenient, but be mindful of using this feature on public devices.
-\nIf you are having trouble logging in, make sure you are using the correct username and password. Passwords are case-sensitive, so double-check that your caps lock key is off.
-                Some apps offer the option to remember your login credentials. This can be convenient, but be mindful of using this feature on public devices."
+\n\nIf you are having trouble logging in, make sure you are using the correct username and password. Passwords are case-sensitive, so double-check that your caps lock key is off. Some apps offer the option to remember your login credentials. This can be convenient, but be mindful of using this feature on public devices."
 
                     android:textAlignment="textStart"
-                    android:textColor="#4d2d18"
+                    android:textColor="#ffffff"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:ignore="ContentDescription,HardcodedText,MissingConstraints,TextSizeCheck" />

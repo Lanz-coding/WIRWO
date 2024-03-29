@@ -27,6 +27,7 @@
         <activity android:name=".Dashboard" />
         <activity android:name=".faqs"/>
         <activity android:name=".SettingsActivity"/>
+        <activity android:name=".Data_Analysis"/>
     </application>
 
 </manifest>
