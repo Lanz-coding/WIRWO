@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -22,7 +21,9 @@ public class Dashboard extends Activity {
 
     private FirebaseAuth auth;
     private DatabaseReference mDatabase;
-    private final String LED_CONTROL_PATH = "LED_Control"; // Separate node for LED control
+
+    private SwitchMaterial ventiSwitch;
+    private String LED_CONTROL_PATH = "LED_Control"; // Separate node for LED control
     private DatabaseReference ledControlRef;
     private PopupWindowHelper popupMenuHelper;
 
@@ -115,6 +116,7 @@ public class Dashboard extends Activity {
             popupMenuHelper.showPopup(v);
         });
 
+
         // Add ValueEventListener to listen for changes in Firebase Database
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -130,25 +132,29 @@ public class Dashboard extends Activity {
 
                     // Update TextViews and ProgressBars with sensor data
                     if (soilTemp != null) {
-                        soilTempText.setText(soilTemp + "°C");
+                        soilTempText.setText(String.valueOf(soilTemp) + "°C");
                         soilTempBar.setProgress((int) Math.round(soilTemp)); // Assuming progress bar max is 100
                     }
                     if (airTemp != null) {
-                        airTempText.setText(airTemp + "°C");
+                        airTempText.setText(String.valueOf(airTemp) + "°C");
                         airTempBar.setProgress((int) Math.round(airTemp)); // Assuming progress bar max is 100
                     }
                     if (humidity != null) {
-                        humidityText.setText(humidity + "%");
+                        humidityText.setText(String.valueOf(humidity) + "%");
                         humidityBar.setProgress(humidity.intValue()); // Assuming progress bar max is 100
                     }
                     if (moisture != null) {
-                        moistureText.setText(moisture + "%");
+                        moistureText.setText(String.valueOf(moisture) + "%");
                         moistureBar.setProgress(moisture.intValue()); // Assuming progress bar max is 100
                     }
 
                     boolean ventiChecked = snapshot.child("LED_Control").getValue(boolean.class);
 
-                    ventiSwitch.setChecked(ventiChecked);
+                    if (ventiChecked == true) {
+                        ventiSwitch.setChecked(true);
+                    } else {
+                        ventiSwitch.setChecked(false);
+                    }
                 }
             }
 
@@ -167,5 +173,6 @@ public class Dashboard extends Activity {
     private void turnOffLED() {
         ledControlRef.setValue(false);
     }
+
 
 }

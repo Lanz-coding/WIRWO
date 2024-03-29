@@ -1,8 +1,10 @@
 package com.example.wirwo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -150,21 +153,38 @@ public class PopupWindowHelper {
             });
 
             logout.setOnClickListener(v -> {
-                // Sign out the user from Firebase
-                auth.signOut();
+                // Display confirmation dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Are you sure you want to log out?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // User confirmed, proceed with logout
+                                // Sign out the user from Firebase
+                                auth.signOut();
 
-                // Display success message (optional)
-                Toast.makeText(context, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
+                                // Display success message with your app icon
+                                showToastWithAppIcon("Logged Out Successfully", true);
 
-                // Close the popup window
-                popupWindow.dismiss();
+                                // Close the popup window
+                                popupWindow.dismiss();
 
-                // Optionally, redirect user to login activity
-                Intent intent = new Intent(context, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                context.startActivity(intent);
+                                // Optionally, redirect user to login activity
+                                Intent intent = new Intent(context, LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                context.startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // User canceled, do nothing or dismiss the dialog
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             });
-
 
             // Set a darker background color for the active item
             if (activeItem != null) {
@@ -187,5 +207,32 @@ public class PopupWindowHelper {
             popupWindow.dismiss();
             isPopupShowing = false;
         }
+    }
+
+    // Method to show custom toast with app icon
+    private void showToastWithAppIcon(String message, boolean isSuccess) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View layout = inflater.inflate(R.layout.toast_layout, null);
+
+        ImageView iconImageView = layout.findViewById(R.id.toast_icon);
+        TextView messageTextView = layout.findViewById(R.id.toast_text);
+
+        // Set the app icon based on success or failure
+        if (isSuccess) {
+            // Set your success icon
+            iconImageView.setImageResource(R.drawable.white_wirwo); // Replace with your success icon
+        } else {
+            // Set your failure icon
+            iconImageView.setImageResource(R.drawable.white_wirwo); // Replace with your failure icon
+        }
+
+        // Set the message
+        messageTextView.setText(message);
+
+        // Create and show the toast
+        Toast toast = new Toast(context);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 }
