@@ -54,7 +54,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
-        android:id="@+id/settings_text"
+        android:id="@+id/settings_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/lighterGreen"
@@ -72,5 +72,68 @@
         android:textSize="25sp"
         android:textStyle="bold" />
     </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@id/settings_layout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="7.5dp"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="PREFERENCES"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/darkBrown"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Soil Temp Threshold"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="0dp"
+                        android:text="Adjust the Soil Temperature Threshold"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

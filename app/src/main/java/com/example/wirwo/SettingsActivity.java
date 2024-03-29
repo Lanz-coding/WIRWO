@@ -1,23 +1,11 @@
 package com.example.wirwo;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.Toast;
-
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 public class SettingsActivity extends Activity {
+
 
     private PopupWindowHelper popupMenuHelper;
 
@@ -29,10 +17,14 @@ public class SettingsActivity extends Activity {
         // Initialize PopupMenuHelper with context of your activity
         popupMenuHelper = new PopupWindowHelper(this);
 
-        findViewById(R.id.toolbar_navigation_icon).setOnClickListener(v -> {
-            // Call showPopup() method to show the popup
-            popupMenuHelper.showPopup(v);
+        findViewById(R.id.toolbar_navigation_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call showPopup() method to show the popup
+                popupMenuHelper.showPopup(v);
+            }
         });
+
+
     }
 }
-
