@@ -41,15 +41,20 @@ public class data_analysis extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.data_analysis);
 
+        // Initialize PopupMenuHelper with context of your activity
         popupMenuHelper = new PopupWindowHelper(this);
+
+        findViewById(R.id.toolbar_navigation_icon).setOnClickListener(v -> {
+            // Call showPopup() method to show the popup
+            popupMenuHelper.showPopup(v);
+        });
+
 
         ProgressBar progressBar1 = findViewById(R.id.vertical_progressbar1);
         progressBar1.setProgress(60);
 
         ProgressBar progressBar2 = findViewById(R.id.vertical_progressbar2);
         progressBar2.setProgress(60);
-
-
 
 
 
