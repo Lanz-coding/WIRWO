@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -67,12 +70,14 @@ public class SigninActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(SigninActivity.this, "SignUp Successful", Toast.LENGTH_SHORT).show();
+                                    // SignUp successful, show custom toast with success icon
+                                    showCustomToast("SignUp Successful", true);
                                     // Handle successful registration, for example, navigate to another activity
                                     Intent intent = new Intent(SigninActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                 } else {
-                                    Toast.makeText(SigninActivity.this, "SignUp Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    // SignUp failed, show custom toast with failure icon
+                                    showCustomToast("SignUp Failed: " + task.getException().getMessage(), false);
                                     // Handle failed registration, for example, show an error message
                                 }
                                 hideLoading();
@@ -114,6 +119,33 @@ public class SigninActivity extends AppCompatActivity {
         }
     };
 
+    // Method to show custom toast with app icon
+    private void showCustomToast(String message, boolean isSuccess) {
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_layout, findViewById(R.id.toast_icon));
+
+        ImageView iconImageView = layout.findViewById(R.id.toast_icon);
+        TextView messageTextView = layout.findViewById(R.id.toast_text);
+
+        // Set the app icon based on success or failure
+        if (isSuccess) {
+            // Set your success icon
+            iconImageView.setImageResource(R.drawable.white_wirwo); // Replace with your success icon
+        } else {
+            // Set your failure icon
+            iconImageView.setImageResource(R.drawable.white_wirwo); // Replace with your failure icon
+        }
+
+        // Set the message
+        messageTextView.setText(message);
+
+        // Create and show the toast
+        Toast toast = new Toast(getApplicationContext());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
+    }
+
     public void onBackPressed() {
         // Handle back button click
         super.onBackPressed();
@@ -121,5 +153,4 @@ public class SigninActivity extends AppCompatActivity {
         startActivity(intent);
         finish(); // Optional, depends on your navigation flow
     }
-
 }

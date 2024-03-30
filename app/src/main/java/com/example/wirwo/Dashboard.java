@@ -116,6 +116,7 @@ public class Dashboard extends Activity {
             popupMenuHelper.showPopup(v);
         });
 
+
         // Add ValueEventListener to listen for changes in Firebase Database
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -172,5 +173,6 @@ public class Dashboard extends Activity {
     private void turnOffLED() {
         ledControlRef.setValue(false);
     }
+
 
 }

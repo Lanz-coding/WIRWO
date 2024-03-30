@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-<application
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <application
         android:theme="@style/Theme.WIRWO"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"

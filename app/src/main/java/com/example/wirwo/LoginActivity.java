@@ -2,7 +2,6 @@ package com.example.wirwo;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -14,14 +13,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
 
-import com.example.wirwo.Dashboard;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthResult;
@@ -41,7 +36,6 @@ public class LoginActivity extends Activity {
     private static final String SHARED_PREF_NAME = "login_preferences";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASSWORD = "password";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,8 +98,6 @@ public class LoginActivity extends Activity {
             // Disable the login button while logging in
             loginButton.setEnabled(false);
 
-            // Show a progress dialog or loading indicator here if desired
-
             // Perform login asynchronously
             new LoginTask().execute(email, password);
         } else {
@@ -154,7 +146,7 @@ public class LoginActivity extends Activity {
             Task<AuthResult> signInTask = auth.signInWithEmailAndPassword(email, password);
             try {
                 Tasks.await(signInTask);
-                return ((Task<?>) signInTask).isSuccessful(); // Login successful if task is successful
+                return signInTask.isSuccessful(); // Login successful if task is successful
             } catch (Exception e) {
                 e.printStackTrace();
                 return false; // Login failed
@@ -163,23 +155,44 @@ public class LoginActivity extends Activity {
 
         @Override
         protected void onPostExecute(Boolean success) {
-            // Hide the progress dialog or loading indicator here if shown
-
             if (success) {
-                // Login successful, navigate to Dashboard activity
-                Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                // Login successful, show custom toast with success icon
+                showCustomToast("Login Successful", true);
+                // Navigate to Dashboard activity
                 Intent intent = new Intent(LoginActivity.this, Dashboard.class);
                 startActivity(intent);
                 finish(); // Finish LoginActivity so the user cannot come back to it using the back button
             } else {
-                // Login failed, display error message
-                Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
-                // Since login failed, you might want to keep the user on the login screen
-                // You don't need to do anything here because the login button is already enabled
-                // and the user can try logging in again
+                // Login failed, show custom toast with failure icon
+                showCustomToast("Login Failed", false);
             }
         }
+    }
 
+    // Method to show custom toast with app icon
+    private void showCustomToast(String message, boolean isSuccess) {
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_layout, findViewById(R.id.toast_icon));
 
+        ImageView iconImageView = layout.findViewById(R.id.toast_icon);
+        TextView messageTextView = layout.findViewById(R.id.toast_text);
+
+        // Set the app icon based on success or failure
+        if (isSuccess) {
+            // Set your success icon
+            iconImageView.setImageResource(R.drawable.white_wirwo); // Replace with your success icon
+        } else {
+            // Set your failure icon
+            iconImageView.setImageResource(R.drawable.white_wirwo); // Replace with your failure icon
+        }
+
+        // Set the message
+        messageTextView.setText(message);
+
+        // Create and show the toast
+        Toast toast = new Toast(getApplicationContext());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 }
