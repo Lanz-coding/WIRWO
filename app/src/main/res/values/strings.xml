@@ -46,6 +46,15 @@
     <string name="navigation_toolbar">navigation toolbar</string>
     <string name="soil_moisture">SOIL MOISTURE</string>
     <string name="air_temperature">AIR TEMPERATURE</string>
+    <string name="background_white_one">background</string>
+    <string name="background_white_two" />
+    <string name="thermometer">thermometer</string>
+    <string name="_38c">38C</string>
+    <string name="_38_c">38°C</string>
+    <string name="as_of_feb_24_2024">As of Feb 24 2024</string>
+    <string name="_28_c">28°C</string>
+    <string name="humidity">HUMIDITY</string>
+    <string name="soil_moisture_a">SOIL MOISTURE</string>
 
 
 </resources>
