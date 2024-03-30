@@ -119,17 +119,6 @@ public class PopupWindowHelper {
                 popupWindow.dismiss();
             });
 
-            analytics.setOnClickListener(v -> {
-                try {
-                    // Handle button1 click
-                    Intent intent = new Intent(context, data_analysis.class);
-                    context.startActivity(intent);
-
-                } catch (ActivityNotFoundException e) {
-                    // Handle the exception appropriately, e.g., show an error message
-                    Toast.makeText(context, "Error starting Data Analysis", Toast.LENGTH_SHORT).show();
-                }
-            });
 
             settings.setOnClickListener(v -> {
                 if (!currentActivity.equals("SettingsActivity")) { // Check if not on the current page
