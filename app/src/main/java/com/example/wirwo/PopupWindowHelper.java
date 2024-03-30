@@ -49,6 +49,7 @@ public class PopupWindowHelper {
 
             FirebaseUser currentUser = auth.getCurrentUser();
 
+
             // Check if user is not null
             if (currentUser != null) {
                 // Extract the email address
@@ -118,47 +119,64 @@ public class PopupWindowHelper {
                 popupWindow.dismiss();
             });
 
-            settings.setOnClickListener(v -> {
+            analytics.setOnClickListener(v -> {
                 try {
                     // Handle button1 click
-                    Intent intent = new Intent(context, SettingsActivity.class);
+                    Intent intent = new Intent(context, data_analysis.class);
                     context.startActivity(intent);
 
                 } catch (ActivityNotFoundException e) {
                     // Handle the exception appropriately, e.g., show an error message
-                    Toast.makeText(context, "Error starting Settings's activity", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Error starting Data Analysis", Toast.LENGTH_SHORT).show();
                 }
+            });
 
+            settings.setOnClickListener(v -> {
+                if (!currentActivity.equals("SettingsActivity")) { // Check if not on the current page
+                    try {
+                        // Handle button1 click
+                        Intent intent = new Intent(context, SettingsActivity.class);
+                        context.startActivity(intent);
+
+                    } catch (ActivityNotFoundException e) {
+                        // Handle the exception appropriately, e.g., show an error message
+                        Toast.makeText(context, "Error starting Settings's activity", Toast.LENGTH_SHORT).show();
+                    }
+                }
             });
 
             dashboard.setOnClickListener(v -> {
-                try {
-                    // Handle button1 click
-                    Intent intent = new Intent(context, Dashboard.class);
-                    context.startActivity(intent);
+                if (!currentActivity.equals("Dashboard")) { // Check if not on the current page
+                    try {
+                        // Handle button1 click
+                        Intent intent = new Intent(context, Dashboard.class);
+                        context.startActivity(intent);
 
-                } catch (ActivityNotFoundException e) {
-                    // Handle the exception appropriately, e.g., show an error message
-                    Toast.makeText(context, "Error starting Dashboard's activity", Toast.LENGTH_SHORT).show();
+                    } catch (ActivityNotFoundException e) {
+                        // Handle the exception appropriately, e.g., show an error message
+                        Toast.makeText(context, "Error starting Dashboard's activity", Toast.LENGTH_SHORT).show();
+                    }
+
+                    // Dismiss the popup window
+                    popupWindow.dismiss();
                 }
-
-                // Dismiss the popup window
-                popupWindow.dismiss();
             });
 
             faqs.setOnClickListener(v -> {
-                try {
-                    // Handle button1 click
-                    Intent intent = new Intent(context, faqs.class);
-                    context.startActivity(intent);
+                if (!currentActivity.equals("faqs")) { // Check if not on the current page
+                    try {
+                        // Handle button1 click
+                        Intent intent = new Intent(context, faqs.class);
+                        context.startActivity(intent);
 
-                } catch (ActivityNotFoundException e) {
-                    // Handle the exception appropriately, e.g., show an error message
-                    Toast.makeText(context, "Error starting FAQs's activity", Toast.LENGTH_SHORT).show();
+                    } catch (ActivityNotFoundException e) {
+                        // Handle the exception appropriately, e.g., show an error message
+                        Toast.makeText(context, "Error starting FAQs's activity", Toast.LENGTH_SHORT).show();
+                    }
+
+                    // Dismiss the popup window
+                    popupWindow.dismiss();
                 }
-
-                // Dismiss the popup window
-                popupWindow.dismiss();
             });
 
             data_analysis.setOnClickListener(v -> {
@@ -175,7 +193,6 @@ public class PopupWindowHelper {
                 // Dismiss the popup window
                 popupWindow.dismiss();
             });
-
 
 
 
