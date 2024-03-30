@@ -44,7 +44,7 @@
     <string name="soil_and_air_condition_sensor">SOIL AND AIR CONDITION SENSOR</string>
     <string name="app_name2">WIRWO 2.0</string>
     <string name="navigation_toolbar">navigation toolbar</string>
-    <string name="soil_moisture">SOIL MOISTURE</string>
+    <string name="soil_moisture">SOIL TEMPERATURE</string>
     <string name="air_temperature">AIR TEMPERATURE</string>
     <string name="background_white_one">background</string>
     <string name="background_white_two" />
@@ -56,6 +56,7 @@
     <string name="humidity">HUMIDITY</string>
     <string name="soil_moisture_a">SOIL MOISTURE</string>
     <string name="air_condition_sensors">AIR CONDITION SENSORS</string>
+    <string name="soil_condition_sensor">SOIL CONDITION SENSOR</string>
 
 
 </resources>

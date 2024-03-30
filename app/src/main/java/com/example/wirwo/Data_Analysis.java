@@ -4,13 +4,16 @@ package com.example.wirwo;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.ekn.gruzer.gaugelibrary.ArcGauge;
+import com.ekn.gruzer.gaugelibrary.HalfGauge;
 import com.ekn.gruzer.gaugelibrary.Range;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -27,11 +30,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 
-public class data_analysis extends Activity {
-    private ArcGauge gauge1;
-    private ArcGauge gauge2;
+public class Data_Analysis extends Activity {
+    private HalfGauge gauge1;
+    private  HalfGauge gauge2;
     private DatabaseReference database;
 
     private PopupWindowHelper popupMenuHelper;
@@ -42,13 +47,6 @@ public class data_analysis extends Activity {
         setContentView(R.layout.data_analysis);
 
         popupMenuHelper = new PopupWindowHelper(this);
-
-        ProgressBar progressBar1 = findViewById(R.id.vertical_progressbar1);
-        progressBar1.setProgress(60);
-
-        ProgressBar progressBar2 = findViewById(R.id.vertical_progressbar2);
-        progressBar2.setProgress(60);
-
 
 
 
@@ -64,24 +62,24 @@ public class data_analysis extends Activity {
         readDsb18Temperature();
         setupLineChart();
 
+        listenToSensorDataChanges();
 
-
-
+        findViewById(R.id.toolbar_navigation_icon).setOnClickListener(v -> {
+            // Call showPopup() method to show the popup
+            popupMenuHelper.showPopup(v);
+        });
 
     }
 
 
-
-
-
     private void readDsb18Temperature() {
-        database = FirebaseDatabase.getInstance().getReference("SensorData").child("Temperature_DS18B20");
+        database = FirebaseDatabase.getInstance().getReference("SensorData").child("Soil_Moisture");
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    Double Temperature_DS18B20 = dataSnapshot.getValue(Double.class);
-                    updateGauge(gauge2, Temperature_DS18B20);
+                    Double Soil_Moisture = dataSnapshot.getValue(Double.class);
+                    updateGauge(gauge2, Soil_Moisture);
                 } else {
                     updateGauge(gauge2, 0.0);
 
@@ -119,7 +117,7 @@ public class data_analysis extends Activity {
         });
     }
 
-    private void setupGauge(ArcGauge gauge) {
+    private void setupGauge(HalfGauge gauge) {
         gauge.setMaxValue(100);
         gauge.setBackgroundColor(Color.WHITE);
         gauge.setMinValue(0);
@@ -131,21 +129,23 @@ public class data_analysis extends Activity {
         range1.setTo(24.0);
 
         Range range2 = new Range();
-        range2.setColor(Color.parseColor("#E3E500"));
+        range2.setColor(Color.parseColor("#4C6444"));
         range2.setFrom(25.0);
         range2.setTo(74.0);
 
         Range range3 = new Range();
-        range3.setColor(Color.parseColor("#ce0000"));
+        range3.setColor(Color.parseColor("#204020"));
         range3.setFrom(75.0);
         range3.setTo(100.0);
 
         gauge.addRange(range1);
         gauge.addRange(range2);
         gauge.addRange(range3);
+        gauge.setBackgroundColor(Color.parseColor("#CABA9C"));
+
     }
 
-    private void updateGauge(ArcGauge gauge, double data) {
+    private void updateGauge(HalfGauge gauge, double data) {
         gauge.setValue((float) data);
     }
 
@@ -260,4 +260,64 @@ public class data_analysis extends Activity {
             return String.format("%02d:%02d", hours, minutesRemainder);
         }
     }
+
+    private void listenToSensorDataChanges() {
+        // Get the Firebase database reference
+        DatabaseReference sensorDataRef = FirebaseDatabase.getInstance().getReference().child("SensorData");
+
+        // Add a ValueEventListener to listen for changes in the SensorData node
+        sensorDataRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Check if the dataSnapshot has children
+                if (dataSnapshot.exists()) {
+                    Calendar calendar = Calendar.getInstance();
+                    Date currentDate = calendar.getTime();
+                    // Format the current date into a human-readable format
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd yyyy", Locale.getDefault());
+                    String formattedDate = dateFormat.format(currentDate);
+                    // Check if the Temperature child node exists
+                    if (dataSnapshot.hasChild("Temperature")) {
+                        // Get the Temperature value
+                        Double temperature = dataSnapshot.child("Temperature").getValue(Double.class);
+                        if (temperature != null) {
+                            // Update progress bar 1 with the temperature value
+                            ProgressBar progressBar1 = findViewById(R.id.vertical_progressbar1);
+                            progressBar1.setProgress(temperature.intValue()); // Assuming temperature is in range of 0-100
+                            TextView airTempText = findViewById(R.id.temp_air);
+                            airTempText.setText(String.valueOf(temperature + " °C"));
+                        }
+                    }
+
+                    // Check if the Temperature_DS18B20 child node exists
+                    if (dataSnapshot.hasChild("Temperature_DS18B20")) {
+                        // Get the Temperature_DS18B20 value
+                        Double temperatureDs18b20 = dataSnapshot.child("Temperature_DS18B20").getValue(Double.class);
+                        if (temperatureDs18b20 != null) {
+                            // Update progress bar 2 with the temperature value
+                            ProgressBar progressBar2 = findViewById(R.id.vertical_progressbar2);
+                            progressBar2.setProgress(temperatureDs18b20.intValue()); // Assuming temperature is in range of 0-100
+                            TextView soilTempText = findViewById(R.id.temp_soil);
+                            soilTempText.setText(String.valueOf(temperatureDs18b20 + " °C"));
+                        }
+                    }
+
+                    TextView date_soil = findViewById(R.id.date_soil);
+                    TextView date_air = findViewById(R.id.date_air);
+
+                    date_soil.setText(String.format("As of %s", formattedDate));
+                    date_air.setText(String.format("As of %s", formattedDate));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors that occur during the read operation
+                Log.e("FirebaseError", "Error reading from Firebase database: " + databaseError.getMessage());
+            }
+        });
+    }
+
+
+
 }

@@ -85,20 +85,29 @@ public class PopupWindowHelper {
             // Find buttons inside the popup window
             LinearLayout profile = popupView.findViewById(R.id.profile_layout);
             LinearLayout dashboard = popupView.findViewById(R.id.dashboard_button);
-            LinearLayout analytics = popupView.findViewById(R.id.data_analytics_button);
+            LinearLayout data_analysis = popupView.findViewById(R.id.data_analytics_button);
             LinearLayout history = popupView.findViewById(R.id.history_button);
             LinearLayout faqs = popupView.findViewById(R.id.faqs_button);
             LinearLayout settings = popupView.findViewById(R.id.settings_button);
             LinearLayout logout = popupView.findViewById(R.id.logout_button);
 
+
             // Update 'activeItem' based on the current activity (replace with your logic)
             String currentActivity = ((Activity) context).getLocalClassName();
-            if (currentActivity.equals("Dashboard")) {
-                activeItem = dashboard;
-            } else if (currentActivity.equals("faqs")) {
-                activeItem = faqs;
-            } else if (currentActivity.equals("SettingsActivity")){
-                activeItem = settings;
+            switch (currentActivity) {
+                case "Dashboard":
+                    activeItem = dashboard;
+                    break;
+                case "faqs":
+                    activeItem = faqs;
+                    break;
+                case "SettingsActivity":
+                    activeItem = settings;
+                    break;
+                case "Data_Analysis":
+                    activeItem = data_analysis;
+
+                    break;
             }
 
             // Set click listeners for buttons
@@ -146,6 +155,21 @@ public class PopupWindowHelper {
                 } catch (ActivityNotFoundException e) {
                     // Handle the exception appropriately, e.g., show an error message
                     Toast.makeText(context, "Error starting FAQs's activity", Toast.LENGTH_SHORT).show();
+                }
+
+                // Dismiss the popup window
+                popupWindow.dismiss();
+            });
+
+            data_analysis.setOnClickListener(v -> {
+                try {
+                    // Handle button1 click
+                    Intent intent = new Intent(context, Data_Analysis.class);
+                    context.startActivity(intent);
+
+                } catch (ActivityNotFoundException e) {
+                    // Handle the exception appropriately, e.g., show an error message
+                    Toast.makeText(context, "Error starting Data_Analysis activity", Toast.LENGTH_SHORT).show();
                 }
 
                 // Dismiss the popup window
