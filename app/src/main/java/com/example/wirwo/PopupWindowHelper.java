@@ -152,6 +152,9 @@ public class PopupWindowHelper {
                 popupWindow.dismiss();
             });
 
+
+
+
             logout.setOnClickListener(v -> {
                 // Display confirmation dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);

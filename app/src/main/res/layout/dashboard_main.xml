@@ -123,8 +123,6 @@
                 tools:ignore="UselessParent, UseSwitchCompatOrMaterialXml">
 
                 <LinearLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/waterPumpContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -154,8 +152,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/ventiContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

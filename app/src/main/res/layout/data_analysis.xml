@@ -208,7 +208,7 @@
                     android:textSize="15sp" />
 
                 <com.ekn.gruzer.gaugelibrary.HalfGauge
-                    android:id="@+id/halfGauge"
+                    android:id="@+id/halfGauge1"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginStart="20dp"
