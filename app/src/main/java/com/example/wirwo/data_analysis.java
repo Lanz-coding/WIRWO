@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 
@@ -41,6 +42,13 @@ public class data_analysis extends Activity {
         setContentView(R.layout.data_analysis);
 
         popupMenuHelper = new PopupWindowHelper(this);
+
+        ProgressBar progressBar1 = findViewById(R.id.vertical_progressbar1);
+        progressBar1.setProgress(60);
+
+        ProgressBar progressBar2 = findViewById(R.id.vertical_progressbar2);
+        progressBar2.setProgress(60);
+
 
 
 
