@@ -207,6 +207,13 @@
                     android:textColor="#825a5a"
                     android:textSize="15sp" />
 
+                <com.ekn.gruzer.gaugelibrary.HalfGauge
+                    android:id="@+id/halfGauge"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="180dp" />
+
 
                 <TextView
                     android:id="@+id/soil_moisture"
@@ -219,6 +226,51 @@
                     android:text="@string/soil_moisture_a"
                     android:textColor="#825a5a"
                     android:textSize="15sp" />
+
+                <com.ekn.gruzer.gaugelibrary.HalfGauge
+                    android:id="@+id/halfGauge2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="250dp"
+                    android:layout_marginTop="180dp" />
+
+                <TextView
+                    android:id="@+id/air_sensors"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="300dp"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:padding="8dp"
+                    android:text="@string/air_condition_sensors"
+                    android:textColor="#825a5a"
+                    android:textSize="15sp" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChart1"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="340dp"
+                    android:layout_marginStart="20dp" />
+
+                <TextView
+                    android:id="@+id/soil_sensors"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="470dp"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:padding="8dp"
+                    android:text="@string/air_condition_sensors"
+                    android:textColor="#825a5a"
+                    android:textSize="15sp" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChart2"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="515dp"
+                    android:layout_marginStart="20dp" />
 
 
 

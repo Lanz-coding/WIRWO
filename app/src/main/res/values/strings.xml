@@ -55,6 +55,7 @@
     <string name="_28_c">28°C</string>
     <string name="humidity">HUMIDITY</string>
     <string name="soil_moisture_a">SOIL MOISTURE</string>
+    <string name="air_condition_sensors">AIR CONDITION SENSORS</string>
 
 
 </resources>
