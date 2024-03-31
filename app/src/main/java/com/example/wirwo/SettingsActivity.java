@@ -3,6 +3,8 @@ package com.example.wirwo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class SettingsActivity extends Activity {
 
@@ -25,6 +27,26 @@ public class SettingsActivity extends Activity {
             }
         });
 
+        SeekBar soilTempSeekBar = findViewById(R.id.soil_temp_seekbar);
+        final TextView progressText = findViewById(R.id.seekbar_progress_text);
+
+        soilTempSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // Update the TextView with the current progress value
+                progressText.setText(String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Not needed for this implementation
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Not needed for this implementation
+            }
+        });
 
     }
 }

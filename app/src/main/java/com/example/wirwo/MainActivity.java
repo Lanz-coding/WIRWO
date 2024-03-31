@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
                 // Set the video path by getting the URI from the drawable resource
-                Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.wirwo_splash_vid);
+                Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.wirwo_splash_vid_396kb);
                 videoView.setVideoURI(videoUri);
 
                 // Start playing the video

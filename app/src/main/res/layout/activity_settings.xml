@@ -98,7 +98,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -127,6 +127,26 @@
                         android:textColor="@color/darkBrown"
                         android:textSize="15sp"
                         android:textStyle="bold" />
+
+                    <SeekBar
+                        android:id="@+id/soil_temp_seekbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:progressTint="@color/darkGreen"
+                        android:thumbTint="@color/darkGreen" />
+                    <TextView
+                        android:id="@+id/seekbar_progress_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/darkGreen"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/soil_temp_seekbar" />
+
+
                 </LinearLayout>
 
             </LinearLayout>
