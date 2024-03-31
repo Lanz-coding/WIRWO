@@ -6,23 +6,44 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.VideoView;
 import androidx.core.app.NotificationCompat;
 
 public class MainActivity extends Activity {
 
     // Splash screen display duration in milliseconds
-    private static final int SPLASH_DISPLAY_DURATION = 3000; // 3 seconds
+    private static final int SPLASH_DISPLAY_DURATION = 3500; // 3.5 seconds
+    private static final long DELAY_BEFORE_VIDEO_PLAYBACK = 1000; // 1 second delay
 
     private static final String CHANNEL_ID = "my_channel_id"; // Notification Channel ID
     private static final int NOTIFICATION_ID = 1;
+
+    private VideoView videoView; // VideoView member variable
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialize the VideoView
+        videoView = findViewById(R.id.videoView);
+
+        // Set up a Handler to delay the start of video playback
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Set the video path by getting the URI from the drawable resource
+                Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.wirwo_splash_vid);
+                videoView.setVideoURI(videoUri);
+
+                // Start playing the video
+                videoView.start();
+            }
+        }, DELAY_BEFORE_VIDEO_PLAYBACK);
 
         // Create notification channel
         createNotificationChannel();
