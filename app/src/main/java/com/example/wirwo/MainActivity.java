@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,8 +16,6 @@ import androidx.core.app.NotificationCompat;
 
 public class MainActivity extends Activity {
 
-    // Splash screen display duration in milliseconds
-    private static final int SPLASH_DISPLAY_DURATION = 3500; // 3.5 seconds
     private static final long DELAY_BEFORE_VIDEO_PLAYBACK = 1000; // 1 second delay
 
     private static final String CHANNEL_ID = "my_channel_id"; // Notification Channel ID
@@ -45,21 +44,27 @@ public class MainActivity extends Activity {
             }
         }, DELAY_BEFORE_VIDEO_PLAYBACK);
 
+        // Set a completion listener on the VideoView
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                // Video playback has completed, proceed to next screen
+                proceedToNextScreen();
+            }
+        });
+
         // Create notification channel
         createNotificationChannel();
+    }
 
-        // Display the splash screen for a specified duration
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Send notification after the splash screen duration
-                sendNotification("Welcome", "Welcome to your app!");
-                // Create an Intent to start LoginActivity
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish(); // Close MainActivity to prevent going back to it when pressing back button from LoginActivity
-            }
-        }, SPLASH_DISPLAY_DURATION);
+    // Proceed to the next screen (LoginActivity)
+    private void proceedToNextScreen() {
+        // Send notification after the video playback has completed
+        sendNotification("Welcome", "Welcome to your app!");
+        // Create an Intent to start LoginActivity
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish(); // Close MainActivity to prevent going back to it when pressing back button from LoginActivity
     }
 
     // Create a notification channel for devices with Android Oreo and above
