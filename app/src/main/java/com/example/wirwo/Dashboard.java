@@ -129,22 +129,21 @@ public class Dashboard extends Activity {
                     Double humidity = snapshot.child("Humidity").getValue(Double.class);
                     Double moisture = snapshot.child("Soil_Moisture").getValue(Double.class);
 
-
                     // Update TextViews and ProgressBars with sensor data
                     if (soilTemp != null) {
-                        soilTempText.setText(String.valueOf(soilTemp) + "°C");
+                        soilTempText.setText(String.format("%.2f", soilTemp) + "°C");
                         soilTempBar.setProgress((int) Math.round(soilTemp)); // Assuming progress bar max is 100
                     }
                     if (airTemp != null) {
-                        airTempText.setText(String.valueOf(airTemp) + "°C");
+                        airTempText.setText(String.format("%.2f", airTemp) + "°C");
                         airTempBar.setProgress((int) Math.round(airTemp)); // Assuming progress bar max is 100
                     }
                     if (humidity != null) {
-                        humidityText.setText(String.valueOf(humidity) + "%");
+                        humidityText.setText(String.format("%.2f", humidity) + "%");
                         humidityBar.setProgress(humidity.intValue()); // Assuming progress bar max is 100
                     }
                     if (moisture != null) {
-                        moistureText.setText(String.valueOf(moisture) + "%");
+                        moistureText.setText(String.format("%.2f", moisture) + "%");
                         moistureBar.setProgress(moisture.intValue()); // Assuming progress bar max is 100
                     }
 
