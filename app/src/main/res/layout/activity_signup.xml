@@ -59,7 +59,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="SIGN UP"
-                    android:fontFamily="@font/montserrat_bold"
                     android:textColor="@color/white"
                     android:textSize="36sp"
                     android:textStyle="bold"
@@ -69,9 +68,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="-10dp"
+                    android:layout_marginTop="1dp"
                     android:text="Sign up to start using WIRWO 2.0 services!"
-                    android:fontFamily="@font/montserrat_regular"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="14sp"
@@ -187,7 +185,7 @@
                     android:layout_marginTop="10dp"
                     android:backgroundTint="#102820"
                     android:text="REGISTER"
-                    android:fontFamily="@font/montserrat_bold"
+
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:cornerRadius="20dp" />
