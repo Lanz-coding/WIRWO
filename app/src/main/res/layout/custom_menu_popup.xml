@@ -47,7 +47,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="-5dp"
                     android:fontFamily="@font/montserrat_light"
-                    android:text="@string/view_profile_1"
+                    android:text="WIRWO 2.0"
                     android:textColor="#FFFFFF"
                     android:textSize="10sp"
                     tools:ignore="SmallSp" />

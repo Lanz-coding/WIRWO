@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 public class SettingsActivity extends Activity {
 
-
     private PopupWindowHelper popupMenuHelper;
 
     @Override
@@ -27,14 +26,14 @@ public class SettingsActivity extends Activity {
             }
         });
 
+        // Soil Temperature SeekBar and TextView
         SeekBar soilTempSeekBar = findViewById(R.id.soil_temp_seekbar);
-        final TextView progressText = findViewById(R.id.seekbar_progress_text);
+        final TextView soilTempProgressText = findViewById(R.id.soiltemp_thresh_text);
 
         soilTempSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                // Update the TextView with the current progress value
-                progressText.setText(String.valueOf(progress));
+                soilTempProgressText.setText(String.valueOf(progress));
             }
 
             @Override
@@ -48,5 +47,67 @@ public class SettingsActivity extends Activity {
             }
         });
 
+        // Soil Moisture SeekBar and TextView
+        SeekBar soilMoistureSeekBar = findViewById(R.id.soil_moisture_seekbar);
+        final TextView soilMoistureProgressText = findViewById(R.id.soilmoisture_thresh_text);
+
+        soilMoistureSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                soilMoistureProgressText.setText(String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Not needed for this implementation
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Not needed for this implementation
+            }
+        });
+
+        // Humidity SeekBar and TextView
+        SeekBar humiditySeekBar = findViewById(R.id.humidity_seekbar);
+        final TextView humidityProgressText = findViewById(R.id.humidity_thresh_text);
+
+        humiditySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                humidityProgressText.setText(String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Not needed for this implementation
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Not needed for this implementation
+            }
+        });
+
+        // Air Temperature SeekBar and TextView
+        SeekBar airTempSeekBar = findViewById(R.id.airtemp_seekbar);
+        final TextView airTempProgressText = findViewById(R.id.airtemp_thresh_text);
+
+        airTempSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                airTempProgressText.setText(String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Not needed for this implementation
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Not needed for this implementation
+            }
+        });
     }
 }

@@ -7,7 +7,6 @@
     tools:context=".Dashboard"
     tools:ignore="HardcodedText, ContentDescription">
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -56,28 +55,29 @@
     <LinearLayout
         android:id="@+id/settings_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/lighterGreen"
         android:orientation="vertical"
         android:padding="8dp"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="SETTINGS"
-        android:fontFamily="@font/montserrat_bold"
-        android:textColor="@color/white"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="SETTINGS"
+            android:fontFamily="@font/montserrat_bold"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        app:layout_constraintTop_toBottomOf="@id/settings_layout">
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/settings_layout"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -99,12 +99,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="5dp">
 
                     <TextView
@@ -128,28 +130,568 @@
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
-                    <SeekBar
-                        android:id="@+id/soil_temp_seekbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:progressTint="@color/darkGreen"
-                        android:thumbTint="@color/darkGreen" />
-                    <TextView
-                        android:id="@+id/seekbar_progress_text"
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textColor="@color/darkGreen"
-                        android:textSize="16sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/soil_temp_seekbar" />
+                        android:layout_height="20dp"
+                        android:orientation="horizontal">
 
+                        <SeekBar
+                            android:id="@+id/soil_temp_seekbar"
+                            android:layout_width="350dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:progressTint="@color/darkGreen"
+                            android:thumbTint="@color/darkGreen" />
+                        <TextView
+                            android:id="@+id/soiltemp_thresh_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:layout_gravity="center"
+                            android:textColor="@color/darkGreen"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Soil Moisture Threshold"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="0dp"
+                        android:text="Adjust the Soil Moisture Threshold"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:orientation="horizontal">
+
+                        <SeekBar
+                            android:id="@+id/soil_moisture_seekbar"
+                            android:layout_width="350dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:progressTint="@color/darkGreen"
+                            android:thumbTint="@color/darkGreen" />
+                        <TextView
+                            android:id="@+id/soilmoisture_thresh_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:layout_gravity="center"
+                            android:textColor="@color/darkGreen"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Humidity Threshold"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="0dp"
+                        android:text="Adjust the Humidity Threshold"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:orientation="horizontal">
+
+                        <SeekBar
+                            android:id="@+id/humidity_seekbar"
+                            android:layout_width="350dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:progressTint="@color/darkGreen"
+                            android:thumbTint="@color/darkGreen" />
+                        <TextView
+                            android:id="@+id/humidity_thresh_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:layout_gravity="center"
+                            android:textColor="@color/darkGreen"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Air Temp Threshold"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="0dp"
+                        android:text="Adjust the Air Temp Threshold"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:orientation="horizontal">
+
+                        <SeekBar
+                            android:id="@+id/airtemp_seekbar"
+                            android:layout_width="350dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:progressTint="@color/darkGreen"
+                            android:thumbTint="@color/darkGreen" />
+                        <TextView
+                            android:id="@+id/airtemp_thresh_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:layout_gravity="center"
+                            android:textColor="@color/darkGreen"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/darkGreen"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="NOTIFICATIONS"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/darkBrown"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Notifications"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="0dp"
+                        android:text="Allow to be notified"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/notifSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="-13dp"
+                    android:layout_marginStart="200dp"
+                    app:trackTint="#D3D3D3"
+                    app:thumbTint="@color/brown"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Alerts"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="0dp"
+                        android:text="Receive Alerts"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/alertSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="-13dp"
+                    android:layout_marginStart="240dp"
+                    app:trackTint="#D3D3D3"
+                    app:thumbTint="@color/brown"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/darkGreen"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="ACCOUNT"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/darkBrown"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Email Address"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="0dp"
+                        android:text="Edit and View Email Address"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/email_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="start"
+                    android:contentDescription=""
+                    android:layout_marginStart="100dp"
+                    android:paddingStart="16dp"
+                    android:src="@drawable/arrow_right"
+                    tools:ignore="RtlSymmetry" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Password"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="0dp"
+                        android:text="Edit or Change Password"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/password_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="start"
+                    android:contentDescription=""
+                    android:layout_marginStart="130dp"
+                    android:paddingStart="16dp"
+                    android:src="@drawable/arrow_right"
+                    tools:ignore="RtlSymmetry" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/darkGreen"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="OTHERS"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/darkBrown"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="FAQs"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="0dp"
+                        android:text="View Frequently Asked Questions"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/faqs_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="start"
+                    android:contentDescription=""
+                    android:layout_marginStart="70dp"
+                    android:paddingStart="16dp"
+                    android:src="@drawable/arrow_right"
+                    tools:ignore="RtlSymmetry" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="About Us"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="0dp"
+                        android:text="Edit or Change Password"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/aboutus_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="start"
+                    android:contentDescription=""
+                    android:layout_marginStart="130dp"
+                    android:paddingStart="16dp"
+                    android:src="@drawable/arrow_right"
+                    tools:ignore="RtlSymmetry" />
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 
