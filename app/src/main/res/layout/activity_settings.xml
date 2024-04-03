@@ -103,8 +103,8 @@
                 android:layout_gravity="center_horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="5dp">
@@ -131,7 +131,7 @@
                         android:textStyle="bold" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="20dp"
                         android:orientation="horizontal">
 
@@ -139,7 +139,8 @@
                             android:id="@+id/soil_temp_seekbar"
                             android:layout_width="350dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_gravity="center_horizontal"
                             android:progressTint="@color/darkGreen"
                             android:thumbTint="@color/darkGreen" />
                         <TextView
@@ -147,11 +148,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0"
-                            android:layout_gravity="center"
+                            android:layout_gravity="center_horizontal"
                             android:textColor="@color/darkGreen"
                             android:textSize="16sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
+                            app:layout_constraintEnd_toEndOf="parent" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -202,6 +202,7 @@
                             android:layout_width="350dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginStart="10dp"
                             android:progressTint="@color/darkGreen"
                             android:thumbTint="@color/darkGreen" />
                         <TextView
@@ -264,6 +265,7 @@
                             android:layout_width="350dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginStart="10dp"
                             android:progressTint="@color/darkGreen"
                             android:thumbTint="@color/darkGreen" />
                         <TextView
@@ -325,6 +327,7 @@
                             android:id="@+id/airtemp_seekbar"
                             android:layout_width="350dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
                             android:layout_gravity="center"
                             android:progressTint="@color/darkGreen"
                             android:thumbTint="@color/darkGreen" />
@@ -364,14 +367,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:orientation="horizontal"
-                android:layout_gravity="center_horizontal">
+                android:gravity="center_vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp">
+                    android:gravity="start"
+                    android:paddingStart="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -400,33 +404,33 @@
                     android:id="@+id/notifSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="-13dp"
-                    android:layout_marginStart="200dp"
-                    app:trackTint="#D3D3D3"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="16dp"
                     app:thumbTint="@color/brown"
-                    tools:ignore="TouchTargetSizeCheck" />
+                    app:trackTint="#D3D3D3" />
 
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:orientation="horizontal"
-                android:layout_gravity="center_horizontal">
+                android:gravity="center_vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp">
+                    android:gravity="start"
+                    android:paddingStart="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="Alerts"
+                        android:text="Notifications"
                         android:fontFamily="@font/montserrat_bold"
                         android:textColor="@color/darkBrown"
                         android:textSize="20sp"
@@ -437,7 +441,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="0dp"
-                        android:text="Receive Alerts"
+                        android:text="Allow to be notified"
                         android:fontFamily="@font/montserrat_regular"
                         android:textColor="@color/darkBrown"
                         android:textSize="15sp"
@@ -449,12 +453,10 @@
                     android:id="@+id/alertSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="-13dp"
-                    android:layout_marginStart="240dp"
-                    app:trackTint="#D3D3D3"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="16dp"
                     app:thumbTint="@color/brown"
-                    tools:ignore="TouchTargetSizeCheck" />
+                    app:trackTint="#D3D3D3" />
 
             </LinearLayout>
 
@@ -479,20 +481,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:orientation="horizontal"
-                android:layout_gravity="center_horizontal">
+                android:gravity="center_vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp">
+                    android:gravity="start"
+                    android:paddingStart="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="Email Address"
+                        android:text="Username"
                         android:fontFamily="@font/montserrat_bold"
                         android:textColor="@color/darkBrown"
                         android:textSize="20sp"
@@ -503,7 +506,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="0dp"
-                        android:text="Edit and View Email Address"
+                        android:text="Username Settings"
                         android:fontFamily="@font/montserrat_regular"
                         android:textColor="@color/darkBrown"
                         android:textSize="15sp"
@@ -517,11 +520,9 @@
                     android:layout_height="50dp"
                     android:layout_gravity="start"
                     android:contentDescription=""
-                    android:layout_marginStart="100dp"
                     android:paddingStart="16dp"
                     android:src="@drawable/arrow_right"
                     tools:ignore="RtlSymmetry" />
-
             </LinearLayout>
 
 
@@ -529,14 +530,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:orientation="horizontal"
-                android:layout_gravity="center_horizontal">
+                android:gravity="center_vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp">
+                    android:gravity="start"
+                    android:paddingStart="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -553,7 +555,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="0dp"
-                        android:text="Edit or Change Password"
+                        android:text="Password Settings"
                         android:fontFamily="@font/montserrat_regular"
                         android:textColor="@color/darkBrown"
                         android:textSize="15sp"
@@ -567,11 +569,9 @@
                     android:layout_height="50dp"
                     android:layout_gravity="start"
                     android:contentDescription=""
-                    android:layout_marginStart="130dp"
                     android:paddingStart="16dp"
                     android:src="@drawable/arrow_right"
                     tools:ignore="RtlSymmetry" />
-
             </LinearLayout>
 
 
@@ -596,14 +596,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:orientation="horizontal"
-                android:layout_gravity="center_horizontal">
+                android:gravity="center_vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp">
+                    android:gravity="start"
+                    android:paddingStart="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -620,7 +621,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="0dp"
-                        android:text="View Frequently Asked Questions"
+                        android:text="View Frequently-Asked Questions"
                         android:fontFamily="@font/montserrat_regular"
                         android:textColor="@color/darkBrown"
                         android:textSize="15sp"
@@ -629,16 +630,14 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/faqs_icon"
+                    android:id="@+id/email_icon"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="start"
                     android:contentDescription=""
-                    android:layout_marginStart="70dp"
                     android:paddingStart="16dp"
                     android:src="@drawable/arrow_right"
                     tools:ignore="RtlSymmetry" />
-
             </LinearLayout>
 
 
@@ -646,14 +645,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:orientation="horizontal"
-                android:layout_gravity="center_horizontal">
+                android:gravity="center_vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp">
+                    android:gravity="start"
+                    android:paddingStart="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -670,7 +670,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="0dp"
-                        android:text="Edit or Change Password"
+                        android:text="View Points of Contact"
                         android:fontFamily="@font/montserrat_regular"
                         android:textColor="@color/darkBrown"
                         android:textSize="15sp"
@@ -679,16 +679,14 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/aboutus_icon"
+                    android:id="@+id/username_icon"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="start"
                     android:contentDescription=""
-                    android:layout_marginStart="130dp"
                     android:paddingStart="16dp"
                     android:src="@drawable/arrow_right"
                     tools:ignore="RtlSymmetry" />
-
             </LinearLayout>
 
 
