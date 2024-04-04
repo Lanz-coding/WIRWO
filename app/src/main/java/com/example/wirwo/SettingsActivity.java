@@ -1,14 +1,23 @@
 package com.example.wirwo;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class SettingsActivity extends Activity {
 
     private PopupWindowHelper popupMenuHelper;
+
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +42,7 @@ public class SettingsActivity extends Activity {
         soilTempSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                soilTempProgressText.setText(String.valueOf(progress));
+                soilTempProgressText.setText(String.valueOf(progress) + "°C");
             }
 
             @Override
@@ -54,7 +63,7 @@ public class SettingsActivity extends Activity {
         soilMoistureSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                soilMoistureProgressText.setText(String.valueOf(progress));
+                soilMoistureProgressText.setText(String.valueOf(progress) + "%");
             }
 
             @Override
@@ -75,7 +84,7 @@ public class SettingsActivity extends Activity {
         humiditySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                humidityProgressText.setText(String.valueOf(progress));
+                humidityProgressText.setText(String.valueOf(progress) + "%");
             }
 
             @Override
@@ -96,7 +105,7 @@ public class SettingsActivity extends Activity {
         airTempSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                airTempProgressText.setText(String.valueOf(progress));
+                airTempProgressText.setText(String.valueOf(progress) + "°C");
             }
 
             @Override
@@ -109,5 +118,42 @@ public class SettingsActivity extends Activity {
                 // Not needed for this implementation
             }
         });
+
+        SwitchMaterial notifSwitch = findViewById(R.id.notifSwitch);
+        SwitchMaterial alertSwitch = findViewById(R.id.alertSwitch);
+
+        notifSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Water pump switch is turned on
+                Toast.makeText(SettingsActivity.this, "Notifications are turned on", Toast.LENGTH_SHORT).show();
+            } else {
+                // Water pump switch is turned off
+                Toast.makeText(SettingsActivity.this, "Notifications are turned off", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        alertSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Water pump switch is turned on
+                Toast.makeText(SettingsActivity.this, "Alerts are turned on", Toast.LENGTH_SHORT).show();
+            } else {
+                // Water pump switch is turned off
+                Toast.makeText(SettingsActivity.this, "Alerts are turned off", Toast.LENGTH_SHORT).show();
+            }
+        });
+        LinearLayout faqsLayout = findViewById(R.id.faqs_layout);
+
+        faqsLayout.setOnClickListener(v -> {
+            try {
+                // Handle button1 click
+                Intent intent = new Intent(SettingsActivity.this, faqs.class);
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                // Handle the exception appropriately, e.g., show an error message
+                Toast.makeText(SettingsActivity.this, "Error starting FAQs activity", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 }
