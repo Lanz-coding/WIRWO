@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -35,7 +36,8 @@ public class LoginActivity extends Activity {
     private EditText passwordEditText;
     private Button loginButton;
     private TextView createAccountTextView;
-    private Switch rememberMeSwitch;
+    private TextView forgotPasswordTextView;
+    private CheckBox rememberMeSwitch;
 
     private FirebaseAuth auth;
 
@@ -60,8 +62,15 @@ public class LoginActivity extends Activity {
         usernameEditText = findViewById(R.id.login_username1);
         passwordEditText = findViewById(R.id.login_password1);
         loginButton = findViewById(R.id.login_button);
+        forgotPasswordTextView = findViewById(R.id.forgotPassword);
         createAccountTextView = findViewById(R.id.create);
         rememberMeSwitch = findViewById(R.id.rememberMeSwitch);
+
+        forgotPasswordTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this,ForgotPasswordActivity.class);
+            startActivity(intent);
+            finish(); // Finish LoginActivity so the user cannot come back to it using the back button
+        });
 
         // Set initial state of login button
         loginButton.setEnabled(false);
@@ -116,6 +125,7 @@ public class LoginActivity extends Activity {
                                 if (user != null && user.isEmailVerified()) {
                                     // User is logged in and email is verified
                                     // Proceed to your main activity
+                                    showCustomToast("Logged In Successfully", true);
                                     startActivity(new Intent(LoginActivity.this, Dashboard.class));
                                     finish();
                                 } else {
@@ -125,7 +135,7 @@ public class LoginActivity extends Activity {
                                 }
                             } else {
                                 // If sign in fails, display a message to the user.
-                                DialogHelper.showDialogWithTitle(LoginActivity.this,"Log-in Failed", "Please try again", null);
+                                DialogHelper.showDialogWithTitle(LoginActivity.this,"Log-In Failed", "Email and Password does not match, please try again.", null);
                             }
                             // Enable login button after login attempt
                             loginButton.setEnabled(true);
@@ -133,7 +143,7 @@ public class LoginActivity extends Activity {
                     });
         } else {
             // Username or password is empty, display error message
-            Toast.makeText(LoginActivity.this, "Username and password are required", Toast.LENGTH_SHORT).show();
+            DialogHelper.showDialogWithTitle(LoginActivity.this, "Empty Fields", "Please fill out all the information and try again.", null);
         }
     }
 

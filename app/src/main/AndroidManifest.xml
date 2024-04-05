@@ -30,6 +30,7 @@
         <activity android:name=".Data_Analysis"/>
         <activity android:name=".DialogHelper"/>
         <activity android:name=".RegisterActivity"/>
+        <activity android:name=".ForgotPasswordActivity"/>
     </application>
 
 </manifest>

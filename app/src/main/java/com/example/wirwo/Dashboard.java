@@ -59,27 +59,33 @@ public class Dashboard extends Activity {
 
         // Check if user is not null
         if (currentUser != null) {
-            // Extract the email address
-            String email = currentUser.getEmail();
+            String userId = currentUser.getUid();
 
-            // If email is not null, extract the username (prefix before "@")
-            if (email != null) {
-                int index = email.indexOf('@');
-                if (index != -1) {
-                    String username = email.substring(0, index);
-                    welcomeText.setText("Ciao, " + username + "! Check your Wireless Worms Today!");
-                } else {
-                    // Handle case where email doesn't contain "@" symbol
+            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("username");
+
+            databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String username = dataSnapshot.getValue(String.class);
+                        welcomeText.setText("Ciao, " + username + "! Check your Wireless Worms Today!");
+                    } else {
+                        // Handle case where username data doesn't exist
+                        welcomeText.setText("Ciao, User! Check your Wireless Worms Today!"); // Or set a default message
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
                     welcomeText.setText("Ciao, User! Check your Wireless Worms Today!");
                 }
-            } else {
-                // Handle case where currentUser.getEmail() is null
-                welcomeText.setText("Ciao, User! Check your Wireless Worms Today!");
-            }
+            });
         } else {
             // Set default text if user is null
-            welcomeText.setText("Welcome, please sign in to proceed.");
+            String text = "User";
+            welcomeText.setText("Ciao, User! Check your Wireless Worms Today!");
         }
+
 
         // Initialize PopupMenuHelper with context of your activity
         popupMenuHelper = new PopupWindowHelper(this);
