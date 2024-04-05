@@ -120,13 +120,12 @@ public class LoginActivity extends Activity {
                                     finish();
                                 } else {
                                     // User's email is not verified
-                                    Toast.makeText(LoginActivity.this, "Please verify your email before logging in.", Toast.LENGTH_SHORT).show();
+                                    DialogHelper.showDialogWithTitle(LoginActivity.this,"Unverified Account", "Please verify your email first before logging in.", null);
                                     FirebaseAuth.getInstance().signOut(); // Sign out the user
                                 }
                             } else {
                                 // If sign in fails, display a message to the user.
-                                Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
+                                DialogHelper.showDialogWithTitle(LoginActivity.this,"Log-in Failed", "Please try again", null);
                             }
                             // Enable login button after login attempt
                             loginButton.setEnabled(true);

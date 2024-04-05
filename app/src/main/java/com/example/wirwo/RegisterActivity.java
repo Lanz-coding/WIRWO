@@ -44,9 +44,15 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = emailEditText.getText().toString().trim();
                 String password = passwordEditText.getText().toString();
                 String confirmPassword = confirmPasswordEditText.getText().toString();
+                int minPasswordLength = 8; // Minimum password length
+                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"; // Regular expression for email format validation
 
                 if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                    DialogHelper.showDialog(RegisterActivity.this, "Empty Fields", "Please fill out all the information and try again.");
+                    DialogHelper.showDialogWithTitle(RegisterActivity.this, "Empty Fields", "Please fill out all the information and try again.", null);
+                } else if (!email.matches(emailPattern)) {
+                    DialogHelper.showDialogWithTitle(RegisterActivity.this, "Invalid Email", "Please enter a valid email address.", null);
+                } else if (password.length() < minPasswordLength) {
+                    DialogHelper.showDialogWithTitle(RegisterActivity.this, "Weak Password", "Password must be at least " + minPasswordLength + " characters long.", null);
                 } else {
                     if (confirmPassword.equals(password)) {
                         DialogHelper.showDialogWithOkCancel(RegisterActivity.this,
@@ -68,11 +74,12 @@ public class RegisterActivity extends AppCompatActivity {
                                     }
                                 });
                     } else {
-                        DialogHelper.showDialog(RegisterActivity.this, "", "Passwords do not match");
+                        DialogHelper.showDialogWithTitle(RegisterActivity.this, "", "Passwords do not match", null);
                     }
                 }
             }
         });
+
     }
 
     private void registerUser(String username, String email, String password) {
@@ -103,13 +110,24 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            DialogHelper.showDialog(RegisterActivity.this, "SING UP", "Check your email to verify your account to finish the registration process.");
-                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                            finish();
+                            DialogHelper.showDialogWithTitle(RegisterActivity.this, "SIGN UP", "Check your email to verify your account to finish the registration process.", new DialogHelper.OnOkClickListener() {
+                                @Override
+                                public void onOkClicked() {
+                                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                    finish();
+                                }
+                            });
                         } else {
-                            Toast.makeText(RegisterActivity.this, "Failed to send verification email", Toast.LENGTH_SHORT).show();
+                            DialogHelper.showDialogWithTitle(RegisterActivity.this, "SIGN UP", "Account already exist.", null);
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+        finish();
     }
 }

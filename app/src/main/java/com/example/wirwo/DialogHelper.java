@@ -11,11 +11,12 @@ import org.w3c.dom.Text;
 
 public class DialogHelper {
 
-    public static void showDialog(Context context, String title, String message) {
-        showDialogWithTitle(context, title, message);
+
+    public interface OnOkClickListener {
+        void onOkClicked();
     }
 
-    public static void showDialogWithTitle(Context context, String title, String message) {
+    public static void showDialogWithTitle(Context context, String title, String message, final OnOkClickListener okClickListener) {
         // Create and instantiate dialog
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_layout);
@@ -31,18 +32,21 @@ public class DialogHelper {
         // Initialize views from dialog layout
         TextView dialogTitle = dialog.findViewById(R.id.dialog_title);
         TextView dialogMessage = dialog.findViewById(R.id.dialog_message);
-        TextView okButton = dialog.findViewById(R.id.ok_button);
+        TextView dialogButton = dialog.findViewById(R.id.ok_button);
 
         // Set title and message
         dialogTitle.setText(title);
         dialogMessage.setText(message);
 
         // Set button click listener
-        okButton.setOnClickListener(new View.OnClickListener() {
+        dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Dismiss dialog when button is clicked
                 dialog.dismiss();
+                if (okClickListener != null) {
+                    okClickListener.onOkClicked();
+                }
             }
         });
 

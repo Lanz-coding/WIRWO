@@ -116,7 +116,7 @@
                     android:layout_height="60dp"
                     android:layout_marginTop="16dp"
                     android:hint="Enter email"
-                    app:startIconDrawable="@drawable/baseline_person_24"
+                    app:startIconDrawable="@drawable/baseline_email_24"
                     app:startIconTint="@color/darkGreen"
                     app:startIconContentDescription="Create Username"
                     app:boxBackgroundMode="outline"
