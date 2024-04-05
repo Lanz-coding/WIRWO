@@ -22,7 +22,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private EditText usernameEditText, emailEditText, passwordEditText, confirmPasswordEditText;
     private Button registerButton;
-
     private FirebaseAuth mAuth;
 
     @Override
@@ -44,16 +43,32 @@ public class RegisterActivity extends AppCompatActivity {
                 String username = usernameEditText.getText().toString().trim();
                 String email = emailEditText.getText().toString().trim();
                 String password = passwordEditText.getText().toString();
-                String confirmPassowrd = confirmPasswordEditText.getText().toString();
+                String confirmPassword = confirmPasswordEditText.getText().toString();
 
-                if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassowrd.isEmpty()) {
-                    Toast.makeText(RegisterActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                    DialogHelper.showDialog(RegisterActivity.this, "Empty Fields", "Please fill out all the information and try again.");
                 } else {
-                    if (confirmPassowrd.equals(password)) {
-                        registerUser(username, email, password);
-                    }
-                    else{
-                        Toast.makeText(RegisterActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                    if (confirmPassword.equals(password)) {
+                        DialogHelper.showDialogWithOkCancel(RegisterActivity.this,
+                                "Confirm Sign-up",
+                                "Are the information correct? Click OK to proceed.",
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        // OK button clicked
+                                        // Register the user
+                                        registerUser(username, email, password);
+                                    }
+                                },
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        // Cancel button clicked
+                                        // Dismiss the dialog (nothing to do here)
+                                    }
+                                });
+                    } else {
+                        DialogHelper.showDialog(RegisterActivity.this, "", "Passwords do not match");
                     }
                 }
             }
@@ -82,14 +97,13 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
-
     private void sendVerificationEmail(FirebaseUser user) {
         user.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(RegisterActivity.this, "Verification email sent", Toast.LENGTH_SHORT).show();
+                            DialogHelper.showDialog(RegisterActivity.this, "SING UP", "Check your email to verify your account to finish the registration process.");
                             startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                             finish();
                         } else {
