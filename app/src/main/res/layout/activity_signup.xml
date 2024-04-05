@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#CABA9C"
-    tools:context=".SigninActivity">
+    tools:context=".RegisterActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -57,6 +57,7 @@
                     android:id="@+id/loginText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
                     android:layout_gravity="center_horizontal"
                     android:text="SIGN UP"
                     android:textColor="@color/white"
@@ -99,7 +100,40 @@
                     app:boxCornerRadiusBottomEnd="24dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/signin_username1"
+                        android:id="@+id/signin_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="@color/black"
+                        android:paddingStart="40dp"
+                        android:drawablePadding="1dp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/email_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="Enter email"
+                    app:startIconDrawable="@drawable/baseline_person_24"
+                    app:startIconTint="@color/darkGreen"
+                    app:startIconContentDescription="Create Username"
+                    app:boxBackgroundMode="outline"
+                    app:boxBackgroundColor="#FFFFFF"
+                    app:boxStrokeColor="#006400"
+                    app:boxStrokeWidth="2dp"
+                    app:boxCornerRadiusTopStart="24dp"
+                    app:cursorColor="@color/darkGreen"
+                    app:hintTextColor="@color/darkGreen"
+                    android:textColorHint="@color/darkGreen"
+                    app:boxCornerRadiusTopEnd="24dp"
+                    app:boxCornerRadiusBottomStart="24dp"
+                    app:endIconMode="clear_text"
+                    app:boxCornerRadiusBottomEnd="24dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/signin_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -133,7 +167,7 @@
                     app:boxCornerRadiusBottomEnd="24dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/create_password1"
+                        android:id="@+id/create_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
@@ -167,7 +201,7 @@
                     app:boxCornerRadiusBottomEnd="24dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/confirm_password1"
+                        android:id="@+id/confirm_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
@@ -185,7 +219,7 @@
                     android:layout_marginTop="10dp"
                     android:backgroundTint="#102820"
                     android:text="REGISTER"
-
+                    android:fontFamily="@font/montserrat_bold"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:cornerRadius="20dp" />

@@ -24,11 +24,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".SigninActivity" />
         <activity android:name=".Dashboard" />
         <activity android:name=".faqs"/>
         <activity android:name=".SettingsActivity"/>
         <activity android:name=".Data_Analysis"/>
+        <activity android:name=".VerifyEmailActivity"/>
+        <activity android:name=".RegisterActivity"/>
     </application>
 
 </manifest>
