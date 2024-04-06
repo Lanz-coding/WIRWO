@@ -162,7 +162,7 @@ It allows you to view real-time sensor readings, receive alerts for critical con
                 android:fontFamily="@font/montserrat_regular"
                 android:lineSpacingExtra="4dp"
                 android:padding="8dp"
-                android:text="Existing User \n1. Locate the login page. This may be the app's opening screen, or there might be a dedicated Login button.
+                android:text="Existing User \n1. Locate the login page. This is the app's opening page after the splash screen.
 \n2. Once on the login page, enter your username and password in the designated fields. These fields are typically labeled Username or Email and Password.
 \n3. Click the Login button (or similar text).
 \n4. If your credentials are correct, the app will automatically direct you to your dashboard, which is your primary landing page within the app.
