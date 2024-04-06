@@ -1,166 +1,168 @@
-<ScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".faqs"
+    tools:ignore="HardcodedText, ContentDescription"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:layout_collapseMode="pin"
+        android:background="#4D2D18"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/PopupMenuOverlay">
+
+        <ImageView
+            android:id="@+id/toolbar_navigation_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="start"
+            android:contentDescription=""
+            android:paddingStart="16dp"
+            android:src="@drawable/button_navbar"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/faqs_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription=""
+            android:elevation="2dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="FAQS"
+            android:textColor="#ffffff"
+            android:textSize="25sp"
+            app:layout_constraintStart_toEndOf="@id/toolbar_navigation_icon"
+            app:layout_constraintTop_toTopOf="@id/toolbar_navigation_icon"
+            tools:ignore="ContentDescription,HardcodedText" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".faqs"
-        tools:ignore="HardcodedText, ContentDescription">
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        tools:ignore="UselessParent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            app:layout_collapseMode="pin"
-            android:background="#4D2D18"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/PopupMenuOverlay">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="20dp">
 
-            <ImageView
-                android:id="@+id/toolbar_navigation_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="start"
-                android:contentDescription=""
-                android:paddingStart="16dp"
-                android:src="@drawable/button_navbar"
-                tools:ignore="RtlSymmetry" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+     <ScrollView
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+
+
+        <FrameLayout
+            android:id="@+id/background_frame"
+            android:layout_width="366dp"
+            android:layout_height="3000dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#628b4c"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="0.5">
 
             <TextView
-                android:id="@+id/faqs_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
+                android:id="@+id/question_1"
+                android:layout_width="336dp"
+                android:layout_height="58dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
                 android:contentDescription=""
                 android:elevation="2dp"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="FAQS"
+                android:text="What is the WIRWO 2.0 Vermicomposter App?"
                 android:textColor="#ffffff"
-                android:textSize="25sp"
-                app:layout_constraintStart_toEndOf="@id/toolbar_navigation_icon"
-                app:layout_constraintTop_toTopOf="@id/toolbar_navigation_icon"
-                tools:ignore="ContentDescription,HardcodedText" />
-
-        </androidx.appcompat.widget.Toolbar>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            tools:ignore="UselessParent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="20dp">
-
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!-- FrameLayout for background -->
-            <FrameLayout
-                android:id="@+id/background_frame"
-                android:layout_width="366dp"
-                android:layout_height="3000dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="16dp"
-                android:background="#628b4c"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/toolbar">
+                tools:ignore="ContentDescription,HardcodedText,MissingConstraints,TextSizeCheck" />
 
-                <TextView
-                    android:id="@+id/question_1"
-                    android:layout_width="336dp"
-                    android:layout_height="58dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp"
-                    android:contentDescription=""
-                    android:elevation="2dp"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:text="What is the WIRWO 2.0 Vermicomposter App?"
-                    android:textColor="#ffffff"
-                    android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:ignore="ContentDescription,HardcodedText,MissingConstraints,TextSizeCheck" />
-
-                <TextView
-                    android:id="@+id/answer_1"
-                    android:layout_width="330dp"
-                    android:layout_height="244dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="78dp"
-                    android:contentDescription=""
-                    android:elevation="2dp"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:lineSpacingExtra="4dp"
-                    android:padding="8dp"
-                    android:text="The WIRWO App is a mobile application that helps you monitor and control your vermicomposting system.
+            <TextView
+                android:id="@+id/answer_1"
+                android:layout_width="330dp"
+                android:layout_height="244dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="78dp"
+                android:contentDescription=""
+                android:elevation="2dp"
+                android:fontFamily="@font/montserrat_regular"
+                android:lineSpacingExtra="4dp"
+                android:padding="8dp"
+                android:text="The WIRWO App is a mobile application that helps you monitor and control your vermicomposting system.
 It allows you to view real-time sensor readings, receive alerts for critical conditions, and remotely control actuators (if available) to optimize the environment for your worms."
-                    android:textAlignment="textStart"
-                    android:textColor="#ffffff"
-                    android:textSize="18sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:ignore="ContentDescription,HardcodedText,MissingConstraints,TextSizeCheck" />
+                android:textAlignment="textStart"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="ContentDescription,HardcodedText,MissingConstraints,TextSizeCheck" />
 
-                <TextView
-                    android:id="@+id/question_2"
-                    android:layout_width="336dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="300dp"
-                    android:contentDescription=""
-                    android:elevation="2dp"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:text="How do I create an account?"
-                    android:textColor="#ffffff"
-                    android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:ignore="ContentDescription,HardcodedText,MissingConstraints,TextSizeCheck" />
+            <TextView
+                android:id="@+id/question_2"
+                android:layout_width="336dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="325dp"
+                android:contentDescription=""
+                android:elevation="2dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="How do I create an account?"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="ContentDescription,HardcodedText,MissingConstraints,TextSizeCheck" />
 
-                <TextView
-                    android:id="@+id/answer_2"
-                    android:layout_width="330dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="335dp"
-                    android:contentDescription=""
-                    android:elevation="2dp"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:lineSpacingExtra="4dp"
-                    android:padding="8dp"
-                    android:text="There are two ways to access the app, depending on whether you already have an account."
-                    android:textAlignment="textStart"
-                    android:textColor="#ffffff"
-                    android:textSize="18sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:ignore="ContentDescription,HardcodedText,MissingConstraints,TextSizeCheck" />
+            <TextView
+                android:id="@+id/answer_2"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="350dp"
+                android:contentDescription=""
+                android:elevation="2dp"
+                android:fontFamily="@font/montserrat_regular"
+                android:padding="8dp"
+                android:text="There are two ways to access the app, depending on whether you already have an account."
+                android:textAlignment="textStart"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="ContentDescription,HardcodedText,MissingConstraints,TextSizeCheck" />
 
-                <TextView
-                    android:id="@+id/answer_2_1"
-                    android:layout_width="340dp"
-                    android:layout_height="1595dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="415dp"
-                    android:contentDescription=""
-                    android:elevation="2dp"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:lineSpacingExtra="4dp"
-                    android:padding="8dp"
-                    android:text="Existing User \n1. Locate the login page. This may be the app's opening screen, or there might be a dedicated Login button.
+            <TextView
+                android:id="@+id/answer_2_1"
+                android:layout_width="340dp"
+                android:layout_height="1595dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="430dp"
+                android:contentDescription=""
+                android:elevation="2dp"
+                android:fontFamily="@font/montserrat_regular"
+                android:lineSpacingExtra="4dp"
+                android:padding="8dp"
+                android:text="Existing User \n1. Locate the login page. This may be the app's opening screen, or there might be a dedicated Login button.
 \n2. Once on the login page, enter your username and password in the designated fields. These fields are typically labeled Username or Email and Password.
 \n3. Click the Login button (or similar text).
 \n4. If your credentials are correct, the app will automatically direct you to your dashboard, which is your primary landing page within the app.
@@ -175,20 +177,27 @@ It allows you to view real-time sensor readings, receive alerts for critical con
 Some apps offer the option to remember your login credentials. This can be convenient, but be mindful of using this feature on public devices.
 \n\nIf you are having trouble logging in, make sure you are using the correct username and password. Passwords are case-sensitive, so double-check that your caps lock key is off. Some apps offer the option to remember your login credentials. This can be convenient, but be mindful of using this feature on public devices."
 
-                    android:textAlignment="textStart"
-                    android:textColor="#ffffff"
-                    android:textSize="18sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:ignore="ContentDescription,HardcodedText,MissingConstraints,TextSizeCheck" />
+                android:textAlignment="textStart"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="ContentDescription,HardcodedText,MissingConstraints,TextSizeCheck" />
 
 
-                <!-- Content inside the FrameLayout -->
+            <!-- Content inside the FrameLayout -->
 
-            </FrameLayout>
+        </FrameLayout>
 
 
-        </LinearLayout>
+     </ScrollView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
-</ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
