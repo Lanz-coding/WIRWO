@@ -16,8 +16,15 @@ import android.widget.Toast;
 import android.widget.TextView;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class PopupWindowHelper {
 
@@ -49,31 +56,36 @@ public class PopupWindowHelper {
 
             FirebaseUser currentUser = auth.getCurrentUser();
 
-
             // Check if user is not null
             if (currentUser != null) {
-                // Extract the email address
-                String email = currentUser.getEmail();
+                String userId = currentUser.getUid();
 
-                // If email is not null, extract the username (prefix before "@")
-                if (email != null) {
-                    int index = email.indexOf('@');
-                    if (index != -1) {
-                        String username = email.substring(0, index);
-                        usernameText.setText(username);
-                    } else {
-                        // Handle case where email doesn't contain "@" symbol
-                        usernameText.setText("User"); // Or set a default message
+                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("username");
+
+                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            String username = dataSnapshot.getValue(String.class);
+                            usernameText.setText(username);
+                        } else {
+                            // Handle case where username data doesn't exist
+                            usernameText.setText("User"); // Or set a default message
+                        }
                     }
-                } else {
-                    // Handle case where currentUser.getEmail() is null
-                    usernameText.setText("User"); // Or set a default message
-                }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                       String text = "User";
+                       usernameText.setText(text);
+                    }
+                });
             } else {
                 // Set default text if user is null
                 String text = "User";
                 usernameText.setText(text);
             }
+
 
 
             // Create a PopupWindow object
@@ -110,14 +122,6 @@ public class PopupWindowHelper {
 
                     break;
             }
-
-            // Set click listeners for buttons
-            profile.setOnClickListener(v -> {
-                // Handle button1 click
-                Toast.makeText(context, "Profile", Toast.LENGTH_SHORT).show();
-                // Dismiss the popup window
-                popupWindow.dismiss();
-            });
 
 
             settings.setOnClickListener(v -> {
@@ -187,36 +191,33 @@ public class PopupWindowHelper {
 
             logout.setOnClickListener(v -> {
                 // Display confirmation dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Are you sure you want to log out?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // User confirmed, proceed with logout
-                                // Sign out the user from Firebase
-                                auth.signOut();
+                DialogHelper.showDialogWithOkCancel(context,
+                                "Log Out",
+                                "Are you sure you want to log-out?",
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        // OK button clicked
+                                        auth.signOut();
 
-                                // Display success message with your app icon
-                                showToastWithAppIcon("Logged Out Successfully", true);
+                                        // Display success message with your app icon
+                                        showToastWithAppIcon("Logged Out Successfully", true);
 
-                                // Close the popup window
-                                popupWindow.dismiss();
+                                        // Optionally, redirect user to login activity
+                                        Intent intent = new Intent(context, LoginActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        context.startActivity(intent);
 
-                                // Optionally, redirect user to login activity
-                                Intent intent = new Intent(context, LoginActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                context.startActivity(intent);
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // User canceled, do nothing or dismiss the dialog
-                                dialog.dismiss();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                                        // Close the popup window
+                                        popupWindow.dismiss();
+                                    }
+                                }, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        // Cancel button clicked
+                                        // Dismiss the dialog (nothing to do here)
+                                    }
+                                });
             });
 
             // Set a darker background color for the active item

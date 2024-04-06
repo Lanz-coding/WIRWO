@@ -11,16 +11,24 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+
+
 
 public class LoginActivity extends Activity {
 
@@ -28,9 +36,11 @@ public class LoginActivity extends Activity {
     private EditText passwordEditText;
     private Button loginButton;
     private TextView createAccountTextView;
-    private Switch rememberMeSwitch;
+    private TextView forgotPasswordTextView;
+    private CheckBox rememberMeSwitch;
 
     private FirebaseAuth auth;
+
     private SharedPreferences sharedPreferences;
 
     private static final String SHARED_PREF_NAME = "login_preferences";
@@ -52,8 +62,15 @@ public class LoginActivity extends Activity {
         usernameEditText = findViewById(R.id.login_username1);
         passwordEditText = findViewById(R.id.login_password1);
         loginButton = findViewById(R.id.login_button);
+        forgotPasswordTextView = findViewById(R.id.forgotPassword);
         createAccountTextView = findViewById(R.id.create);
         rememberMeSwitch = findViewById(R.id.rememberMeSwitch);
+
+        forgotPasswordTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this,ForgotPasswordActivity.class);
+            startActivity(intent);
+            finish(); // Finish LoginActivity so the user cannot come back to it using the back button
+        });
 
         // Set initial state of login button
         loginButton.setEnabled(false);
@@ -69,7 +86,7 @@ public class LoginActivity extends Activity {
         createAccountTextView.setOnClickListener(v -> {
             // Action to perform when the create account text view is clicked
             // Create an Intent to start the SigninActivity
-            Intent intent = new Intent(LoginActivity.this, SigninActivity.class);
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
             finish(); // Finish LoginActivity so the user cannot come back to it using the back button
         });
@@ -93,18 +110,43 @@ public class LoginActivity extends Activity {
         // Check if username and password are not empty
         if (!username.isEmpty() && !password.isEmpty()) {
             // Append the domain to the username (modify if needed)
-            String email = username + "@wirwo.com";
+            String email = username;
 
             // Disable the login button while logging in
             loginButton.setEnabled(false);
 
             // Perform login asynchronously
-            new LoginTask().execute(email, password);
+            auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = auth.getCurrentUser();
+                                if (user != null && user.isEmailVerified()) {
+                                    // User is logged in and email is verified
+                                    // Proceed to your main activity
+                                    showCustomToast("Logged In Successfully", true);
+                                    startActivity(new Intent(LoginActivity.this, Dashboard.class));
+                                    finish();
+                                } else {
+                                    // User's email is not verified
+                                    DialogHelper.showDialogWithTitle(LoginActivity.this,"Unverified Account", "Please verify your email first before logging in.", null);
+                                    FirebaseAuth.getInstance().signOut(); // Sign out the user
+                                }
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                DialogHelper.showDialogWithTitle(LoginActivity.this,"Log-In Failed", "Email and Password does not match, please try again.", null);
+                            }
+                            // Enable login button after login attempt
+                            loginButton.setEnabled(true);
+                        }
+                    });
         } else {
             // Username or password is empty, display error message
-            Toast.makeText(LoginActivity.this, "Username and password are required", Toast.LENGTH_SHORT).show();
+            DialogHelper.showDialogWithTitle(LoginActivity.this, "Empty Fields", "Please fill out all the information and try again.", null);
         }
     }
+
 
     // TextWatcher to monitor changes in EditText fields
     private TextWatcher textWatcher = new TextWatcher() {
