@@ -189,7 +189,7 @@
 
 
                 <FrameLayout
-                    android:layout_width="90dp"
+                    android:layout_width="95dp"
                     android:layout_height="80dp"
                     android:layout_marginTop="62dp"
                     android:background="@drawable/pngimg_com___thermometer_png78"
@@ -200,19 +200,18 @@
                         style="@style/Widget.ProgressBar.vertical"
                         android:layout_width="10dp"
                         android:layout_height="60dp"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginTop="7dp"
-                        android:elevation="1dp"
+                        android:layout_marginStart="43dp"
+                        android:layout_marginTop="8dp"
                         android:max="50"
                         android:padding="2dp"
-                        android:progress="30"
+                        android:progress="100"
                         app:layout_constraintBottom_toBottomOf="@id/textView5"
                         tools:ignore="MissingConstraints,NotSibling" />
                 </FrameLayout>
 
 
                 <FrameLayout
-                    android:layout_width="90dp"
+                    android:layout_width="95dp"
                     android:layout_height="80dp"
                     android:layout_marginStart="205dp"
                     android:layout_marginTop="60dp"
@@ -224,7 +223,7 @@
                         style="@style/Widget.ProgressBar.vertical"
                         android:layout_width="10dp"
                         android:layout_height="60dp"
-                        android:layout_marginStart="40dp"
+                        android:layout_marginStart="43dp"
                         android:layout_marginTop="10dp"
                         android:elevation="3dp"
                         android:max="50"
