@@ -1,4 +1,4 @@
-package com.example.wirwo;
+package com.allstar.wirwo;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 

@@ -8,9 +8,47 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:686940710424:android:ea4b159532c8b6fd80c56d",
+        "android_client_info": {
+          "package_name": "com.allstar.wirwo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjoVMe7K7DQ8t7Z2MPSyFGSq7ukiBpaLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:686940710424:android:718833382681445f80c56d",
         "android_client_info": {
           "package_name": "com.example.wirwo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjoVMe7K7DQ8t7Z2MPSyFGSq7ukiBpaLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:686940710424:android:7cdf04c47950f71d80c56d",
+        "android_client_info": {
+          "package_name": "com.example.wirwo_20"
         }
       },
       "oauth_client": [],

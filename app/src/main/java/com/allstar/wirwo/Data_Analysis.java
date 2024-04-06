@@ -1,4 +1,4 @@
-package com.example.wirwo;
+package com.allstar.wirwo;
 
 
 import android.annotation.SuppressLint;
@@ -8,10 +8,8 @@ import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 

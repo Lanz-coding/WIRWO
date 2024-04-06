@@ -1,4 +1,4 @@
-package com.example.wirwo;
+package com.allstar.wirwo;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
