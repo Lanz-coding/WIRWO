@@ -44,7 +44,7 @@ public class Data_Analysis extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.data_analysis);
+        setContentView(R.layout.activity_data_analytics);
 
         popupMenuHelper = new PopupWindowHelper(this);
 

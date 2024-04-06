@@ -141,7 +141,7 @@ public class PopupWindowHelper {
                 if (!currentActivity.equals("Dashboard")) { // Check if not on the current page
                     try {
                         // Handle button1 click
-                        Intent intent = new Intent(context, Dashboard.class);
+                        Intent intent = new Intent(context, DashboardActivity.class);
                         context.startActivity(intent);
 
                     } catch (ActivityNotFoundException e) {
@@ -158,7 +158,7 @@ public class PopupWindowHelper {
                 if (!currentActivity.equals("faqs")) { // Check if not on the current page
                     try {
                         // Handle button1 click
-                        Intent intent = new Intent(context, faqs.class);
+                        Intent intent = new Intent(context, FAQsActivity.class);
                         context.startActivity(intent);
 
                     } catch (ActivityNotFoundException e) {

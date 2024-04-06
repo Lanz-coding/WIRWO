@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class Dashboard extends Activity {
+public class DashboardActivity extends Activity {
 
     private FirebaseAuth auth;
     private DatabaseReference mDatabase;
@@ -43,7 +43,7 @@ public class Dashboard extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dashboard_main);
+        setContentView(R.layout.activity_dashboard);
 
         // Initialize FirebaseAuth instance
         auth = FirebaseAuth.getInstance();
@@ -109,10 +109,10 @@ public class Dashboard extends Activity {
         waterPumpSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 // Water pump switch is turned on
-                Toast.makeText(Dashboard.this, "Water Pump is turned on", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DashboardActivity.this, "Water Pump is turned on", Toast.LENGTH_SHORT).show();
             } else {
                 // Water pump switch is turned off
-                Toast.makeText(Dashboard.this, "Water Pump is turned off", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DashboardActivity.this, "Water Pump is turned off", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -122,11 +122,11 @@ public class Dashboard extends Activity {
             if (isChecked) {
                 // Ventilation switch is turned on, send "true" to Firebase
                 turnOnLED();
-                Toast.makeText(Dashboard.this, "Ventilation is turned on and LED is lit", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DashboardActivity.this, "Ventilation is turned on and LED is lit", Toast.LENGTH_SHORT).show();
             } else {
                 // Ventilation switch is turned off, send "false" to Firebase
                 turnOffLED();
-                Toast.makeText(Dashboard.this.getApplicationContext(), "Ventilation is turned off and LED is off", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DashboardActivity.this.getApplicationContext(), "Ventilation is turned off and LED is off", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -152,7 +152,7 @@ public class Dashboard extends Activity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Handle database errors
-                Toast.makeText(Dashboard.this, "Error fetching sensor data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DashboardActivity.this, "Error fetching sensor data", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -226,7 +226,7 @@ public class Dashboard extends Activity {
     @Override
     public void onBackPressed() {
 // Display confirmation dialog
-        DialogHelper.showDialogWithOkCancel(Dashboard.this,
+        DialogHelper.showDialogWithOkCancel(DashboardActivity.this,
                 "Log Out",
                 "Are you sure you want to log-out?",
                 new View.OnClickListener() {
@@ -239,9 +239,9 @@ public class Dashboard extends Activity {
                         showToastWithAppIcon("Logged Out Successfully", true);
 
                         // Optionally, redirect user to login activity
-                        Intent intent = new Intent(Dashboard.this, LoginActivity.class);
+                        Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        Dashboard.this.startActivity(intent);
+                        DashboardActivity.this.startActivity(intent);
                     }
                 }, new View.OnClickListener() {
                     @Override
@@ -254,7 +254,7 @@ public class Dashboard extends Activity {
 
     // Method to show custom toast with app icon
     private void showToastWithAppIcon(String message, boolean isSuccess) {
-        LayoutInflater inflater = LayoutInflater.from(Dashboard.this);
+        LayoutInflater inflater = LayoutInflater.from(DashboardActivity.this);
         View layout = inflater.inflate(R.layout.toast_layout, null);
 
         ImageView iconImageView = layout.findViewById(R.id.toast_icon);
@@ -273,7 +273,7 @@ public class Dashboard extends Activity {
         messageTextView.setText(message);
 
         // Create and show the toast
-        Toast toast = new Toast(Dashboard.this);
+        Toast toast = new Toast(DashboardActivity.this);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();

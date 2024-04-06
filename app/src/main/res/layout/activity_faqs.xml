@@ -1,7 +1,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".faqs"
+    tools:context=".FAQsActivity"
     tools:ignore="HardcodedText, ContentDescription"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

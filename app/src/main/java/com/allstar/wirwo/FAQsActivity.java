@@ -4,14 +4,14 @@ import android.app.Activity;
 import android.os.Bundle;
 
 
-public class faqs extends Activity {
+public class FAQsActivity extends Activity {
 
     private PopupWindowHelper popupMenuHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.faqs);
+        setContentView(R.layout.activity_faqs);
 
         // Initialize PopupMenuHelper with context of your activity
         popupMenuHelper = new PopupWindowHelper(this);

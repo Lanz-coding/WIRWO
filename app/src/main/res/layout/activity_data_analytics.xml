@@ -45,7 +45,7 @@
             android:layout_marginBottom="10dp"
             android:contentDescription=""
             android:elevation="2dp"
-            android:src="@drawable/wirwo_wordmark_1"
+            android:src="@drawable/wirwo_wordmark"
             app:layout_constraintBottom_toBottomOf="@id/toolbar"
             app:layout_constraintStart_toStartOf="@id/toolbar"
             app:layout_constraintTop_toTopOf="@id/toolbar"
@@ -192,7 +192,7 @@
                     android:layout_width="95dp"
                     android:layout_height="80dp"
                     android:layout_marginTop="62dp"
-                    android:background="@drawable/pngimg_com___thermometer_png78"
+                    android:background="@drawable/thermometer"
                     android:layout_marginStart="2dp">
 
                     <ProgressBar
@@ -215,7 +215,7 @@
                     android:layout_height="80dp"
                     android:layout_marginStart="205dp"
                     android:layout_marginTop="60dp"
-                    android:background="@drawable/pngimg_com___thermometer_png78"
+                    android:background="@drawable/thermometer"
                     android:gravity="center">
 
                     <ProgressBar

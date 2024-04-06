@@ -14,7 +14,7 @@ import android.os.Handler;
 import android.widget.VideoView;
 import androidx.core.app.NotificationCompat;
 
-public class MainActivity extends Activity {
+public class SplashActivity extends Activity {
 
     private static final long DELAY_BEFORE_VIDEO_PLAYBACK = 1000; // 1 second delay
 
@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_splash);
 
         // Initialize the VideoView
         videoView = findViewById(R.id.videoView);
@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
         // Send notification after the video playback has completed
         sendNotification("Welcome", "Welcome to your app!");
         // Create an Intent to start LoginActivity
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
         startActivity(intent);
         finish(); // Close MainActivity to prevent going back to it when pressing back button from LoginActivity
     }

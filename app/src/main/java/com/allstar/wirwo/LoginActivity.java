@@ -125,7 +125,7 @@ public class LoginActivity extends Activity {
                                     // User is logged in and email is verified
                                     // Proceed to your main activity
                                     showCustomToast("Logged In Successfully", true);
-                                    startActivity(new Intent(LoginActivity.this, Dashboard.class));
+                                    startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
                                     finish();
                                 } else {
                                     // User's email is not verified
@@ -200,7 +200,7 @@ public class LoginActivity extends Activity {
                 // Login successful, show custom toast with success icon
                 showCustomToast("Login Successful", true);
                 // Navigate to Dashboard activity
-                Intent intent = new Intent(LoginActivity.this, Dashboard.class);
+                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                 startActivity(intent);
                 finish(); // Finish LoginActivity so the user cannot come back to it using the back button
             } else {
