@@ -1,4 +1,4 @@
-package com.example.wirwo;
+package com.allstar.wirwo;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -126,7 +125,7 @@ public class LoginActivity extends Activity {
                                     // User is logged in and email is verified
                                     // Proceed to your main activity
                                     showCustomToast("Logged In Successfully", true);
-                                    startActivity(new Intent(LoginActivity.this, Dashboard.class));
+                                    startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
                                     finish();
                                 } else {
                                     // User's email is not verified
@@ -201,7 +200,7 @@ public class LoginActivity extends Activity {
                 // Login successful, show custom toast with success icon
                 showCustomToast("Login Successful", true);
                 // Navigate to Dashboard activity
-                Intent intent = new Intent(LoginActivity.this, Dashboard.class);
+                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                 startActivity(intent);
                 finish(); // Finish LoginActivity so the user cannot come back to it using the back button
             } else {
@@ -236,5 +235,25 @@ public class LoginActivity extends Activity {
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+// Display confirmation dialog
+        DialogHelper.showDialogWithOkCancel(LoginActivity.this,
+                "Exit App",
+                "Exit the WIRWO 2.0 App?",
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Cancel button clicked
+                        // Dismiss the dialog (nothing to do here)
+                    }
+                });
     }
 }

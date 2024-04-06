@@ -1,4 +1,4 @@
-package com.example.wirwo;
+package com.allstar.wirwo;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -6,8 +6,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 public class DialogHelper {
 

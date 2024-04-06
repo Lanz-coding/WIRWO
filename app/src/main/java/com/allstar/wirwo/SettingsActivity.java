@@ -1,4 +1,4 @@
-package com.example.wirwo;
+package com.allstar.wirwo;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -146,7 +146,7 @@ public class SettingsActivity extends Activity {
         faqsLayout.setOnClickListener(v -> {
             try {
                 // Handle button1 click
-                Intent intent = new Intent(SettingsActivity.this, faqs.class);
+                Intent intent = new Intent(SettingsActivity.this, FAQsActivity.class);
                 startActivity(intent);
             } catch (ActivityNotFoundException e) {
                 // Handle the exception appropriately, e.g., show an error message

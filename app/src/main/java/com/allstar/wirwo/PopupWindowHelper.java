@@ -1,10 +1,8 @@
-package com.example.wirwo;
+package com.allstar.wirwo;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -42,6 +40,7 @@ public class PopupWindowHelper {
         // Initialize FirebaseAuth instance
         auth = FirebaseAuth.getInstance();
     }
+
 
     public void showPopup(View anchorView) {
         if (!isPopupShowing) {
@@ -142,7 +141,7 @@ public class PopupWindowHelper {
                 if (!currentActivity.equals("Dashboard")) { // Check if not on the current page
                     try {
                         // Handle button1 click
-                        Intent intent = new Intent(context, Dashboard.class);
+                        Intent intent = new Intent(context, DashboardActivity.class);
                         context.startActivity(intent);
 
                     } catch (ActivityNotFoundException e) {
@@ -159,7 +158,7 @@ public class PopupWindowHelper {
                 if (!currentActivity.equals("faqs")) { // Check if not on the current page
                     try {
                         // Handle button1 click
-                        Intent intent = new Intent(context, faqs.class);
+                        Intent intent = new Intent(context, FAQsActivity.class);
                         context.startActivity(intent);
 
                     } catch (ActivityNotFoundException e) {

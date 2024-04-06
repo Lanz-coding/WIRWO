@@ -94,7 +94,7 @@
                 app:endIconMode="clear_text"
                 app:hintTextColor="@color/darkGreen"
                 app:startIconContentDescription="Username"
-                app:startIconDrawable="@drawable/baseline_email_24"
+                app:startIconDrawable="@drawable/icon_email_24"
                 app:startIconTint="@color/darkGreen">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -127,7 +127,7 @@
                 app:endIconMode="password_toggle"
                 app:hintTextColor="@color/darkGreen"
                 app:startIconContentDescription="Password"
-                app:startIconDrawable="@drawable/baseline_lock_24"
+                app:startIconDrawable="@drawable/icon_password_lock_24"
                 app:startIconTint="@color/darkGreen">
 
                 <com.google.android.material.textfield.TextInputEditText

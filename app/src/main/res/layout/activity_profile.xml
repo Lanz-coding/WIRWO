@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Dashboard"
+    tools:context=".DashboardActivity"
     tools:ignore="HardcodedText, ContentDescription">
 
 
@@ -45,7 +45,7 @@
             android:layout_marginBottom="10dp"
             android:contentDescription=""
             android:elevation="2dp"
-            android:src="@drawable/wirwo_wordmark_1"
+            android:src="@drawable/wirwo_wordmark"
             app:layout_constraintBottom_toBottomOf="@id/toolbar"
             app:layout_constraintStart_toStartOf="@id/toolbar"
             app:layout_constraintTop_toTopOf="@id/toolbar"
