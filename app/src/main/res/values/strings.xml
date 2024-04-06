@@ -57,6 +57,8 @@
     <string name="soil_moisture_a">SOIL MOISTURE</string>
     <string name="air_condition_sensors">AIR CONDITION SENSORS</string>
     <string name="soil_condition_sensor">SOIL CONDITION SENSOR</string>
+    <string name="thermometer2" />
+    <string name="thermometer1" />
 
 
 </resources>

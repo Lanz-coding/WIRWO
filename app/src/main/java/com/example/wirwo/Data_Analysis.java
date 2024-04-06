@@ -8,8 +8,10 @@ import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
@@ -49,8 +51,6 @@ public class Data_Analysis extends Activity {
         popupMenuHelper = new PopupWindowHelper(this);
 
 
-
-
         gauge1 = findViewById(R.id.halfGauge1);
         setupGauge(gauge1);
 
@@ -70,6 +70,8 @@ public class Data_Analysis extends Activity {
         });
 
     }
+
+
 
 
     private void readDsb18Temperature() {
@@ -97,6 +99,8 @@ public class Data_Analysis extends Activity {
 
     private void readHumidityData() {
         database = FirebaseDatabase.getInstance().getReference("SensorData").child("Humidity");
+
+
 
         database.addValueEventListener(new ValueEventListener() {
             @Override
