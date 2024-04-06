@@ -1,5 +1,6 @@
 package com.example.wirwo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -36,7 +37,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 if (!email.isEmpty()) {
                     sendPasswordResetEmail(email);
                 } else {
-                    Toast.makeText(ForgotPasswordActivity.this, "Please enter your email", Toast.LENGTH_SHORT).show();
+                    DialogHelper.showDialogWithTitle(ForgotPasswordActivity.this, "Empty Fields", "Please fill out all the information and try again.", null);
                 }
             }
         });
@@ -48,18 +49,32 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(ForgotPasswordActivity.this, "Password reset email sent. Please check your inbox.", Toast.LENGTH_SHORT).show();
+                            DialogHelper.showDialogWithTitle(ForgotPasswordActivity.this, "Email Sent", "Password Reset email successfully sent to your email. Please make sure you are registered with this email.", new DialogHelper.OnOkClickListener() {
+                                @Override
+                                public void onOkClicked() {
+                                    startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
+                                    finish();
+                                }
+                            });
                         } else {
                             // Check if the error is due to unregistered email
                             if (task.getException() instanceof FirebaseAuthInvalidUserException) {
-                                Toast.makeText(ForgotPasswordActivity.this, "This email is not registered. Please enter a registered email.", Toast.LENGTH_SHORT).show();
+                                DialogHelper.showDialogWithTitle(ForgotPasswordActivity.this, "Invalid email", "Please enter a registered email and try again. If problem still persists, contact the administrator.", null);
                             } else {
                                 // Handle other errors
-                                Toast.makeText(ForgotPasswordActivity.this, "Failed to send password reset email. Please try again.", Toast.LENGTH_SHORT).show();
+                                DialogHelper.showDialogWithTitle(ForgotPasswordActivity.this, "Failed", "Please try again. If problem still persists, contact the administrator.", null);
                             }
                         }
                     }
                 });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
+        finish();
+    }
+
 
 }
