@@ -237,4 +237,24 @@ public class LoginActivity extends Activity {
         toast.setView(layout);
         toast.show();
     }
+
+    @Override
+    public void onBackPressed() {
+// Display confirmation dialog
+        DialogHelper.showDialogWithOkCancel(LoginActivity.this,
+                "Exit App",
+                "Exit the WIRWO 2.0 App?",
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Cancel button clicked
+                        // Dismiss the dialog (nothing to do here)
+                    }
+                });
+    }
 }

@@ -43,6 +43,7 @@ public class PopupWindowHelper {
         auth = FirebaseAuth.getInstance();
     }
 
+
     public void showPopup(View anchorView) {
         if (!isPopupShowing) {
             // Inflate the custom popup window layout

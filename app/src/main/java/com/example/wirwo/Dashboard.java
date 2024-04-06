@@ -1,7 +1,13 @@
 package com.example.wirwo;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
 public class Dashboard extends Activity {
 
     private FirebaseAuth auth;
@@ -27,8 +32,13 @@ public class Dashboard extends Activity {
     private DatabaseReference ledControlRef;
     private PopupWindowHelper popupMenuHelper;
 
+    private LoadingDialogHelper loadingDialogHelper;
+    private Handler handler;
+
     private TextView soilTempText, airTempText, humidityText, moistureText;
     private ProgressBar soilTempBar, airTempBar, humidityBar, moistureBar;
+
+    private boolean isFirstTime = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +47,10 @@ public class Dashboard extends Activity {
 
         // Initialize FirebaseAuth instance
         auth = FirebaseAuth.getInstance();
+
+        // Initialize the LoadingDialogHelper
+        loadingDialogHelper = new LoadingDialogHelper(this);
+        handler = new Handler();
 
         // Get references to TextViews and ProgressBars
         soilTempText = findViewById(R.id.soiltemp_meter);
@@ -86,12 +100,11 @@ public class Dashboard extends Activity {
             welcomeText.setText("Ciao, User! Check your Wireless Worms Today!");
         }
 
-
         // Initialize PopupMenuHelper with context of your activity
         popupMenuHelper = new PopupWindowHelper(this);
 
         SwitchMaterial waterPumpSwitch = findViewById(R.id.waterPumpSwitch);
-        SwitchMaterial ventiSwitch = findViewById(R.id.ventiSwitch);
+        ventiSwitch = findViewById(R.id.ventiSwitch);
 
         waterPumpSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -122,45 +135,18 @@ public class Dashboard extends Activity {
             popupMenuHelper.showPopup(v);
         });
 
-
         // Add ValueEventListener to listen for changes in Firebase Database
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-
-                    // Extract sensor data from snapshot
-                    Double soilTemp = snapshot.child("Temperature_DS18B20").getValue(Double.class);
-                    Double airTemp = snapshot.child("Temperature").getValue(Double.class);
-                    Double humidity = snapshot.child("Humidity").getValue(Double.class);
-                    Double moisture = snapshot.child("Soil_Moisture").getValue(Double.class);
-
-                    // Update TextViews and ProgressBars with sensor data
-                    if (soilTemp != null) {
-                        soilTempText.setText(String.format("%.2f", soilTemp) + "°C");
-                        soilTempBar.setProgress((int) Math.round(soilTemp)); // Assuming progress bar max is 100
-                    }
-                    if (airTemp != null) {
-                        airTempText.setText(String.format("%.2f", airTemp) + "°C");
-                        airTempBar.setProgress((int) Math.round(airTemp)); // Assuming progress bar max is 100
-                    }
-                    if (humidity != null) {
-                        humidityText.setText(String.format("%.2f", humidity) + "%");
-                        humidityBar.setProgress(humidity.intValue()); // Assuming progress bar max is 100
-                    }
-                    if (moisture != null) {
-                        moistureText.setText(String.format("%.2f", moisture) + "%");
-                        moistureBar.setProgress(moisture.intValue()); // Assuming progress bar max is 100
-                    }
-
-                    boolean ventiChecked = snapshot.child("LED_Control").getValue(boolean.class);
-
-                    if (ventiChecked == true) {
-                        ventiSwitch.setChecked(true);
-                    } else {
-                        ventiSwitch.setChecked(false);
-                    }
+                if (isFirstTime) {
+                    // Show loading animation only for the first time
+                    showLoadingAnimation();
+                    isFirstTime = false; // Set flag to false after the first time
                 }
+
+                // Execute AsyncTask to perform data retrieval in the background
+                new FetchSensorDataTask().execute(snapshot);
             }
 
             @Override
@@ -179,5 +165,118 @@ public class Dashboard extends Activity {
         ledControlRef.setValue(false);
     }
 
+    // AsyncTask to perform data retrieval in the background
+    private class FetchSensorDataTask extends AsyncTask<DataSnapshot, Void, Void> {
+
+        @Override
+        protected Void doInBackground(DataSnapshot... snapshots) {
+            DataSnapshot snapshot = snapshots[0];
+
+            if (snapshot.exists()) {
+                // Extract sensor data from snapshot
+                Double soilTemp = snapshot.child("Temperature_DS18B20").getValue(Double.class);
+                Double airTemp = snapshot.child("Temperature").getValue(Double.class);
+                Double humidity = snapshot.child("Humidity").getValue(Double.class);
+                Double moisture = snapshot.child("Soil_Moisture").getValue(Double.class);
+
+                // Update UI on the main thread
+                runOnUiThread(() -> {
+                    // Update TextViews and ProgressBars with sensor data
+                    if (soilTemp != null) {
+                        soilTempText.setText(String.format("%.2f", soilTemp) + "°C");
+                        soilTempBar.setProgress((int) Math.round(soilTemp)); // Assuming progress bar max is 100
+                    }
+                    if (airTemp != null) {
+                        airTempText.setText(String.format("%.2f", airTemp) + "°C");
+                        airTempBar.setProgress((int) Math.round(airTemp)); // Assuming progress bar max is 100
+                    }
+                    if (humidity != null) {
+                        humidityText.setText(String.format("%.2f", humidity) + "%");
+                        humidityBar.setProgress(humidity.intValue()); // Assuming progress bar max is 100
+                    }
+                    if (moisture != null) {
+                        moistureText.setText(String.format("%.2f", moisture) + "%");
+                        moistureBar.setProgress(moisture.intValue()); // Assuming progress bar max is 100
+                    }
+
+                    boolean ventiChecked = snapshot.child("LED_Control").getValue(Boolean.class);
+
+                    if (ventiChecked) {
+                        ventiSwitch.setChecked(true);
+                    } else {
+                        ventiSwitch.setChecked(false);
+                    }
+                });
+            }
+            return null;
+        }
+    }
+
+    // Method to show loading animation for 3 seconds
+    private void showLoadingAnimation() {
+        // Show loading dialog
+        loadingDialogHelper.showDialog("Loading...");
+
+        // Delay dismissal of loading dialog after 1 seconds
+        handler.postDelayed(() -> {
+            loadingDialogHelper.dismissDialog();
+        }, 1000); // 1 second delay
+    }
+
+    @Override
+    public void onBackPressed() {
+// Display confirmation dialog
+        DialogHelper.showDialogWithOkCancel(Dashboard.this,
+                "Log Out",
+                "Are you sure you want to log-out?",
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // OK button clicked
+                        auth.signOut();
+
+                        // Display success message with your app icon
+                        showToastWithAppIcon("Logged Out Successfully", true);
+
+                        // Optionally, redirect user to login activity
+                        Intent intent = new Intent(Dashboard.this, LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        Dashboard.this.startActivity(intent);
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Cancel button clicked
+                        // Dismiss the dialog (nothing to do here)
+                    }
+                });
+    }
+
+    // Method to show custom toast with app icon
+    private void showToastWithAppIcon(String message, boolean isSuccess) {
+        LayoutInflater inflater = LayoutInflater.from(Dashboard.this);
+        View layout = inflater.inflate(R.layout.toast_layout, null);
+
+        ImageView iconImageView = layout.findViewById(R.id.toast_icon);
+        TextView messageTextView = layout.findViewById(R.id.toast_text);
+
+        // Set the app icon based on success or failure
+        if (isSuccess) {
+            // Set your success icon
+            iconImageView.setImageResource(R.drawable.white_wirwo); // Replace with your success icon
+        } else {
+            // Set your failure icon
+            iconImageView.setImageResource(R.drawable.white_wirwo); // Replace with your failure icon
+        }
+
+        // Set the message
+        messageTextView.setText(message);
+
+        // Create and show the toast
+        Toast toast = new Toast(Dashboard.this);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
+    }
 
 }
