@@ -59,6 +59,7 @@
     <string name="soil_condition_sensor">SOIL CONDITION SENSOR</string>
     <string name="thermometer2" />
     <string name="thermometer1" />
+    <string name="data_analysis1">Data Analysis</string>
 
 
 </resources>
