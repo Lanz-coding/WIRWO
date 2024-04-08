@@ -216,7 +216,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:fontFamily="@font/montserrat_regular"
-                            android:text="PINEDA, MATT ELIJAH S."
+                            android:text="PINEDA, MATT ELIJAH T."
                             android:textColor="@color/white"
                             android:textSize="15sp" />
 
