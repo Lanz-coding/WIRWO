@@ -51,7 +51,6 @@ public class SettingsActivity extends Activity {
                 }
             });
         }
-
         if (aboutUsLayout != null) {
             aboutUsLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
