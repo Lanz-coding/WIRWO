@@ -31,6 +31,7 @@
         <activity android:name=".DialogHelper"/>
         <activity android:name=".RegisterActivity"/>
         <activity android:name=".ForgotPasswordActivity"/>
+        <activity android:name=".AboutUsActivity"/>
     </application>
 
 </manifest>

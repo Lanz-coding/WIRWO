@@ -4,14 +4,14 @@ import android.app.Activity;
 import android.os.Bundle;
 
 
-public class FAQsActivity extends Activity {
+public class AboutUsActivity extends Activity {
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_faqs);
+        setContentView(R.layout.activity_about_us);
 
 
     }
