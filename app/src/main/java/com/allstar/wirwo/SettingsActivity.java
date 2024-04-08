@@ -17,6 +17,8 @@ public class SettingsActivity extends Activity {
 
     private PopupWindowHelper popupMenuHelper;
 
+    private LinearLayout faqsLayout, aboutUsLayout;
+
     private Context context;
 
     @Override
@@ -26,6 +28,46 @@ public class SettingsActivity extends Activity {
 
         // Initialize PopupMenuHelper with context of your activity
         popupMenuHelper = new PopupWindowHelper(this);
+        SwitchMaterial notifSwitch = findViewById(R.id.notifSwitch);
+        SwitchMaterial alertSwitch = findViewById(R.id.alertSwitch);
+        // Initialize the LinearLayout object
+        faqsLayout = findViewById(R.id.faqs);
+        aboutUsLayout = findViewById(R.id.aboutus);
+
+        // Set an OnClickListener on the LinearLayout
+        if (faqsLayout != null) {
+            faqsLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        // Handle button1 click
+                        Intent intent = new Intent(SettingsActivity.this, FAQsActivity.class);
+                        SettingsActivity.this.startActivity(intent);
+
+                    } catch (ActivityNotFoundException e) {
+                        // Handle the exception appropriately, e.g., show an error message
+                        Toast.makeText(SettingsActivity.this, "Error starting FAQs's activity", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+
+        if (aboutUsLayout != null) {
+            aboutUsLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        // Handle button1 click
+                        Intent intent = new Intent(SettingsActivity.this, AboutUsActivity.class);
+                        SettingsActivity.this.startActivity(intent);
+
+                    } catch (ActivityNotFoundException e) {
+                        // Handle the exception appropriately, e.g., show an error message
+                        Toast.makeText(SettingsActivity.this, "Error starting FAQs's activity", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
 
         findViewById(R.id.toolbar_navigation_icon).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,92 +77,7 @@ public class SettingsActivity extends Activity {
             }
         });
 
-        // Soil Temperature SeekBar and TextView
-        SeekBar soilTempSeekBar = findViewById(R.id.soil_temp_seekbar);
-        final TextView soilTempProgressText = findViewById(R.id.soiltemp_thresh_text);
 
-        soilTempSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                soilTempProgressText.setText(String.valueOf(progress) + "°C");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // Not needed for this implementation
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // Not needed for this implementation
-            }
-        });
-
-        // Soil Moisture SeekBar and TextView
-        SeekBar soilMoistureSeekBar = findViewById(R.id.soil_moisture_seekbar);
-        final TextView soilMoistureProgressText = findViewById(R.id.soilmoisture_thresh_text);
-
-        soilMoistureSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                soilMoistureProgressText.setText(String.valueOf(progress) + "%");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // Not needed for this implementation
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // Not needed for this implementation
-            }
-        });
-
-        // Humidity SeekBar and TextView
-        SeekBar humiditySeekBar = findViewById(R.id.humidity_seekbar);
-        final TextView humidityProgressText = findViewById(R.id.humidity_thresh_text);
-
-        humiditySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                humidityProgressText.setText(String.valueOf(progress) + "%");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // Not needed for this implementation
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // Not needed for this implementation
-            }
-        });
-
-        // Air Temperature SeekBar and TextView
-        SeekBar airTempSeekBar = findViewById(R.id.airtemp_seekbar);
-        final TextView airTempProgressText = findViewById(R.id.airtemp_thresh_text);
-
-        airTempSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                airTempProgressText.setText(String.valueOf(progress) + "°C");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // Not needed for this implementation
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // Not needed for this implementation
-            }
-        });
-
-        SwitchMaterial notifSwitch = findViewById(R.id.notifSwitch);
-        SwitchMaterial alertSwitch = findViewById(R.id.alertSwitch);
 
         notifSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -141,19 +98,6 @@ public class SettingsActivity extends Activity {
                 Toast.makeText(SettingsActivity.this, "Alerts are turned off", Toast.LENGTH_SHORT).show();
             }
         });
-        LinearLayout faqsLayout = findViewById(R.id.faqs_layout);
-
-        faqsLayout.setOnClickListener(v -> {
-            try {
-                // Handle button1 click
-                Intent intent = new Intent(SettingsActivity.this, FAQsActivity.class);
-                startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                // Handle the exception appropriately, e.g., show an error message
-                Toast.makeText(SettingsActivity.this, "Error starting FAQs activity", Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
 
     }
