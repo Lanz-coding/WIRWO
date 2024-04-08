@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,9 +29,56 @@ public class SettingsActivity extends Activity {
         popupMenuHelper = new PopupWindowHelper(this);
         SwitchMaterial notifSwitch = findViewById(R.id.notifSwitch);
         SwitchMaterial alertSwitch = findViewById(R.id.alertSwitch);
+
+        LinearLayout soilTempThreshold = findViewById(R.id.soil_temperature);
+        TextView soilTempCurrent = findViewById(R.id.soilTempCurrent);
+        LinearLayout soilMoistureThreshold = findViewById(R.id.soil_moisture);
+        TextView soilMoistureCurrent = findViewById(R.id.soilMoistureCurrent);
+        LinearLayout humidityThreshold = findViewById(R.id.humidity);
+        TextView humidityCurrent = findViewById(R.id.humidityCurrent);
+        LinearLayout airTempThreshold = findViewById(R.id.air_temperature);
+        TextView airTempCurrent = findViewById(R.id.airTempCurrent);
+
         // Initialize the LinearLayout object
         faqsLayout = findViewById(R.id.faqs);
         aboutUsLayout = findViewById(R.id.aboutus);
+
+        // Set an OnClickListener on the LinearLayout
+        if (soilTempThreshold != null) {
+            soilTempThreshold.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ThresholdDialogHelper.showSoilTempThresholdDialog(SettingsActivity.this, soilTempCurrent, null, null);
+                }
+            });
+        }
+
+        if (soilMoistureThreshold != null) {
+            soilMoistureThreshold.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ThresholdDialogHelper.showSoilMoistureThresholdDialog(SettingsActivity.this, soilMoistureCurrent, null, null);
+                }
+            });
+        }
+
+        if (humidityThreshold != null) {
+            humidityThreshold.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ThresholdDialogHelper.showHumidityThresholdDialog(SettingsActivity.this, humidityCurrent, null, null);
+                }
+            });
+        }
+
+        if (airTempThreshold != null) {
+            airTempThreshold.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ThresholdDialogHelper.showAirTempThresholdDialog(SettingsActivity.this, airTempCurrent,null, null);
+                }
+            });
+        }
 
         // Set an OnClickListener on the LinearLayout
         if (faqsLayout != null) {

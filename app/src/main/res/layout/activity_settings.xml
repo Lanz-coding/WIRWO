@@ -127,6 +127,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/soilTempCurrent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -172,6 +173,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/soilMoistureCurrent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -217,6 +219,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/humidityCurrent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -262,6 +265,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/airTempCurrent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -628,7 +632,7 @@
                 android:id="@+id/aboutus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:layout_margin="10dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -668,6 +672,13 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/transparent"
+                android:elevation="4dp" />
 
         </LinearLayout>
 
