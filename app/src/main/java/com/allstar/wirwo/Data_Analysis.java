@@ -16,13 +16,11 @@ import androidx.annotation.NonNull;
 import com.ekn.gruzer.gaugelibrary.HalfGauge;
 import com.ekn.gruzer.gaugelibrary.Range;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -153,44 +152,80 @@ public class Data_Analysis extends Activity {
 
     private void setupLineChart() {
         // Customize chart appearance
-        LineChart mpLineChart = findViewById(R.id.lineChart1);
-        int leftPadding = 10;
-        int topPadding = 20;
-        int rightPadding = 30;
-        int bottomPadding = 40;
+        LineChart mpLineChart1 = findViewById(R.id.lineChart1);
+        LineChart mpLineChart2 = findViewById(R.id.lineChart2);
 
-        mpLineChart.setDrawBorders(true);
-        mpLineChart.setBorderWidth(3);
-        mpLineChart.setBackgroundColor(Color.parseColor("#4C6444"));
-        mpLineChart.setBorderColor(Color.BLACK);
-        mpLineChart.setBackgroundColor(Color.WHITE);
-        mpLineChart.setDrawGridBackground(true);
-        mpLineChart.setExtraOffsets(leftPadding, topPadding, rightPadding, bottomPadding);
+        LineDataSet lineDataSet1 = new LineDataSet(dataValues1(), "Air Temperature");
+        LineDataSet lineDataSet2 = new LineDataSet(dataValues2(), "Humidity");
+        LineDataSet lineDataSet3 = new LineDataSet(dataValues3(), "Soil Temperature");
+        LineDataSet lineDataSet4 = new LineDataSet(dataValues4(), "Soil Moisture");
 
-        // Set up listeners to update chart data when Firebase data changes
-        setupHumidityDataListener(mpLineChart);
-        setupTemperatureDataListener(mpLineChart);
 
-        // Customize X-axis
-        XAxis xAxis = mpLineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // Set X-axis position
-        xAxis.setGranularity(30); // Set X-axis granularity
-        xAxis.setValueFormatter(new TimeAxisValueFormatter());// Set custom X-axis value formatter
+        ArrayList<ILineDataSet> dataSets1 = new ArrayList<>();
+        dataSets1.add(lineDataSet1);
+        dataSets1.add(lineDataSet2);
 
-        // Customize Y-axis
-        YAxis yAxisLeft = mpLineChart.getAxisLeft();
-        yAxisLeft.setTextColor(Color.BLACK); // Set Y-axis label color
-        yAxisLeft.setAxisMinimum(0f); // Set minimum Y-axis value
+        ArrayList<ILineDataSet> dataSets2 = new ArrayList<>();
+        dataSets2.add(lineDataSet3);
+        dataSets2.add(lineDataSet4);
 
-        // Hide right Y-axis
-        mpLineChart.getAxisRight().setEnabled(false);
 
-        // Customize chart legend
-        Legend legend = mpLineChart.getLegend();
-        legend.setTextColor(Color.BLACK); // Set legend text color
-        legend.setForm(Legend.LegendForm.LINE);
+        LineData data1 = new LineData(dataSets1);
+        mpLineChart1.setData(data1);
+        mpLineChart1.invalidate();
 
-        mpLineChart.invalidate();
+        LineData data2 = new LineData(dataSets2);
+        mpLineChart2.setData(data2);
+        mpLineChart2.invalidate();
+
+
+    }
+
+
+
+    private List<Entry> dataValues1() {
+        ArrayList<Entry> dataVals = new ArrayList<>();
+        dataVals.add(new Entry(0,20));
+        dataVals.add(new Entry(1,24));
+        dataVals.add(new Entry(2,2));
+        dataVals.add(new Entry(3,10));
+        dataVals.add(new Entry(4,28));
+
+        return dataVals;
+    }
+
+
+    private List<Entry> dataValues2() {
+        ArrayList<Entry> dataVals = new ArrayList<>();
+        dataVals.add(new Entry(0,20));
+        dataVals.add(new Entry(2,24));
+        dataVals.add(new Entry(3,2));
+        dataVals.add(new Entry(5,23));
+        dataVals.add(new Entry(7,18));
+
+        return dataVals;
+    }
+
+    private List<Entry> dataValues3() {
+        ArrayList<Entry> dataVals = new ArrayList<>();
+        dataVals.add(new Entry(0,20));
+        dataVals.add(new Entry(1,24));
+        dataVals.add(new Entry(2,2));
+        dataVals.add(new Entry(3,10));
+        dataVals.add(new Entry(4,28));
+
+        return dataVals;
+    }
+
+    private List<Entry> dataValues4() {
+        ArrayList<Entry> dataVals = new ArrayList<>();
+        dataVals.add(new Entry(0,20));
+        dataVals.add(new Entry(2,24));
+        dataVals.add(new Entry(3,2));
+        dataVals.add(new Entry(5,23));
+        dataVals.add(new Entry(7,18));
+
+        return dataVals;
     }
 
     private void setupHumidityDataListener(final LineChart chart) {

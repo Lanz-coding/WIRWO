@@ -140,7 +140,7 @@
 
                     android:layout_height="wrap_content"
 
-                    android:layout_marginStart="190dp"
+                    android:layout_marginStart="220dp"
 
                     android:layout_marginTop="2dp"
 
@@ -309,7 +309,7 @@
 
                     android:layout_marginStart="30dp"
 
-                    android:layout_marginTop="220dp"
+                    android:layout_marginTop="180dp"
 
                     android:fontFamily="@font/montserrat_bold"
 
@@ -333,7 +333,7 @@
 
                     android:layout_marginStart="30dp"
 
-                    android:layout_marginTop="250dp" />
+                    android:layout_marginTop="200dp" />
 
 
 
@@ -347,7 +347,7 @@
 
                     android:layout_marginStart="230dp"
 
-                    android:layout_marginTop="220dp"
+                    android:layout_marginTop="180dp"
 
                     android:fontFamily="@font/montserrat_bold"
 
@@ -371,7 +371,7 @@
 
                     android:layout_marginStart="250dp"
 
-                    android:layout_marginTop="250dp" />
+                    android:layout_marginTop="200dp" />
 
 
 
