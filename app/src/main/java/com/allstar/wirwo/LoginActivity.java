@@ -1,5 +1,6 @@
 package com.allstar.wirwo;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -36,6 +37,8 @@ public class LoginActivity extends Activity {
     private Button loginButton;
     private TextView createAccountTextView;
     private TextView forgotPasswordTextView;
+    private TextView faqsTextView;
+    private TextView abousUsTextView;
     private CheckBox rememberMeSwitch;
 
     private FirebaseAuth auth;
@@ -46,6 +49,7 @@ public class LoginActivity extends Activity {
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASSWORD = "password";
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +68,22 @@ public class LoginActivity extends Activity {
         forgotPasswordTextView = findViewById(R.id.forgotPassword);
         createAccountTextView = findViewById(R.id.create);
         rememberMeSwitch = findViewById(R.id.rememberMeSwitch);
+        faqsTextView = findViewById(R.id.faqs_btn_login);
+        abousUsTextView = findViewById(R.id.about_us_btn_login);
+
+        faqsTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this,FAQsActivity.class);
+            startActivity(intent);
+        });
+
+        abousUsTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this,AboutUsActivity.class);
+            startActivity(intent);
+        });
 
         forgotPasswordTextView.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this,ForgotPasswordActivity.class);
             startActivity(intent);
-            finish(); // Finish LoginActivity so the user cannot come back to it using the back button
         });
 
         // Set initial state of login button
@@ -125,6 +140,8 @@ public class LoginActivity extends Activity {
                                     // User is logged in and email is verified
                                     // Proceed to your main activity
                                     showCustomToast("Logged In Successfully", true);
+                                    // Instantiate Database to start retrieving data
+                                    Database database = new Database();
                                     startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
                                     finish();
                                 } else {

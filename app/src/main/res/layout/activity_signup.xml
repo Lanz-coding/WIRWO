@@ -88,7 +88,7 @@
                     app:startIconContentDescription="Create Username"
                     app:boxBackgroundMode="outline"
                     app:boxBackgroundColor="#FFFFFF"
-                    app:boxStrokeColor="#006400"
+                    app:boxStrokeColor="@color/darkGreen"
                     app:boxStrokeWidth="2dp"
                     app:boxCornerRadiusTopStart="24dp"
                     app:cursorColor="@color/darkGreen"
@@ -97,7 +97,8 @@
                     app:boxCornerRadiusTopEnd="24dp"
                     app:boxCornerRadiusBottomStart="24dp"
                     app:endIconMode="clear_text"
-                    app:boxCornerRadiusBottomEnd="24dp">
+                    app:boxCornerRadiusBottomEnd="24dp"
+                    app:endIconTint="@color/darkGreen">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/signin_username"
@@ -121,7 +122,7 @@
                     app:startIconContentDescription="Create Username"
                     app:boxBackgroundMode="outline"
                     app:boxBackgroundColor="#FFFFFF"
-                    app:boxStrokeColor="#006400"
+                    app:boxStrokeColor="@color/darkGreen"
                     app:boxStrokeWidth="2dp"
                     app:boxCornerRadiusTopStart="24dp"
                     app:cursorColor="@color/darkGreen"
@@ -130,7 +131,8 @@
                     app:boxCornerRadiusTopEnd="24dp"
                     app:boxCornerRadiusBottomStart="24dp"
                     app:endIconMode="clear_text"
-                    app:boxCornerRadiusBottomEnd="24dp">
+                    app:boxCornerRadiusBottomEnd="24dp"
+                    app:endIconTint="@color/darkGreen">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/signin_email"
@@ -164,7 +166,8 @@
                     app:boxCornerRadiusTopEnd="24dp"
                     app:boxCornerRadiusBottomStart="24dp"
                     app:endIconMode="password_toggle"
-                    app:boxCornerRadiusBottomEnd="24dp">
+                    app:boxCornerRadiusBottomEnd="24dp"
+                    app:endIconTint="@color/darkGreen">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/create_password"
@@ -198,7 +201,8 @@
                     app:boxCornerRadiusTopEnd="24dp"
                     app:boxCornerRadiusBottomStart="24dp"
                     app:endIconMode="password_toggle"
-                    app:boxCornerRadiusBottomEnd="24dp">
+                    app:boxCornerRadiusBottomEnd="24dp"
+                    app:endIconTint="@color/lighterGreen">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/confirm_password"

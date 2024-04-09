@@ -183,11 +183,11 @@ public class DashboardActivity extends Activity {
                 runOnUiThread(() -> {
                     // Update TextViews and ProgressBars with sensor data
                     if (soilTemp != null) {
-                        soilTempText.setText(String.format("%.2f", soilTemp) + "°C");
+                        soilTempText.setText(String.format("%.1f", soilTemp) + "°C");
                         soilTempBar.setProgress((int) Math.round(soilTemp)); // Assuming progress bar max is 100
                     }
                     if (airTemp != null) {
-                        airTempText.setText(String.format("%.2f", airTemp) + "°C");
+                        airTempText.setText(String.format("%.1f", airTemp) + "°C");
                         airTempBar.setProgress((int) Math.round(airTemp)); // Assuming progress bar max is 100
                     }
                     if (humidity != null) {
