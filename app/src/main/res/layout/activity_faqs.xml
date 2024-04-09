@@ -74,20 +74,21 @@
 
 
      <ScrollView
-         android:layout_width="match_parent"
-         android:layout_height="900dp">
+         android:layout_width="wrap_content"
+         android:layout_height="700dp">
 
 
          <RelativeLayout
-             android:layout_width="match_parent"
+             android:layout_width="wrap_content"
              android:layout_height="wrap_content">
 
          <androidx.cardview.widget.CardView
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:layout_margin="30dp"
-             app:cardCornerRadius="30dp"
-             android:layout_marginTop="10dp"
+             android:layout_marginLeft="30dp"
+             android:layout_marginRight="30dp"
+             app:cardCornerRadius="10dp"
+             android:layout_marginTop="0dp"
              app:cardElevation="20dp"
              android:backgroundTint="#102820">
 
@@ -110,6 +111,7 @@
                      android:textSize="20sp"
                      android:textStyle="bold" />
 
+
                  <TextView
                      android:id="@+id/Answer1Text"
                      android:layout_width="wrap_content"
@@ -121,7 +123,6 @@ It allows you to view real-time sensor readings, receive alerts for critical con
                      android:textColor="@color/white"
                      android:textSize="15sp"
                      android:textStyle="bold" />
-
 
                  <TextView
                      android:id="@+id/Question2Text"
@@ -154,7 +155,8 @@ It allows you to view real-time sensor readings, receive alerts for critical con
                      android:text="Existing User"
                      android:textColor="@color/white"
                      android:textSize="15sp"
-                     android:textStyle="bold" />
+                     android:textStyle="bold"
+                     android:layout_marginTop="8dp"/>
 
                  <TextView
                      android:id="@+id/Answer2_3Text"
