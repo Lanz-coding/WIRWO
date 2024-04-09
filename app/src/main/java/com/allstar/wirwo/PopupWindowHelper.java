@@ -8,11 +8,11 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 import android.widget.TextView;
-import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -75,8 +75,8 @@ public class PopupWindowHelper {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                       String text = "User";
-                       usernameText.setText(text);
+                        String text = "User";
+                        usernameText.setText(text);
                     }
                 });
             } else {
@@ -84,7 +84,6 @@ public class PopupWindowHelper {
                 String text = "User";
                 usernameText.setText(text);
             }
-
 
 
             // Create a PopupWindow object
@@ -105,12 +104,12 @@ public class PopupWindowHelper {
 
 
             // Update 'activeItem' based on the current activity (replace with your logic)
-            String currentActivity = ((Activity) context).getLocalClassName();
+            String currentActivity = ((Activity) context).getClass().getSimpleName();
             switch (currentActivity) {
-                case "Dashboard":
+                case "DashboardActivity":
                     activeItem = dashboard;
                     break;
-                case "faqs":
+                case "FAQsActivity":
                     activeItem = faqs;
                     break;
                 case "SettingsActivity":
@@ -118,11 +117,16 @@ public class PopupWindowHelper {
                     break;
                 case "Data_Analysis":
                     activeItem = data_analysis;
-
                     break;
             }
 
+            // Set a darker background color for the active item
+            if (activeItem != null) {
+                int color = Color.parseColor("#102820");  // Parse hex code to integer color value
+                activeItem.setBackgroundColor(color);
+            }
 
+            // Implement click listeners for other buttons similarly...
             settings.setOnClickListener(v -> {
                 if (!currentActivity.equals("SettingsActivity")) { // Check if not on the current page
                     try {
@@ -134,11 +138,13 @@ public class PopupWindowHelper {
                         // Handle the exception appropriately, e.g., show an error message
                         Toast.makeText(context, "Error starting Settings's activity", Toast.LENGTH_SHORT).show();
                     }
+                    // Dismiss the popup window
+                    popupWindow.dismiss();
                 }
             });
 
             dashboard.setOnClickListener(v -> {
-                if (!currentActivity.equals("Dashboard")) { // Check if not on the current page
+                if (!currentActivity.equals("DashboardActivity")) { // Check if not on the current page
                     try {
                         // Handle button1 click
                         Intent intent = new Intent(context, DashboardActivity.class);
@@ -155,7 +161,7 @@ public class PopupWindowHelper {
             });
 
             faqs.setOnClickListener(v -> {
-                if (!currentActivity.equals("faqs")) { // Check if not on the current page
+                if (!currentActivity.equals("FAQsActivity")) { // Check if not on the current page
                     try {
                         // Handle button1 click
                         Intent intent = new Intent(context, FAQsActivity.class);
@@ -172,61 +178,47 @@ public class PopupWindowHelper {
             });
 
             data_analysis.setOnClickListener(v -> {
-                try {
-                    // Handle button1 click
-                    Intent intent = new Intent(context, Data_Analysis.class);
-                    context.startActivity(intent);
+                if (!currentActivity.equals("Data_Analysis")) { // Check if not on the current page
+                    try {
+                        // Handle button1 click
+                        Intent intent = new Intent(context, Data_Analysis.class);
+                        context.startActivity(intent);
 
-                } catch (ActivityNotFoundException e) {
-                    // Handle the exception appropriately, e.g., show an error message
-                    Toast.makeText(context, "Error starting Data_Analysis activity", Toast.LENGTH_SHORT).show();
+                    } catch (ActivityNotFoundException e) {
+                        // Handle the exception appropriately, e.g., show an error message
+                        Toast.makeText(context, "Error starting Data_Analysis activity", Toast.LENGTH_SHORT).show();
+                    }
+
+                    // Dismiss the popup window
+                    popupWindow.dismiss();
                 }
-
-                // Dismiss the popup window
-                popupWindow.dismiss();
             });
-
-
 
             logout.setOnClickListener(v -> {
                 // Display confirmation dialog
                 DialogHelper.showDialogWithOkCancel(context,
-                                "Log Out",
-                                "Are you sure you want to log-out?",
-                                new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        // OK button clicked
-                                        auth.signOut();
+                        "Log Out",
+                        "Are you sure you want to log-out?",
+                        v1 -> {
+                            // OK button clicked
+                            auth.signOut();
 
-                                        // Display success message with your app icon
-                                        showToastWithAppIcon("Logged Out Successfully", true);
+                            // Display success message with your app icon
+                            showToastWithAppIcon("Logged Out Successfully", true);
 
-                                        // Optionally, redirect user to login activity
-                                        Intent intent = new Intent(context, LoginActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        context.startActivity(intent);
+                            // Optionally, redirect user to login activity
+                            Intent intent = new Intent(context, LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            context.startActivity(intent);
 
-                                        // Close the popup window
-                                        popupWindow.dismiss();
-                                    }
-                                }, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        // Cancel button clicked
-                                        // Dismiss the dialog (nothing to do here)
-                                    }
-                                });
+                            // Close the popup window
+                            popupWindow.dismiss();
+                        },
+                        v12 -> {
+                            // Cancel button clicked
+                            // Dismiss the dialog (nothing to do here)
+                        });
             });
-
-            // Set a darker background color for the active item
-            if (activeItem != null) {
-                int color = Color.parseColor("#102820");  // Parse hex code to integer color value
-                activeItem.setBackgroundColor(color);
-            }
-
-
-            // Implement click listeners for other buttons similarly...
 
             // Show the popup window at a specific location on the screen
             // For example, show it below the toolbar navigation icon
