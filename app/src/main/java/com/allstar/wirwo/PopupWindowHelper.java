@@ -181,7 +181,7 @@ public class PopupWindowHelper {
                 if (!currentActivity.equals("Data_Analysis")) { // Check if not on the current page
                     try {
                         // Handle button1 click
-                        Intent intent = new Intent(context, Data_Analysis.class);
+                        Intent intent = new Intent(context, DataAnalysisActivity.class);
                         context.startActivity(intent);
 
                     } catch (ActivityNotFoundException e) {

@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class Data_Analysis extends Activity {
+public class DataAnalysisActivity extends Activity {
     private HalfGauge gauge1;
     private  HalfGauge gauge2;
     private DatabaseReference database;

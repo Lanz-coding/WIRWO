@@ -15,30 +15,21 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-public class DashboardActivity extends Activity {
+public class DashboardActivity extends Activity implements OnDataChangeListener {
 
     private FirebaseAuth auth;
-    private DatabaseReference mDatabase;
+    private DatabaseHelper helper;  // Use DatabaseHelper instead of mDatabase
 
     private SwitchMaterial ventiSwitch;
-    private String LED_CONTROL_PATH = "LED_Control"; // Separate node for LED control
-    private DatabaseReference ledControlRef;
-    private PopupWindowHelper popupMenuHelper;
 
     private LoadingDialogHelper loadingDialogHelper;
+
     private Handler handler;
 
-    private TextView soilTempText, airTempText, humidityText, moistureText;
+    private TextView soilTempText, airTempText, humidityText, moistureText, welcomeText;
     private ProgressBar soilTempBar, airTempBar, humidityBar, moistureBar;
-
-    private boolean isFirstTime = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,46 +53,32 @@ public class DashboardActivity extends Activity {
         moistureText = findViewById(R.id.moisture_meter);
         moistureBar = findViewById(R.id.moisture_bar);
 
-        // Get an instance of Firebase Database
-        mDatabase = FirebaseDatabase.getInstance().getReference("SensorData");
+        welcomeText = findViewById(R.id.welcome_text);
 
-        // Get current user
-        FirebaseUser currentUser = auth.getCurrentUser();
+        // Create an instance of FirebaseDatabase
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        // Get reference to TextView
-        TextView welcomeText = findViewById(R.id.welcome_text);
+// Call the getUsername() method with the database instance and implement the UsernameCallback interface
+        DatabaseHelper.getUsername(database, new DatabaseHelper.UsernameCallback() {
+            @Override
+            public void onUsernameReceived(String username) {
+                // Use the retrieved username here
+                welcomeText.setText("Ciao, " + username + "! Check your Wireless Worms Today!");
 
-        // Check if user is not null
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
+            }
+        });
 
-            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("username");
+        // Get an instance of DatabaseHelper
+        helper = DatabaseHelper.getInstance();
 
-            databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        String username = dataSnapshot.getValue(String.class);
-                        welcomeText.setText("Ciao, " + username + "! Check your Wireless Worms Today!");
-                    } else {
-                        // Handle case where username data doesn't exist
-                        welcomeText.setText("Ciao, User! Check your Wireless Worms Today!"); // Or set a default message
-                    }
-                }
+        // Register this activity as a listener for data changes
+        helper.addOnDataChangeListener(this);
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    welcomeText.setText("Ciao, User! Check your Wireless Worms Today!");
-                }
-            });
-        } else {
-            // Set default text if user is null
-            String text = "User";
-            welcomeText.setText("Ciao, User! Check your Wireless Worms Today!");
-        }
+        // Call method to retrieve initial data
+        helper.retrieveInitialData(this);
 
         // Initialize PopupMenuHelper with context of your activity
-        popupMenuHelper = new PopupWindowHelper(this);
+        PopupWindowHelper popupMenuHelper = new PopupWindowHelper(this);
 
         SwitchMaterial waterPumpSwitch = findViewById(R.id.waterPumpSwitch);
         ventiSwitch = findViewById(R.id.ventiSwitch);
@@ -116,16 +93,13 @@ public class DashboardActivity extends Activity {
             }
         });
 
-        ledControlRef = mDatabase.child(LED_CONTROL_PATH); // New DatabaseReference for LED control
-
         ventiSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 // Ventilation switch is turned on, send "true" to Firebase
-                turnOnLED();
+                
                 Toast.makeText(DashboardActivity.this, "Ventilation is turned on and LED is lit", Toast.LENGTH_SHORT).show();
             } else {
                 // Ventilation switch is turned off, send "false" to Firebase
-                turnOffLED();
                 Toast.makeText(DashboardActivity.this.getApplicationContext(), "Ventilation is turned off and LED is off", Toast.LENGTH_SHORT).show();
             }
         });
@@ -134,84 +108,42 @@ public class DashboardActivity extends Activity {
             // Call showPopup() method to show the popup
             popupMenuHelper.showPopup(v);
         });
-
-        // Add ValueEventListener to listen for changes in Firebase Database
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (isFirstTime) {
-                    // Show loading animation only for the first time
-                    showLoadingAnimation();
-                    isFirstTime = false; // Set flag to false after the first time
-                }
-
-                // Execute AsyncTask to perform data retrieval in the background
-                new FetchSensorDataTask().execute(snapshot);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle database errors
-                Toast.makeText(DashboardActivity.this, "Error fetching sensor data", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
-    private void turnOnLED() {
-        ledControlRef.setValue(true);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Unregister listener to avoid memory leaks
+        helper.removeOnDataChangeListener(this);
     }
 
-    private void turnOffLED() {
-        ledControlRef.setValue(false);
-    }
+    @Override
+    public void onDatabaseChange(double humidity, boolean ledValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue) {
+        // Update UI elements based on the received data
+        if (soilTempText != null) {
+            soilTempText.setText(String.format("%.1f", tempValue) + "°C");
+            soilTempBar.setProgress((int) Math.round(tempValue)); // Assuming progress bar max is 100
+        }
+        if (airTempText != null) {
+            airTempText.setText(String.format("%.1f", airtempValue) + "°C");
+            airTempBar.setProgress((int) Math.round(airtempValue)); // Assuming progress bar max is 100
+        }
+        if (humidityText != null) {
+            humidityText.setText(String.format("%.2f", humidity) + "%");
+            // Convert humidity to int before setting progress (assuming progress bar max is 100)
+            humidityBar.setProgress((int) Math.round(humidity));
+        }
+        if (moistureText != null) {
+            moistureText.setText(String.format("%.2f", moistureValue) + "%");
+            // Convert moistureValue to int before setting progress (assuming progress bar max is 100)
+            moistureBar.setProgress((int) Math.round(moistureValue));
+        }
 
-    // AsyncTask to perform data retrieval in the background
-    private class FetchSensorDataTask extends AsyncTask<DataSnapshot, Void, Void> {
-
-        @Override
-        protected Void doInBackground(DataSnapshot... snapshots) {
-            DataSnapshot snapshot = snapshots[0];
-
-            if (snapshot.exists()) {
-                // Extract sensor data from snapshot
-                Double soilTemp = snapshot.child("Temperature_DS18B20").getValue(Double.class);
-                Double airTemp = snapshot.child("Temperature").getValue(Double.class);
-                Double humidity = snapshot.child("Humidity").getValue(Double.class);
-                Double moisture = snapshot.child("Soil_Moisture").getValue(Double.class);
-
-                // Update UI on the main thread
-                runOnUiThread(() -> {
-                    // Update TextViews and ProgressBars with sensor data
-                    if (soilTemp != null) {
-                        soilTempText.setText(String.format("%.1f", soilTemp) + "°C");
-                        soilTempBar.setProgress((int) Math.round(soilTemp)); // Assuming progress bar max is 100
-                    }
-                    if (airTemp != null) {
-                        airTempText.setText(String.format("%.1f", airTemp) + "°C");
-                        airTempBar.setProgress((int) Math.round(airTemp)); // Assuming progress bar max is 100
-                    }
-                    if (humidity != null) {
-                        humidityText.setText(String.format("%.2f", humidity) + "%");
-                        humidityBar.setProgress(humidity.intValue()); // Assuming progress bar max is 100
-                    }
-                    if (moisture != null) {
-                        moistureText.setText(String.format("%.2f", moisture) + "%");
-                        moistureBar.setProgress(moisture.intValue()); // Assuming progress bar max is 100
-                    }
-
-                    boolean ventiChecked = snapshot.child("LED_Control").getValue(Boolean.class);
-
-                    if (ventiChecked) {
-                        ventiSwitch.setChecked(true);
-                    } else {
-                        ventiSwitch.setChecked(false);
-                    }
-                });
-            }
-            return null;
+        if (ventiSwitch != null) {
+            ventiSwitch.setChecked(ledValue);
         }
     }
-
     // Method to show loading animation for 3 seconds
     private void showLoadingAnimation() {
         // Show loading dialog
@@ -279,4 +211,32 @@ public class DashboardActivity extends Activity {
         toast.show();
     }
 
+    public void updateUIElements(double humidity, boolean ledValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue) {
+        // Update UI elements here based on the received data
+        if (soilTempText != null) {
+            soilTempText.setText(String.format("%.1f", tempValue) + "°C");
+            soilTempBar.setProgress((int) Math.round(tempValue)); // Assuming progress bar max is 100
+        }
+        // ... same logic for other UI elements ...
+
+        if (airTempText != null) {
+            airTempText.setText(String.format("%.1f", airtempValue) + "°C");
+            airTempBar.setProgress((int) Math.round(airtempValue)); // Assuming progress bar max is 100
+        }
+        if (humidityText != null) {
+            humidityText.setText(String.format("%.2f", humidity) + "%");
+            // Convert humidity to int before setting progress (assuming progress bar max is 100)
+            humidityBar.setProgress((int) Math.round(humidity));
+        }
+        if (moistureText != null) {
+            moistureText.setText(String.format("%.2f", moistureValue) + "%");
+            // Convert moistureValue to int before setting progress (assuming progress bar max is 100)
+            moistureBar.setProgress((int) Math.round(moistureValue));
+        }
+
+        if (ventiSwitch != null) {
+            ventiSwitch.setChecked(ledValue);
+        }
+    }
 }
+

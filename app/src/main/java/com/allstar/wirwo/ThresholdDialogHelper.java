@@ -2,7 +2,6 @@ package com.allstar.wirwo;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -30,10 +29,11 @@ public class ThresholdDialogHelper {
         Slider slider = dialog.findViewById(R.id.slider);
         TextView progressTextView = dialog.findViewById(R.id.slider_progress);
 
-        dialogTitle.setText("Set Soil Moisture Threshold");
+        dialogTitle.setText("Set Soil Temperature Threshold");
 
-        int soilTempCurrent = Database.getSoilTempThreshold();
-        progressTextView.setText(soilTempCurrent + "C");
+        int soilTempCurrent = DatabaseHelper.getSoilTempThreshold();
+        progressTextView.setText(soilTempCurrent + "°C");
+        slider.setValue(soilTempCurrent);
 
         // Set button click listeners
         okButton.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +62,15 @@ public class ThresholdDialogHelper {
             public void onValueChange(Slider slider, float value, boolean fromUser) {
                 // Update progress TextView when slider value changes
                 progressTextView.setText(String.valueOf((int)value) + "%");
+            }
+        });
+
+        slider.setLabelFormatter(new LabelFormatter() {
+            @NonNull
+            @Override
+            public String getFormattedValue(float value) {
+                // Returning an empty string will hide the progress tooltip
+                return "";
             }
         });
 

@@ -27,7 +27,7 @@
         <activity android:name=".DashboardActivity" />
         <activity android:name=".FAQsActivity"/>
         <activity android:name=".SettingsActivity"/>
-        <activity android:name=".Data_Analysis"/>
+        <activity android:name=".DataAnalysisActivity"/>
         <activity android:name=".DialogHelper"/>
         <activity android:name=".RegisterActivity"/>
         <activity android:name=".ForgotPasswordActivity"/>

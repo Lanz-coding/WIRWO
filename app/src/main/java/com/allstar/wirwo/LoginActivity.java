@@ -140,8 +140,6 @@ public class LoginActivity extends Activity {
                                     // User is logged in and email is verified
                                     // Proceed to your main activity
                                     showCustomToast("Logged In Successfully", true);
-                                    // Instantiate Database to start retrieving data
-                                    Database database = new Database();
                                     startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
                                     finish();
                                 } else {
