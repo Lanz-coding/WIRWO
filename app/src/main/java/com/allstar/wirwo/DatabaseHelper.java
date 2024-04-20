@@ -21,13 +21,13 @@ public class DatabaseHelper implements OnDataChangeListener {
     private String username;
 
     private double humidityValue;
-    private boolean ledValue;
+    private boolean ventiValue, waterValue;
     private double moistureValue;
     private double tempValue;
     private double airtempValue;
     private boolean alertsValue;
     private boolean notifsValue;
-    private static double soilTempThreshold;
+    private static double soilTempThreshold, airTempThreshold, soilMoistureThreshold, humidityThreshold;
 
     public interface UsernameCallback {
         void onUsernameReceived(String username);
@@ -49,7 +49,8 @@ public class DatabaseHelper implements OnDataChangeListener {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataSnapshot sensorDataSnapshot = dataSnapshot.child("SensorData");
                 humidityValue = sensorDataSnapshot.child("Humidity").getValue(Double.class);
-                ledValue = sensorDataSnapshot.child("LED_Control").getValue(Boolean.class);
+                ventiValue = sensorDataSnapshot.child("Ventilation").getValue(Boolean.class);
+                waterValue = sensorDataSnapshot.child("WaterPump").getValue(Boolean.class);
                 moistureValue = sensorDataSnapshot.child("Soil_Moisture").getValue(Double.class);
                 tempValue = sensorDataSnapshot.child("Temperature").getValue(Double.class);
                 airtempValue = sensorDataSnapshot.child("Temperature_DS18B20").getValue(Double.class);
@@ -69,6 +70,7 @@ public class DatabaseHelper implements OnDataChangeListener {
                     username = "User";
                 }
 
+
                 DataSnapshot notifSettingsSnapshot = dataSnapshot.child("notifSettings");
                 alertsValue = notifSettingsSnapshot.child("allowAlerts").getValue(Boolean.class);
                 notifsValue = notifSettingsSnapshot.child("allowNotifs").getValue(Boolean.class);
@@ -76,7 +78,7 @@ public class DatabaseHelper implements OnDataChangeListener {
                 soilTempThreshold = dataSnapshot.child("thresholds").child("soilTempThreshold").getValue(Integer.class);
 
                 for (OnDataChangeListener listener : listeners) {
-                    listener.onDatabaseChange(humidityValue, ledValue, moistureValue, tempValue, airtempValue, alertsValue, notifsValue);
+                    listener.onDatabaseChange(humidityValue, ventiValue, waterValue, moistureValue, tempValue, airtempValue, alertsValue, notifsValue);
                 }
             }
 
@@ -88,7 +90,7 @@ public class DatabaseHelper implements OnDataChangeListener {
     }
 
     @Override
-    public void onDatabaseChange(double humidity, boolean ledValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue) {
+    public void onDatabaseChange(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue) {
         // This method is not used in this approach directly, but can be used for internal purposes in DatabaseHelper if needed
     }
 
@@ -100,33 +102,22 @@ public class DatabaseHelper implements OnDataChangeListener {
         listeners.remove(listener);
     }
 
-    public double getHumidityValue() {
-        return humidityValue;
+    public void setWaterValue(boolean value){
+        // Get a reference to the Firebase Database
+        DatabaseReference myRef = databaseRef.child("SensorData").child("WaterPump");
+
+        // Set the values
+        myRef.setValue(value); // waterValue is a boolean
     }
 
-    public boolean isLedValue() {
-        return ledValue;
+    public void setVentiValue(boolean value){
+        // Get a reference to the Firebase Database
+        DatabaseReference myRef = databaseRef.child("SensorData").child("Ventilation");
+
+        // Set the values
+        myRef.setValue(value); // ventiValue is a boolean
     }
 
-    public double getMoistureValue() {
-        return moistureValue;
-    }
-
-    public double getTempValue() {
-        return tempValue;
-    }
-
-    public double getAirtempValue() {
-        return airtempValue;
-    }
-
-    public boolean isAlertsValue() {
-        return alertsValue;
-    }
-
-    public boolean isNotifsValue() {
-        return notifsValue;
-    }
 
     public static int getSoilTempThreshold() {
         return (int) soilTempThreshold;
@@ -137,7 +128,7 @@ public class DatabaseHelper implements OnDataChangeListener {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (activity != null) {
-                    activity.updateUIElements(humidityValue, ledValue, moistureValue, tempValue, airtempValue, alertsValue, notifsValue);
+                    activity.updateUIElements(humidityValue, ventiValue, waterValue, moistureValue, tempValue, airtempValue, alertsValue, notifsValue);
                 }
             }
 

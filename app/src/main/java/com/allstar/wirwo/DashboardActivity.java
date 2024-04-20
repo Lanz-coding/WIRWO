@@ -2,7 +2,6 @@ package com.allstar.wirwo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,9 +18,9 @@ import com.google.firebase.database.FirebaseDatabase;
 public class DashboardActivity extends Activity implements OnDataChangeListener {
 
     private FirebaseAuth auth;
-    private DatabaseHelper helper;  // Use DatabaseHelper instead of mDatabase
+    private DatabaseHelper helper;
 
-    private SwitchMaterial ventiSwitch;
+    private SwitchMaterial ventiSwitch, waterSwitch;
 
     private LoadingDialogHelper loadingDialogHelper;
 
@@ -30,6 +28,12 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
 
     private TextView soilTempText, airTempText, humidityText, moistureText, welcomeText;
     private ProgressBar soilTempBar, airTempBar, humidityBar, moistureBar;
+
+    private static final String WATER_SWITCH_STATE = "water_switch_state";
+    private static final String VENTI_SWITCH_STATE = "venti_switch_state";
+    private boolean waterSwitchState;
+    private boolean ventiSwitchState;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +62,7 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         // Create an instance of FirebaseDatabase
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-// Call the getUsername() method with the database instance and implement the UsernameCallback interface
+        // Call the getUsername() method with the database instance and implement the UsernameCallback interface
         DatabaseHelper.getUsername(database, new DatabaseHelper.UsernameCallback() {
             @Override
             public void onUsernameReceived(String username) {
@@ -80,15 +84,17 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         // Initialize PopupMenuHelper with context of your activity
         PopupWindowHelper popupMenuHelper = new PopupWindowHelper(this);
 
-        SwitchMaterial waterPumpSwitch = findViewById(R.id.waterPumpSwitch);
+        waterSwitch = findViewById(R.id.waterPumpSwitch);
         ventiSwitch = findViewById(R.id.ventiSwitch);
 
-        waterPumpSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        waterSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 // Water pump switch is turned on
+                helper.setWaterValue(isChecked);
                 Toast.makeText(DashboardActivity.this, "Water Pump is turned on", Toast.LENGTH_SHORT).show();
             } else {
                 // Water pump switch is turned off
+                helper.setWaterValue(false);
                 Toast.makeText(DashboardActivity.this, "Water Pump is turned off", Toast.LENGTH_SHORT).show();
             }
         });
@@ -96,10 +102,11 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         ventiSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 // Ventilation switch is turned on, send "true" to Firebase
-                
+                helper.setVentiValue(isChecked);
                 Toast.makeText(DashboardActivity.this, "Ventilation is turned on and LED is lit", Toast.LENGTH_SHORT).show();
             } else {
                 // Ventilation switch is turned off, send "false" to Firebase
+                helper.setVentiValue(false);
                 Toast.makeText(DashboardActivity.this.getApplicationContext(), "Ventilation is turned off and LED is off", Toast.LENGTH_SHORT).show();
             }
         });
@@ -108,6 +115,16 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
             // Call showPopup() method to show the popup
             popupMenuHelper.showPopup(v);
         });
+
+        // Restore switch states if savedInstanceState is not null
+        if (savedInstanceState != null) {
+            waterSwitchState = savedInstanceState.getBoolean(WATER_SWITCH_STATE);
+            ventiSwitchState = savedInstanceState.getBoolean(VENTI_SWITCH_STATE);
+
+            // Set the state of switches
+            waterSwitch.setChecked(waterSwitchState);
+            ventiSwitch.setChecked(ventiSwitchState);
+        }
     }
 
     @Override
@@ -119,7 +136,7 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
     }
 
     @Override
-    public void onDatabaseChange(double humidity, boolean ledValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue) {
+    public void onDatabaseChange(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue) {
         // Update UI elements based on the received data
         if (soilTempText != null) {
             soilTempText.setText(String.format("%.1f", tempValue) + "°C");
@@ -141,9 +158,14 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         }
 
         if (ventiSwitch != null) {
-            ventiSwitch.setChecked(ledValue);
+            ventiSwitch.setChecked(ventiValue);
+        }
+
+        if (waterSwitch != null){
+            waterSwitch.setChecked(waterValue);
         }
     }
+
     // Method to show loading animation for 3 seconds
     private void showLoadingAnimation() {
         // Show loading dialog
@@ -157,7 +179,7 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
 
     @Override
     public void onBackPressed() {
-// Display confirmation dialog
+        // Display confirmation dialog
         DialogHelper.showDialogWithOkCancel(DashboardActivity.this,
                 "Log Out",
                 "Are you sure you want to log-out?",
@@ -211,14 +233,13 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         toast.show();
     }
 
-    public void updateUIElements(double humidity, boolean ledValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue) {
+    // Method to update UI elements based on data received from the database
+    public void updateUIElements(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue) {
         // Update UI elements here based on the received data
         if (soilTempText != null) {
             soilTempText.setText(String.format("%.1f", tempValue) + "°C");
             soilTempBar.setProgress((int) Math.round(tempValue)); // Assuming progress bar max is 100
         }
-        // ... same logic for other UI elements ...
-
         if (airTempText != null) {
             airTempText.setText(String.format("%.1f", airtempValue) + "°C");
             airTempBar.setProgress((int) Math.round(airtempValue)); // Assuming progress bar max is 100
@@ -235,8 +256,33 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         }
 
         if (ventiSwitch != null) {
-            ventiSwitch.setChecked(ledValue);
+            ventiSwitch.setChecked(ventiValue);
+        }
+
+        if (waterSwitch != null){
+            waterSwitch.setChecked(waterValue);
         }
     }
-}
 
+    // Method to save switch states during configuration changes
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Save the state of switches
+        outState.putBoolean(WATER_SWITCH_STATE, waterSwitch.isChecked());
+        outState.putBoolean(VENTI_SWITCH_STATE, ventiSwitch.isChecked());
+    }
+
+    // Method to restore switch states after configuration changes
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        // Restore switch states
+        waterSwitchState = savedInstanceState.getBoolean(WATER_SWITCH_STATE);
+        ventiSwitchState = savedInstanceState.getBoolean(VENTI_SWITCH_STATE);
+
+        // Set the state of switches
+        waterSwitch.setChecked(waterSwitchState);
+        ventiSwitch.setChecked(ventiSwitchState);
+    }
+}
