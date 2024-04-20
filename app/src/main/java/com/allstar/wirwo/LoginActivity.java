@@ -18,6 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Task;
@@ -54,6 +60,11 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        if (!isNetworkAvailable()) {
+            // Show dialog indicating no internet connection
+            DialogHelper.showDialogWithTitle(LoginActivity.this, "NO INTENET CONNECTION", "Check your internet connection.", null );
+        }
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
@@ -176,7 +187,6 @@ public class LoginActivity extends Activity {
             String username = usernameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
             loginButton.setEnabled(!username.isEmpty() && !password.isEmpty());
-
             // Save credentials immediately if "Remember Me" is checked
             if (rememberMeSwitch.isChecked()) {
                 saveCredentials(username, password);
@@ -270,5 +280,11 @@ public class LoginActivity extends Activity {
                         // Dismiss the dialog (nothing to do here)
                     }
                 });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
