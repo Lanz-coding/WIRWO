@@ -18,23 +18,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-
-
 
 public class LoginActivity extends Activity {
 
@@ -48,7 +39,6 @@ public class LoginActivity extends Activity {
     private CheckBox rememberMeSwitch;
 
     private FirebaseAuth auth;
-
     private SharedPreferences sharedPreferences;
 
     private static final String SHARED_PREF_NAME = "login_preferences";
@@ -61,9 +51,10 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Check for internet connection
         if (!isNetworkAvailable()) {
             // Show dialog indicating no internet connection
-            DialogHelper.showDialogWithTitle(LoginActivity.this, "NO INTENET CONNECTION", "Check your internet connection.", null );
+            DialogHelper.showNoIntenetDialog(LoginActivity.this);
         }
 
         // Initialize Firebase Auth
@@ -83,17 +74,17 @@ public class LoginActivity extends Activity {
         abousUsTextView = findViewById(R.id.about_us_btn_login);
 
         faqsTextView.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this,FAQsActivity.class);
+            Intent intent = new Intent(LoginActivity.this, FAQsActivity.class);
             startActivity(intent);
         });
 
         abousUsTextView.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this,AboutUsActivity.class);
+            Intent intent = new Intent(LoginActivity.this, AboutUsActivity.class);
             startActivity(intent);
         });
 
         forgotPasswordTextView.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this,ForgotPasswordActivity.class);
+            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
         });
 
@@ -142,29 +133,26 @@ public class LoginActivity extends Activity {
 
             // Perform login asynchronously
             auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                FirebaseUser user = auth.getCurrentUser();
-                                if (user != null && user.isEmailVerified()) {
-                                    // User is logged in and email is verified
-                                    // Proceed to your main activity
-                                    showCustomToast("Logged In Successfully", true);
-                                    startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
-                                    finish();
-                                } else {
-                                    // User's email is not verified
-                                    DialogHelper.showDialogWithTitle(LoginActivity.this,"Unverified Account", "Please verify your email first before logging in.", null);
-                                    FirebaseAuth.getInstance().signOut(); // Sign out the user
-                                }
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = auth.getCurrentUser();
+                            if (user != null && user.isEmailVerified()) {
+                                // User is logged in and email is verified
+                                // Proceed to your main activity
+                                showCustomToast("Logged In Successfully", true);
+                                startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                                finish();
                             } else {
-                                // If sign in fails, display a message to the user.
-                                DialogHelper.showDialogWithTitle(LoginActivity.this,"Log-In Failed", "Email and Password does not match, please try again.", null);
+                                // User's email is not verified
+                                DialogHelper.showDialogWithTitle(LoginActivity.this, "Unverified Account", "Please verify your email first before logging in.", null);
+                                FirebaseAuth.getInstance().signOut(); // Sign out the user
                             }
-                            // Enable login button after login attempt
-                            loginButton.setEnabled(true);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            DialogHelper.showDialogWithTitle(LoginActivity.this, "Log-In Failed", "Email and Password does not match, please try again.", null);
                         }
+                        // Enable login button after login attempt
+                        loginButton.setEnabled(true);
                     });
         } else {
             // Username or password is empty, display error message
@@ -202,39 +190,6 @@ public class LoginActivity extends Activity {
         editor.apply();
     }
 
-    // AsyncTask to perform login asynchronously
-    private class LoginTask extends AsyncTask<String, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(String... params) {
-            String email = params[0];
-            String password = params[1];
-
-            Task<AuthResult> signInTask = auth.signInWithEmailAndPassword(email, password);
-            try {
-                Tasks.await(signInTask);
-                return signInTask.isSuccessful(); // Login successful if task is successful
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false; // Login failed
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            if (success) {
-                // Login successful, show custom toast with success icon
-                showCustomToast("Login Successful", true);
-                // Navigate to Dashboard activity
-                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                startActivity(intent);
-                finish(); // Finish LoginActivity so the user cannot come back to it using the back button
-            } else {
-                // Login failed, show custom toast with failure icon
-                showCustomToast("Login Failed", false);
-            }
-        }
-    }
-
     // Method to show custom toast with app icon
     private void showCustomToast(String message, boolean isSuccess) {
         LayoutInflater inflater = getLayoutInflater();
@@ -264,7 +219,7 @@ public class LoginActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-// Display confirmation dialog
+        // Display confirmation dialog
         DialogHelper.showDialogWithOkCancel(LoginActivity.this,
                 "Exit App",
                 "Exit the WIRWO 2.0 App?",
