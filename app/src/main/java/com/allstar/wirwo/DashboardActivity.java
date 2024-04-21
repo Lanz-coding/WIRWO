@@ -1,6 +1,7 @@
 package com.allstar.wirwo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -39,6 +43,12 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        // Check for internet connection
+        if (!isNetworkAvailable()) {
+            // Show dialog indicating no internet connection
+            DialogHelper.showNoIntenetDialog(DashboardActivity.this);
+        }
 
         // Initialize FirebaseAuth instance
         auth = FirebaseAuth.getInstance();
@@ -79,7 +89,7 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         helper.addOnDataChangeListener(this);
 
         // Call method to retrieve initial data
-        helper.retrieveInitialData(this);
+        helper.retrieveDashboardInitialData(this);
 
         // Initialize PopupMenuHelper with context of your activity
         PopupWindowHelper popupMenuHelper = new PopupWindowHelper(this);
@@ -136,7 +146,8 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
     }
 
     @Override
-    public void onDatabaseChange(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue) {
+    public void onDatabaseChange(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue,
+                                 double soilTempThresh, double soilMoistureThresh, double humidityThresh, double airTempThresh) {
         // Update UI elements based on the received data
         if (soilTempText != null) {
             soilTempText.setText(String.format("%.1f", tempValue) + "°C");
@@ -284,5 +295,11 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         // Set the state of switches
         waterSwitch.setChecked(waterSwitchState);
         ventiSwitch.setChecked(ventiSwitchState);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

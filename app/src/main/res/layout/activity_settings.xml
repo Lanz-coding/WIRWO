@@ -78,15 +78,6 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/refresh_btn"
-                android:layout_width="27.5dp"
-                android:layout_height="27.5dp"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/icon_dashboard"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@string/todo1" />
-
     </LinearLayout>
 
     <ScrollView
@@ -151,7 +142,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="-5dp"
                         android:text="Current Threshold: "
-                        android:fontFamily="@font/montserrat_bold"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textColor="@color/darkBrown"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -197,7 +188,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="-5dp"
                         android:text="Current Threshold: "
-                        android:fontFamily="@font/montserrat_bold"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textColor="@color/darkBrown"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -243,7 +234,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="-5dp"
                         android:text="Current Threshold: "
-                        android:fontFamily="@font/montserrat_bold"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textColor="@color/darkBrown"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -289,7 +280,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="-5dp"
                         android:text="Current Threshold: "
-                        android:fontFamily="@font/montserrat_bold"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textColor="@color/darkBrown"
                         android:textSize="14sp"
                         android:textStyle="bold" />

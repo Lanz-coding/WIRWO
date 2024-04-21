@@ -2,33 +2,31 @@ package com.allstar.wirwo;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.provider.ContactsContract;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
-
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends Activity implements OnDataChangeListener {
 
     private PopupWindowHelper popupMenuHelper;
+    private DatabaseHelper helper;
 
     private LinearLayout faqsLayout, aboutUsLayout;
     private TextView soilTempCurrent, soilMoistureCurrent, humidityCurrent, airTempCurrent, notifCurrent, alertCurrent;
@@ -37,17 +35,31 @@ public class SettingsActivity extends Activity {
 
     private SwitchMaterial alertSwitch, notifSwitch;
 
-    private Context context;
+    private int isNotifsFirstChanged = 0;
+    private int isAlertsFirstChanged = 0;
+
+
+
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+        // Get an instance of DatabaseHelper
+        helper = DatabaseHelper.getInstance();
+
+        // Register this activity as a listener for data changes
+        helper.addOnDataChangeListener(this);
+
+        // Call method to retrieve initial data
+        helper.retrieveSettingsInitialData(this);
+
 
         // Initialize PopupMenuHelper with context of your activity
         popupMenuHelper = new PopupWindowHelper(this);
+
         notifSwitch = findViewById(R.id.notifSwitch);
         alertSwitch = findViewById(R.id.alertSwitch);
 
@@ -60,25 +72,61 @@ public class SettingsActivity extends Activity {
         LinearLayout airTempThreshold = findViewById(R.id.air_temperature);
         airTempCurrent = findViewById(R.id.airTempCurrent);
 
-        ImageView refreshButton = findViewById(R.id.refresh_btn);
-
         notifCurrent = findViewById(R.id.notifCurrent);
         alertCurrent = findViewById(R.id.alertCurrent);
+
+        LinearLayout usernameLayout = findViewById(R.id.username);
+        LinearLayout emailLayout = findViewById(R.id.email);
+        LinearLayout passwordLayout = findViewById(R.id.password);
 
         // Initialize the LinearLayout object
         faqsLayout = findViewById(R.id.faqs);
         aboutUsLayout = findViewById(R.id.aboutus);
 
-        // Fetch data and update UI initially
-        fetchDataAndUpdateUI();
-
-        refreshButton.setOnClickListener(new View.OnClickListener() {
+        // Create an instance of FirebaseDatabase
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        usernameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Call fetchDataAndUpdateUI() to fetch data from Firebase and update UI
-                fetchDataAndUpdateUI();
+                DatabaseHelper.getUsername(database, new DatabaseHelper.UsernameCallback() {
+                    @Override
+                    public void onUsernameReceived(String username) {
+                        // Use the retrieved username here
+                        DialogHelper.showDialogWithTitle(SettingsActivity.this, "Username", "Your Username is: " + username, null);
+
+                    }
+                });
+
+
             }
         });
+
+        emailLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                FirebaseUser user = auth.getCurrentUser();
+
+                DialogHelper.showDialogWithTitle(SettingsActivity.this, "Email", user.getEmail(), null);
+
+            }
+        });
+
+        passwordLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    // Handle button1 click
+                    Intent intent = new Intent(SettingsActivity.this, ChangePasswordActivity.class);
+                    SettingsActivity.this.startActivity(intent);
+
+                } catch (ActivityNotFoundException e) {
+                    // Handle the exception appropriately, e.g., show an error message
+                    Toast.makeText(SettingsActivity.this, "Error starting Change Password's activity", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
         // Get a reference to the 'notifSettings' node
         thresholdsRef = FirebaseDatabase.getInstance().getReference().child("thresholds");
@@ -93,11 +141,12 @@ public class SettingsActivity extends Activity {
                         public void onThresholdSelected(int thresholdValue) {
                             thresholdsRef.child("soilTempThreshold").setValue(thresholdValue)
                                     .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(SettingsActivity.this, "Threshold Updated", Toast.LENGTH_SHORT).show();
+                                        DialogHelper.showDialogWithTitle(SettingsActivity.this, "Threshold Updated.", "", null);
                                         // Fetch data and update UI after setting the threshold
-                                        fetchDataAndUpdateUI();
                                     })
-                                    .addOnFailureListener(e -> Toast.makeText(SettingsActivity.this, "Failed to update soil temperature threshold", Toast.LENGTH_SHORT).show());
+                                    .addOnFailureListener(e -> {
+                                        DialogHelper.showDialogWithTitle(SettingsActivity.this, "Error Updating Threshold.", "", null);
+                                    });
                         }
                     });
                 }
@@ -109,7 +158,19 @@ public class SettingsActivity extends Activity {
             soilMoistureThreshold.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ThresholdDialogHelper.showSoilMoistureThresholdDialog(SettingsActivity.this, soilMoistureCurrent, null, null);
+                    ThresholdDialogHelper.showSoilMoistureThresholdDialog(SettingsActivity.this, new ThresholdDialogHelper.ThresholdDialogCallback() {
+                        @Override
+                        public void onThresholdSelected(int thresholdValue) {
+                            thresholdsRef.child("soilMoistureThreshold").setValue(thresholdValue)
+                                    .addOnSuccessListener(aVoid -> {
+                                        DialogHelper.showDialogWithTitle(SettingsActivity.this, "Threshold Updated.", "", null);
+                                        // Fetch data and update UI after setting the threshold
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        DialogHelper.showDialogWithTitle(SettingsActivity.this, "Error Updating Threshold.", "", null);
+                                    });
+                        }
+                    });
                 }
             });
         }
@@ -118,7 +179,20 @@ public class SettingsActivity extends Activity {
             humidityThreshold.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ThresholdDialogHelper.showHumidityThresholdDialog(SettingsActivity.this, humidityCurrent, null, null);
+                    ThresholdDialogHelper.showHumidityThresholdDialog(SettingsActivity.this, new ThresholdDialogHelper.ThresholdDialogCallback() {
+                        @Override
+                        public void onThresholdSelected(int thresholdValue) {
+                            thresholdsRef.child("humidityThreshold").setValue(thresholdValue)
+                                    .addOnSuccessListener(aVoid -> {
+                                        DialogHelper.showDialogWithTitle(SettingsActivity.this, "Threshold Updated.", "", null);
+                                        // Fetch data and update UI after setting the threshold
+
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        DialogHelper.showDialogWithTitle(SettingsActivity.this, "Error Updating Threshold.", "", null);
+                                    });
+                        }
+                    });
                 }
             });
         }
@@ -127,7 +201,20 @@ public class SettingsActivity extends Activity {
             airTempThreshold.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ThresholdDialogHelper.showAirTempThresholdDialog(SettingsActivity.this, airTempCurrent,null, null);
+                    ThresholdDialogHelper.showAirTempThresholdDialog(SettingsActivity.this, new ThresholdDialogHelper.ThresholdDialogCallback() {
+                        @Override
+                        public void onThresholdSelected(int thresholdValue) {
+                            thresholdsRef.child("airTempThreshold").setValue(thresholdValue)
+                                    .addOnSuccessListener(aVoid -> {
+                                        DialogHelper.showDialogWithTitle(SettingsActivity.this, "Threshold Updated.", "", null);
+                                        // Fetch data and update UI after setting the threshold
+
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        DialogHelper.showDialogWithTitle(SettingsActivity.this, "Error Updating Threshold.", "", null);
+                                    });
+                        }
+                    });
                 }
             });
         }
@@ -178,44 +265,52 @@ public class SettingsActivity extends Activity {
         // Get a reference to the 'notifSettings' node
         notifSettingsRef = FirebaseDatabase.getInstance().getReference().child("notifSettings");
 
-// Add a listener to 'allowNotifs' switch
+        // Add a listener to 'allowNotifs' switch
         notifSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // Write the value to Firebase Realtime Database
             notifSettingsRef.child("allowNotifs").setValue(isChecked)
                     .addOnSuccessListener(aVoid -> {
                         if (isChecked) {
+                            if (isNotifsFirstChanged > 0) {
+                                DialogHelper.showDialogWithTitle(SettingsActivity.this, "Notifications", "Notifications successfully turned on.", null);
+                            }
                             notifCurrent.setText("Notifications are turned on");
-                            Toast.makeText(SettingsActivity.this, "Notifications enabled", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(SettingsActivity.this, "Notifications disabled", Toast.LENGTH_SHORT).show();
+                            DialogHelper.showDialogWithTitle(SettingsActivity.this, "Notifications", "Notifications successfully turned off.", null);
                             notifCurrent.setText("Notifications are turned off");
                         }
+                        // Increment after setting the value
+                        isNotifsFirstChanged += 1;
                     })
                     .addOnFailureListener(e -> Toast.makeText(SettingsActivity.this, "Failed to update allowNotifs value", Toast.LENGTH_SHORT).show());
         });
 
-// Add a listener to 'allowAlerts' switch
+        // Add a listener to 'allowAlerts' switch
         alertSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // Write the value to Firebase Realtime Database
             notifSettingsRef.child("allowAlerts").setValue(isChecked)
                     .addOnSuccessListener(aVoid -> {
                         if (isChecked) {
-                            Toast.makeText(SettingsActivity.this, "Alerts enabled", Toast.LENGTH_SHORT).show();
-                            alertCurrent.setText("In-App Alerts are turned on");
+                            if (isAlertsFirstChanged > 0) {
+                                DialogHelper.showDialogWithTitle(SettingsActivity.this, "Alerts", "Alerts successfully turned on.", null);
+                            }
+                            alertCurrent.setText("In-App are turned on");
                         } else {
-                            Toast.makeText(SettingsActivity.this, "Alerts disabled", Toast.LENGTH_SHORT).show();
-                            alertCurrent.setText("In-App Alerts are turned off");
+                            DialogHelper.showDialogWithTitle(SettingsActivity.this, "Alerts", "Alerts successfully turned off.", null);
+                            alertCurrent.setText("In-App are turned off");
                         }
+                        // Increment after setting the value
+                        isAlertsFirstChanged += 1;
                     })
                     .addOnFailureListener(e -> Toast.makeText(SettingsActivity.this, "Failed to update allowAlerts value", Toast.LENGTH_SHORT).show());
         });
 
-// Add a listener to database changes to update UI
+        // Add a listener to database changes to update UI
         notifSettingsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Update UI with latest data
-                fetchDataAndUpdateUI();
+
             }
 
             @Override
@@ -223,66 +318,66 @@ public class SettingsActivity extends Activity {
                 // Handle cancelled event
             }
         });
+    }
+
+
+    @Override
+    public void onDatabaseChange(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue,
+                                 double soilTempThresh, double soilMoistureThresh, double humidityThresh, double airTempThresh) {
+
+        if (soilTempCurrent != null) {
+            soilTempCurrent.setText("Current Threshold: " + String.format("%.0f", soilTempThresh) + "°C");
+        }
+        if (soilMoistureCurrent != null) {
+            soilMoistureCurrent.setText("Current Threshold: " +  String.format("%.0f", soilMoistureThresh) + "%");
+        }
+        if (humidityCurrent != null) {
+            humidityCurrent.setText("Current Threshold: " +  String.format("%.0f", humidityThresh) + "%");
+        }
+        if (airTempCurrent != null) {
+            airTempCurrent.setText("Current Threshold: " +  String.format("%.0f", airTempThresh) + "°C");
+        }
+        // Update UI elements based on the retrieved values
+        if (notifSwitch != null) {
+            // Update UI elements according to allowNotifs value
+            // Example:
+            notifSwitch.setChecked(notifsValue);
+        }
+
+        if (alertSwitch != null) {
+            // Update UI elements according to allowAlerts value
+            // Example:
+            alertSwitch.setChecked(alertsValue);
+        }
+
     }
 
     // Method to fetch data from Firebase and update UI
-    private void fetchDataAndUpdateUI() {
-        // Get a reference to the root node
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        // Add a listener to retrieve the data
-        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Call FetchSensorDataTask to retrieve data from the snapshot
-                new FetchSettingsDataTask().execute(dataSnapshot);
-            }
+    void fetchDataAndUpdateUI(boolean alertsValue, boolean notifsValue,
+                              double soilTempThresh, double soilMoistureThresh, double humidityThresh, double airTempThresh) {
+        if (soilTempCurrent != null) {
+            soilTempCurrent.setText("Current Threshold: " + String.format("%.0f", soilTempThresh) + "°C");
+        }
+        if (soilMoistureCurrent != null) {
+            soilMoistureCurrent.setText("Current Threshold: " +  String.format("%.0f", soilMoistureThresh) + "%");
+        }
+        if (humidityCurrent != null) {
+            humidityCurrent.setText("Current Threshold: " +  String.format("%.0f", humidityThresh) + "%");
+        }
+        if (airTempCurrent != null) {
+            airTempCurrent.setText("Current Threshold: " +  String.format("%.0f", airTempThresh) + "°C");
+        }
+        // Update UI elements based on the retrieved values
+        if (notifSwitch != null) {
+            // Update UI elements according to allowNotifs value
+            // Example:
+            notifSwitch.setChecked(notifsValue);
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle cancelled event
-            }
-        });
-    }
-
-    private class FetchSettingsDataTask extends AsyncTask<DataSnapshot, Void, Void> {
-
-        @Override
-        protected Void doInBackground(DataSnapshot... snapshots) {
-            DataSnapshot snapshot = snapshots[0];
-
-            if (snapshot.exists()) {
-                Log.d("FirebaseSnapshot", snapshot.toString());
-
-                Integer soilTempValue = snapshot.child("thresholds").child("soilTempThreshold").getValue(Integer.class);
-                Log.d("SoilTempValue", "Value: " + soilTempValue);
-                // int soilMoistureValue = snapshot.child("threshold").child("soilMoistureThreshold").getValue(Integer.class);
-                // int humidityValue = snapshot.child("threshold").child("HumidityThreshold").getValue(Integer.class);
-                // airTempValue = snapshot.child("threshold").child("airTempThreshold").getValue(Integer.class);
-                // Extract allowNotifs and allowAlerts from notifSettings node
-                Boolean allowNotifs = snapshot.child("notifSettings").child("allowNotifs").getValue(Boolean.class);
-                Boolean allowAlerts = snapshot.child("notifSettings").child("allowAlerts").getValue(Boolean.class);
-
-                // Update UI on the main thread
-                runOnUiThread(() -> {
-
-                    if (soilTempValue != null) {
-                        soilTempCurrent.setText("Current Threshold: " + String.valueOf(soilTempValue));
-                    }
-                    // Update UI elements based on the retrieved values
-                    if (allowNotifs != null) {
-                        // Update UI elements according to allowNotifs value
-                        // Example:
-                        notifSwitch.setChecked(allowNotifs);
-                    }
-
-                    if (allowAlerts != null) {
-                        // Update UI elements according to allowAlerts value
-                        // Example:
-                        alertSwitch.setChecked(allowAlerts);
-                    }
-                });
-            }
-            return null;
+        if (alertSwitch != null) {
+            // Update UI elements according to allowAlerts value
+            // Example:
+            alertSwitch.setChecked(alertsValue);
         }
     }
 

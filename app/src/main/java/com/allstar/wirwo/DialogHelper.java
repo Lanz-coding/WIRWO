@@ -44,7 +44,7 @@ public class DialogHelper {
                 // Dismiss dialog when button is clicked
                 dialog.dismiss();
                 if (okClickListener != null) {
-                    okClickListener.onOkClicked();
+                    okClickListener.onOkClicked(); // Invoke onOkClicked method
                 }
             }
         });
@@ -52,6 +52,46 @@ public class DialogHelper {
         // Show the dialog
         dialog.show();
     }
+
+    public static void showSuccessChangePassDialog(final Activity activity, final OnOkClickListener okClickListener) {
+        // Create and instantiate dialog
+        final Dialog dialog = new Dialog(activity);
+        dialog.setContentView(R.layout.dialog_layout);
+
+        // Set dialog window attributes
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        layoutParams.copyFrom(dialog.getWindow().getAttributes());
+        layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        layoutParams.gravity = Gravity.CENTER;
+        dialog.getWindow().setAttributes(layoutParams);
+
+        // Initialize views from dialog layout
+        TextView dialogTitle = dialog.findViewById(R.id.dialog_title);
+        TextView dialogMessage = dialog.findViewById(R.id.dialog_message);
+        TextView dialogButton = dialog.findViewById(R.id.ok_button);
+
+        // Set title and message
+        dialogTitle.setText("Success");
+        dialogMessage.setText("Password Successfully Changed. You need to log-in again.");
+        dialogButton.setText("OK");
+
+        // Set button click listener
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (okClickListener != null) {
+                    okClickListener.onOkClicked(); // Invoke onOkClicked method if listener is not null
+                }
+                dialog.dismiss(); // Dismiss the dialog after the button is clicked
+            }
+        });
+
+        // Show the dialog
+        dialog.show();
+    }
+
+
 
     public static void showNoIntenetDialog(final Activity activity) {
         // Create and instantiate dialog
@@ -73,7 +113,8 @@ public class DialogHelper {
 
         // Set title and message
         dialogTitle.setText("You're Offline");
-        dialogMessage.setText("Please check your internet connection.");
+        dialogMessage.setText("Please check your internet connection and launch the app again.");
+        dialogButton.setText("EXIT");
 
         // Set button click listener
         dialogButton.setOnClickListener(new View.OnClickListener() {

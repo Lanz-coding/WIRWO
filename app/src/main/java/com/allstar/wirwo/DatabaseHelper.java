@@ -15,7 +15,10 @@ public class DatabaseHelper implements OnDataChangeListener {
 
     private static DatabaseHelper instance;
     private FirebaseDatabase database;
-    private DatabaseReference databaseRef;
+
+    private static FirebaseAuth auth;
+    private static FirebaseUser currentUser;
+    private static DatabaseReference databaseRef;
     private List<OnDataChangeListener> listeners = new ArrayList<>();
 
     private String username;
@@ -27,6 +30,7 @@ public class DatabaseHelper implements OnDataChangeListener {
     private double airtempValue;
     private boolean alertsValue;
     private boolean notifsValue;
+
     private static double soilTempThreshold, airTempThreshold, soilMoistureThreshold, humidityThreshold;
 
     public interface UsernameCallback {
@@ -76,9 +80,12 @@ public class DatabaseHelper implements OnDataChangeListener {
                 notifsValue = notifSettingsSnapshot.child("allowNotifs").getValue(Boolean.class);
 
                 soilTempThreshold = dataSnapshot.child("thresholds").child("soilTempThreshold").getValue(Integer.class);
+                soilMoistureThreshold = dataSnapshot.child("thresholds").child("soilMoistureThreshold").getValue(Integer.class);
+                humidityThreshold = dataSnapshot.child("thresholds").child("humidityThreshold").getValue(Integer.class);
+                airTempThreshold = dataSnapshot.child("thresholds").child("airTempThreshold").getValue(Integer.class);
 
                 for (OnDataChangeListener listener : listeners) {
-                    listener.onDatabaseChange(humidityValue, ventiValue, waterValue, moistureValue, tempValue, airtempValue, alertsValue, notifsValue);
+                    listener.onDatabaseChange(humidityValue, ventiValue, waterValue, moistureValue, tempValue, airtempValue, alertsValue, notifsValue, soilTempThreshold, soilMoistureThreshold, humidityThreshold, airTempThreshold);
                 }
             }
 
@@ -90,7 +97,8 @@ public class DatabaseHelper implements OnDataChangeListener {
     }
 
     @Override
-    public void onDatabaseChange(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue) {
+    public void onDatabaseChange(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue,
+                                 double soilTempThresh, double soilMoistureThresh, double humidityThresh, double airTempThresh) {
         // This method is not used in this approach directly, but can be used for internal purposes in DatabaseHelper if needed
     }
 
@@ -118,12 +126,34 @@ public class DatabaseHelper implements OnDataChangeListener {
         myRef.setValue(value); // ventiValue is a boolean
     }
 
+    public static void setSoilTempThreshold(int value){
+        // Get a reference to the Firebase Database
+        DatabaseReference myRef = databaseRef.child("thresholds").child("soilTempThreshold");
+
+        // Set the values
+        myRef.setValue(value);
+    }
+
 
     public static int getSoilTempThreshold() {
         return (int) soilTempThreshold;
     }
 
-    public void retrieveInitialData(DashboardActivity activity) {
+    public static int getSoilMoistureThreshold() {
+        return (int) soilMoistureThreshold;
+    }
+
+    public static int getHumidityThreshold() {
+        return (int) humidityThreshold;
+    }
+
+    public static int getAirTempThreshold() {
+        return (int) airTempThreshold;
+    }
+
+
+
+    public void retrieveDashboardInitialData(DashboardActivity activity) {
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -139,9 +169,25 @@ public class DatabaseHelper implements OnDataChangeListener {
         });
     }
 
+    public void retrieveSettingsInitialData(SettingsActivity activity) {
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (activity != null) {
+                    activity.fetchDataAndUpdateUI(alertsValue, notifsValue,soilTempThreshold, soilMoistureThreshold, humidityThreshold, airTempThreshold) ;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle errors
+            }
+        });
+    }
+
     public static void getUsername(FirebaseDatabase database, UsernameCallback callback) {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = auth.getCurrentUser();
+        auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
             DatabaseReference userRef = database.getReference("users").child(userId);
@@ -166,4 +212,23 @@ public class DatabaseHelper implements OnDataChangeListener {
             callback.onUsernameReceived("User");
         }
     }
+
+    public static void getUserEmail(FirebaseAuth auth, EmailCallback callback) {
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            String email = currentUser.getEmail();
+            if (email != null) {
+                callback.onEmailReceived(email);
+            } else {
+                callback.onEmailReceived("No email found");
+            }
+        } else {
+            callback.onEmailReceived("No user signed in");
+        }
+    }
+    public interface EmailCallback {
+        void onEmailReceived(String email);
+    }
+
+
 }
