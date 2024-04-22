@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -12,8 +11,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -91,9 +88,15 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
                 DatabaseHelper.getUsername(database, new DatabaseHelper.UsernameCallback() {
                     @Override
                     public void onUsernameReceived(String username) {
-                        // Use the retrieved username here
-                        DialogHelper.showDialogWithTitle(SettingsActivity.this, "Username", "Your Username is: " + username, null);
+                        try {
+                            // Handle button1 click
+                            Intent intent = new Intent(SettingsActivity.this, ChangeUsernameActivity.class);
+                            SettingsActivity.this.startActivity(intent);
 
+                        } catch (ActivityNotFoundException e) {
+                            // Handle the exception appropriately, e.g., show an error message
+                            Toast.makeText(SettingsActivity.this, "Error starting Change Username's activity", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
@@ -253,7 +256,7 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
             });
         }
 
-        findViewById(R.id.toolbar_navigation_icon).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.back_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Call showPopup() method to show the popup
@@ -294,10 +297,10 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
                             if (isAlertsFirstChanged > 0) {
                                 DialogHelper.showDialogWithTitle(SettingsActivity.this, "Alerts", "Alerts successfully turned on.", null);
                             }
-                            alertCurrent.setText("In-App are turned on");
+                            alertCurrent.setText("In-App Alerts are turned on");
                         } else {
                             DialogHelper.showDialogWithTitle(SettingsActivity.this, "Alerts", "Alerts successfully turned off.", null);
-                            alertCurrent.setText("In-App are turned off");
+                            alertCurrent.setText("In-App Alerts are turned off");
                         }
                         // Increment after setting the value
                         isAlertsFirstChanged += 1;

@@ -21,7 +21,7 @@
 
         <!-- Remove android:onClick attribute from here -->
         <ImageView
-            android:id="@+id/toolbar_navigation_icon"
+            android:id="@+id/back_icon"
             android:onClick="ShowPopUp"
             android:layout_width="50dp"
             android:layout_height="50dp"

@@ -1,19 +1,18 @@
 package com.allstar.wirwo;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,13 +20,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class ChangePasswordActivity extends Activity {
 
-    private PopupWindowHelper popupMenuHelper;
-
     private TextInputEditText currentPasswordEditText, newPasswordEditText, confirmPasswordEditText;
     private Button changePasswordButton;
 
     private FirebaseAuth mAuth;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,20 +34,16 @@ public class ChangePasswordActivity extends Activity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        // Initialize PopupMenuHelper with context of your activity
-        popupMenuHelper = new PopupWindowHelper(this);
-
         // Initialize views
         currentPasswordEditText = findViewById(R.id.currentPasswordEditText);
         newPasswordEditText = findViewById(R.id.newPasswordEditText);
         confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
         changePasswordButton = findViewById(R.id.change_password_button);
 
-        findViewById(R.id.toolbar_navigation_icon).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.back_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Call showPopup() method to show the popup
-                popupMenuHelper.showPopup(v);
+                finish();
             }
         });
 
