@@ -33,11 +33,6 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
     private TextView soilTempText, airTempText, humidityText, moistureText, welcomeText;
     private ProgressBar soilTempBar, airTempBar, humidityBar, moistureBar;
 
-    private static final String WATER_SWITCH_STATE = "water_switch_state";
-    private static final String VENTI_SWITCH_STATE = "venti_switch_state";
-    private boolean waterSwitchState;
-    private boolean ventiSwitchState;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,20 +116,11 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
             }
         });
 
-        findViewById(R.id.toolbar_navigation_icon).setOnClickListener(v -> {
+        findViewById(R.id.back_icon).setOnClickListener(v -> {
             // Call showPopup() method to show the popup
             popupMenuHelper.showPopup(v);
         });
 
-        // Restore switch states if savedInstanceState is not null
-        if (savedInstanceState != null) {
-            waterSwitchState = savedInstanceState.getBoolean(WATER_SWITCH_STATE);
-            ventiSwitchState = savedInstanceState.getBoolean(VENTI_SWITCH_STATE);
-
-            // Set the state of switches
-            waterSwitch.setChecked(waterSwitchState);
-            ventiSwitch.setChecked(ventiSwitchState);
-        }
     }
 
     @Override
@@ -275,27 +261,7 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         }
     }
 
-    // Method to save switch states during configuration changes
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        // Save the state of switches
-        outState.putBoolean(WATER_SWITCH_STATE, waterSwitch.isChecked());
-        outState.putBoolean(VENTI_SWITCH_STATE, ventiSwitch.isChecked());
-    }
 
-    // Method to restore switch states after configuration changes
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        // Restore switch states
-        waterSwitchState = savedInstanceState.getBoolean(WATER_SWITCH_STATE);
-        ventiSwitchState = savedInstanceState.getBoolean(VENTI_SWITCH_STATE);
-
-        // Set the state of switches
-        waterSwitch.setChecked(waterSwitchState);
-        ventiSwitch.setChecked(ventiSwitchState);
-    }
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
