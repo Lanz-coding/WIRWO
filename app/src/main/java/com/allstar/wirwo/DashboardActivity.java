@@ -1,8 +1,10 @@
 package com.allstar.wirwo;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -11,6 +13,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.graphics.Color;
+
+
+import androidx.core.content.ContextCompat;
+
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import android.net.ConnectivityManager;
@@ -131,34 +138,87 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         helper.removeOnDataChangeListener(this);
     }
 
-    @Override
     public void onDatabaseChange(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue,
                                  double soilTempThresh, double soilMoistureThresh, double humidityThresh, double airTempThresh) {
+        // Initialize default color
+        int defaultColor = ContextCompat.getColor(DashboardActivity.this, R.color.lighterGreen);
+        ColorStateList defaultColorStateList = ColorStateList.valueOf(defaultColor);
+
+        // Initialize ColorStateList for each progress bar
+        ColorStateList soilTempColorStateList = defaultColorStateList;
+        ColorStateList airTempColorStateList = defaultColorStateList;
+        ColorStateList humidityColorStateList = defaultColorStateList;
+        ColorStateList moistureColorStateList = defaultColorStateList;
+
         // Update UI elements based on the received data
         if (soilTempText != null) {
             soilTempText.setText(String.format("%.1f", tempValue) + "°C");
             soilTempBar.setProgress((int) Math.round(tempValue)); // Assuming progress bar max is 100
+
+            // Change color based on thresholds
+            if (tempValue >= soilTempThresh) {
+                soilTempColorStateList = ColorStateList.valueOf(Color.RED);
+            } else if (tempValue >= soilTempThresh - 5) { // Adjust threshold for orange color
+                soilTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
+            }
+
+            // Set the progress tint list
+            soilTempBar.setProgressTintList(soilTempColorStateList);
         }
+
         if (airTempText != null) {
             airTempText.setText(String.format("%.1f", airtempValue) + "°C");
             airTempBar.setProgress((int) Math.round(airtempValue)); // Assuming progress bar max is 100
+
+            // Change color based on thresholds
+            if (airtempValue >= airTempThresh) {
+                airTempColorStateList = ColorStateList.valueOf(Color.RED);
+            } else if (airtempValue >= airTempThresh - 5) { // Adjust threshold for orange color
+                airTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
+            }
+
+            // Set the progress tint list
+            airTempBar.setProgressTintList(airTempColorStateList);
         }
+
         if (humidityText != null) {
             humidityText.setText(String.format("%.2f", humidity) + "%");
             // Convert humidity to int before setting progress (assuming progress bar max is 100)
             humidityBar.setProgress((int) Math.round(humidity));
+
+            // Change color based on thresholds
+            if (humidity >= humidityThresh) {
+                humidityColorStateList = ColorStateList.valueOf(Color.RED);
+            } else if (humidity >= humidityThresh - 5) { // Adjust threshold for orange color
+                humidityColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
+            }
+
+            // Set the progress tint list
+            humidityBar.setProgressTintList(humidityColorStateList);
         }
+
         if (moistureText != null) {
             moistureText.setText(String.format("%.2f", moistureValue) + "%");
             // Convert moistureValue to int before setting progress (assuming progress bar max is 100)
             moistureBar.setProgress((int) Math.round(moistureValue));
+
+            // Change color based on thresholds
+            if (moistureValue >= soilMoistureThresh) {
+                moistureColorStateList = ColorStateList.valueOf(Color.RED);
+            } else if (moistureValue >= soilMoistureThresh - 5) { // Adjust threshold for orange color
+                moistureColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
+            }
+
+            // Set the progress tint list
+            moistureBar.setProgressTintList(moistureColorStateList);
         }
 
+        // Set switch states
         if (ventiSwitch != null) {
             ventiSwitch.setChecked(ventiValue);
         }
 
-        if (waterSwitch != null){
+        if (waterSwitch != null) {
             waterSwitch.setChecked(waterValue);
         }
     }
@@ -231,35 +291,13 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
     }
 
     // Method to update UI elements based on data received from the database
-    public void updateUIElements(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue) {
-        // Update UI elements here based on the received data
-        if (soilTempText != null) {
-            soilTempText.setText(String.format("%.1f", tempValue) + "°C");
-            soilTempBar.setProgress((int) Math.round(tempValue)); // Assuming progress bar max is 100
-        }
-        if (airTempText != null) {
-            airTempText.setText(String.format("%.1f", airtempValue) + "°C");
-            airTempBar.setProgress((int) Math.round(airtempValue)); // Assuming progress bar max is 100
-        }
-        if (humidityText != null) {
-            humidityText.setText(String.format("%.2f", humidity) + "%");
-            // Convert humidity to int before setting progress (assuming progress bar max is 100)
-            humidityBar.setProgress((int) Math.round(humidity));
-        }
-        if (moistureText != null) {
-            moistureText.setText(String.format("%.2f", moistureValue) + "%");
-            // Convert moistureValue to int before setting progress (assuming progress bar max is 100)
-            moistureBar.setProgress((int) Math.round(moistureValue));
-        }
-
-        if (ventiSwitch != null) {
-            ventiSwitch.setChecked(ventiValue);
-        }
-
-        if (waterSwitch != null){
-            waterSwitch.setChecked(waterValue);
-        }
+    public void updateUIElements(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue,
+                                 double soilTempThresh, double soilMoistureThresh, double humidityThresh, double airTempThresh) {
+        // Call onDatabaseChange with the provided parameters
+        onDatabaseChange(humidity, ventiValue, waterValue, moistureValue, tempValue, airtempValue, alertsValue, notifsValue,
+                soilTempThresh, soilMoistureThresh, humidityThresh, airTempThresh);
     }
+
 
 
 

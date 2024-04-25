@@ -158,7 +158,7 @@ public class DatabaseHelper implements OnDataChangeListener {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (activity != null) {
-                    activity.updateUIElements(humidityValue, ventiValue, waterValue, moistureValue, tempValue, airtempValue, alertsValue, notifsValue);
+                    activity.updateUIElements(humidityValue, ventiValue, waterValue, moistureValue, tempValue, airtempValue, alertsValue, notifsValue, soilTempThreshold, soilMoistureThreshold, humidityThreshold, airTempThreshold);
                 }
             }
 
