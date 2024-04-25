@@ -96,7 +96,7 @@ public class ThresholdDialogHelper {
         progressTextView.setText(currentMin + "% - " + currentMax + "%");
         rangeSlider.setValues((float) currentMin, (float) currentMax);
         rangeSlider.setValueFrom(0);
-        rangeSlider.setValueTo(50);
+        rangeSlider.setValueTo(100);
 
         // Set button click listeners
         // Set button click listeners
@@ -159,7 +159,7 @@ public class ThresholdDialogHelper {
         progressTextView.setText(currentMin + "% - " + currentMax + "%");
         rangeSlider.setValues((float) currentMin, (float) currentMax);
         rangeSlider.setValueFrom(0);
-        rangeSlider.setValueTo(50);
+        rangeSlider.setValueTo(100);
 
         // Set button click listeners
         // Set button click listeners
