@@ -139,7 +139,10 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
     }
 
     public void onDatabaseChange(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue,
-                                 double soilTempThresh, double soilMoistureThresh, double humidityThresh, double airTempThresh) {
+                                 double minSoilTempThresh, double maxSoilTempThresh,
+                                 double minSoilMoistureThresh, double maxSoilMoistureThresh,
+                                 double minHumidityThresh, double maxHumidityThresh,
+                                 double minAirTempThresh, double maxAirTempThresh) {
         // Initialize default color
         int defaultColor = ContextCompat.getColor(DashboardActivity.this, R.color.lighterGreen);
         ColorStateList defaultColorStateList = ColorStateList.valueOf(defaultColor);
@@ -156,9 +159,9 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
             soilTempBar.setProgress((int) Math.round(tempValue)); // Assuming progress bar max is 100
 
             // Change color based on thresholds
-            if (tempValue >= soilTempThresh) {
+            if (tempValue >= maxSoilTempThresh) {
                 soilTempColorStateList = ColorStateList.valueOf(Color.RED);
-            } else if (tempValue >= soilTempThresh - 5) { // Adjust threshold for orange color
+            } else if (tempValue >= maxSoilTempThresh - 5) { // Adjust threshold for orange color
                 soilTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
             }
 
@@ -171,9 +174,9 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
             airTempBar.setProgress((int) Math.round(airtempValue)); // Assuming progress bar max is 100
 
             // Change color based on thresholds
-            if (airtempValue >= airTempThresh) {
+            if (airtempValue >= maxAirTempThresh) {
                 airTempColorStateList = ColorStateList.valueOf(Color.RED);
-            } else if (airtempValue >= airTempThresh - 5) { // Adjust threshold for orange color
+            } else if (airtempValue >= maxAirTempThresh - 5) { // Adjust threshold for orange color
                 airTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
             }
 
@@ -187,9 +190,9 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
             humidityBar.setProgress((int) Math.round(humidity));
 
             // Change color based on thresholds
-            if (humidity >= humidityThresh) {
+            if (humidity >= maxHumidityThresh) {
                 humidityColorStateList = ColorStateList.valueOf(Color.RED);
-            } else if (humidity >= humidityThresh - 5) { // Adjust threshold for orange color
+            } else if (humidity >= maxHumidityThresh - 5) { // Adjust threshold for orange color
                 humidityColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
             }
 
@@ -203,9 +206,9 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
             moistureBar.setProgress((int) Math.round(moistureValue));
 
             // Change color based on thresholds
-            if (moistureValue >= soilMoistureThresh) {
+            if (moistureValue >= maxSoilMoistureThresh) {
                 moistureColorStateList = ColorStateList.valueOf(Color.RED);
-            } else if (moistureValue >= soilMoistureThresh - 5) { // Adjust threshold for orange color
+            } else if (moistureValue >= maxSoilMoistureThresh - 5) { // Adjust threshold for orange color
                 moistureColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
             }
 
@@ -292,11 +295,18 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
 
     // Method to update UI elements based on data received from the database
     public void updateUIElements(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue,
-                                 double soilTempThresh, double soilMoistureThresh, double humidityThresh, double airTempThresh) {
+                                 double minSoilTempThresh, double maxSoilTempThresh,
+                                 double minSoilMoistureThresh, double maxSoilMoistureThresh,
+                                 double minHumidityThresh, double maxHumidityThresh,
+                                 double minAirTempThresh, double maxAirTempThresh) {
         // Call onDatabaseChange with the provided parameters
         onDatabaseChange(humidity, ventiValue, waterValue, moistureValue, tempValue, airtempValue, alertsValue, notifsValue,
-                soilTempThresh, soilMoistureThresh, humidityThresh, airTempThresh);
+                minSoilTempThresh, maxSoilTempThresh,
+                minSoilMoistureThresh, maxSoilMoistureThresh,
+                minHumidityThresh, maxHumidityThresh,
+                minAirTempThresh, maxAirTempThresh);
     }
+
 
 
 

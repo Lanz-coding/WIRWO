@@ -48,12 +48,11 @@
             android:orientation="horizontal"
             android:layout_gravity="start">
 
-            <com.google.android.material.slider.Slider
-                android:id="@+id/slider"
-                android:layout_width="310dp"
+            <com.google.android.material.slider.RangeSlider
+                android:id="@+id/range_slider"
+                android:layout_width="270dp"
                 android:layout_height="wrap_content"
                 app:trackHeight="10dp"
-                android:value="0"
                 android:valueFrom="0"
                 android:valueTo="100"
                 app:thumbColor="@color/darkGreen"
@@ -71,7 +70,7 @@
                 android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
                 android:layout_gravity="center_vertical"
-                android:text="100%"
+                android:text="0% - 100%"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />

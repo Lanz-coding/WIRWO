@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -141,8 +142,9 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
                 public void onClick(View v) {
                     ThresholdDialogHelper.showSoilTempThresholdDialog(SettingsActivity.this, new ThresholdDialogHelper.ThresholdDialogCallback() {
                         @Override
-                        public void onThresholdSelected(int thresholdValue) {
-                            thresholdsRef.child("soilTempThreshold").setValue(thresholdValue)
+                        public void onThresholdSelected(int minThresholdValue, int maxThresholdValue) {
+                            thresholdsRef.child("soilTempThreshold").child("min").setValue(minThresholdValue);
+                            thresholdsRef.child("soilTempThreshold").child("max").setValue(maxThresholdValue)
                                     .addOnSuccessListener(aVoid -> {
                                         DialogHelper.showDialogWithTitle(SettingsActivity.this, "Threshold Updated.", "", null);
                                         // Fetch data and update UI after setting the threshold
@@ -156,15 +158,15 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
             });
         }
 
-
         if (soilMoistureThreshold != null) {
             soilMoistureThreshold.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ThresholdDialogHelper.showSoilMoistureThresholdDialog(SettingsActivity.this, new ThresholdDialogHelper.ThresholdDialogCallback() {
                         @Override
-                        public void onThresholdSelected(int thresholdValue) {
-                            thresholdsRef.child("soilMoistureThreshold").setValue(thresholdValue)
+                        public void onThresholdSelected(int minThresholdValue, int maxThresholdValue) {
+                            thresholdsRef.child("soilMoistureThreshold").child("min").setValue(minThresholdValue);
+                            thresholdsRef.child("soilMoistureThreshold").child("max").setValue(maxThresholdValue)
                                     .addOnSuccessListener(aVoid -> {
                                         DialogHelper.showDialogWithTitle(SettingsActivity.this, "Threshold Updated.", "", null);
                                         // Fetch data and update UI after setting the threshold
@@ -184,12 +186,12 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
                 public void onClick(View v) {
                     ThresholdDialogHelper.showHumidityThresholdDialog(SettingsActivity.this, new ThresholdDialogHelper.ThresholdDialogCallback() {
                         @Override
-                        public void onThresholdSelected(int thresholdValue) {
-                            thresholdsRef.child("humidityThreshold").setValue(thresholdValue)
+                        public void onThresholdSelected(int minThresholdValue, int maxThresholdValue) {
+                            thresholdsRef.child("humidityThreshold").child("min").setValue(minThresholdValue);
+                            thresholdsRef.child("humidityThreshold").child("max").setValue(maxThresholdValue)
                                     .addOnSuccessListener(aVoid -> {
                                         DialogHelper.showDialogWithTitle(SettingsActivity.this, "Threshold Updated.", "", null);
                                         // Fetch data and update UI after setting the threshold
-
                                     })
                                     .addOnFailureListener(e -> {
                                         DialogHelper.showDialogWithTitle(SettingsActivity.this, "Error Updating Threshold.", "", null);
@@ -199,6 +201,7 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
                 }
             });
         }
+
 
         if (airTempThreshold != null) {
             airTempThreshold.setOnClickListener(new View.OnClickListener() {
@@ -206,12 +209,12 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
                 public void onClick(View v) {
                     ThresholdDialogHelper.showAirTempThresholdDialog(SettingsActivity.this, new ThresholdDialogHelper.ThresholdDialogCallback() {
                         @Override
-                        public void onThresholdSelected(int thresholdValue) {
-                            thresholdsRef.child("airTempThreshold").setValue(thresholdValue)
+                        public void onThresholdSelected(int minThresholdValue, int maxThresholdValue) {
+                            thresholdsRef.child("airTempThreshold").child("min").setValue(minThresholdValue);
+                            thresholdsRef.child("airTempThreshold").child("max").setValue(maxThresholdValue)
                                     .addOnSuccessListener(aVoid -> {
                                         DialogHelper.showDialogWithTitle(SettingsActivity.this, "Threshold Updated.", "", null);
                                         // Fetch data and update UI after setting the threshold
-
                                     })
                                     .addOnFailureListener(e -> {
                                         DialogHelper.showDialogWithTitle(SettingsActivity.this, "Error Updating Threshold.", "", null);
@@ -221,6 +224,8 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
                 }
             });
         }
+
+
 
         // Set an OnClickListener on the LinearLayout
         if (faqsLayout != null) {
@@ -326,62 +331,69 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
 
     @Override
     public void onDatabaseChange(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue,
-                                 double soilTempThresh, double soilMoistureThresh, double humidityThresh, double airTempThresh) {
+                                 double minSoilTempThresh, double maxSoilTempThresh,
+                                 double minSoilMoistureThresh, double maxSoilMoistureThresh, double minHumidityThresh, double maxHumidityThresh,
+                                 double minAirTempThresh, double maxAirTempThresh) {
 
+        Log.d("DatabaseChange", "Received minSoilTempThresh: " + minSoilTempThresh);
+        Log.d("DatabaseChange", "Received maxSoilTempThresh: " + maxSoilTempThresh);
+        Log.d("DatabaseChange", "Received minSoilMoistureThresh: " + minSoilMoistureThresh);
+        Log.d("DatabaseChange", "Received maxSoilMoistureThresh: " + maxSoilMoistureThresh);
+        Log.d("DatabaseChange", "Received minHumidityThresh: " + minHumidityThresh);
+        Log.d("DatabaseChange", "Received maxHumidityThresh: " + maxHumidityThresh);
+        Log.d("DatabaseChange", "Received minAirTempThresh: " + minAirTempThresh);
+        Log.d("DatabaseChange", "Received maxAirTempThresh: " + maxAirTempThresh);
+
+        double minSoilTemp = DatabaseHelper.getMinSoilTempThreshold();
+        double maxSoilTemp = DatabaseHelper.getMaxSoilTempThreshold();
+        double minSoilMoisture = DatabaseHelper.getMinSoilMoistureThreshold();
+        double maxSoilMoisture = DatabaseHelper.getMaxSoilMoistureThreshold();
+        double minHumidity = DatabaseHelper.getMinHumidityThreshold();
+        double maxHumidity = DatabaseHelper.getMaxHumidityThreshold();
+        double minAirTemp = DatabaseHelper.getMinAirTempThreshold();
+        double maxAirTemp = DatabaseHelper.getMaxAirTempThreshold();
+
+        // Update UI elements based on the retrieved values
         if (soilTempCurrent != null) {
-            soilTempCurrent.setText("Current Threshold: " + String.format("%.0f", soilTempThresh) + "°C");
+            soilTempCurrent.setText("Current Threshold: " + String.format("%.0f", minSoilTemp) + "°C - " + String.format("%.0f", maxSoilTemp) + "°C");
         }
         if (soilMoistureCurrent != null) {
-            soilMoistureCurrent.setText("Current Threshold: " +  String.format("%.0f", soilMoistureThresh) + "%");
+            soilMoistureCurrent.setText("Current Threshold: " + String.format("%.0f", minSoilMoisture) + "% - " + String.format("%.0f", maxSoilMoisture) + "%");
         }
         if (humidityCurrent != null) {
-            humidityCurrent.setText("Current Threshold: " +  String.format("%.0f", humidityThresh) + "%");
+            humidityCurrent.setText("Current Threshold: " + String.format("%.0f", minHumidity) + "% - " + String.format("%.0f", maxHumidity) + "%");
         }
         if (airTempCurrent != null) {
-            airTempCurrent.setText("Current Threshold: " +  String.format("%.0f", airTempThresh) + "°C");
+            airTempCurrent.setText("Current Threshold: " + String.format("%.0f", minAirTemp) + "°C - " + String.format("%.0f", maxAirTemp) + "°C");
         }
-        // Update UI elements based on the retrieved values
+
+        // Update Switches based on the retrieved values
         if (notifSwitch != null) {
-            // Update UI elements according to allowNotifs value
-            // Example:
             notifSwitch.setChecked(notifsValue);
         }
 
         if (alertSwitch != null) {
-            // Update UI elements according to allowAlerts value
-            // Example:
             alertSwitch.setChecked(alertsValue);
         }
-
     }
+
 
     // Method to fetch data from Firebase and update UI
     void fetchDataAndUpdateUI(boolean alertsValue, boolean notifsValue,
-                              double soilTempThresh, double soilMoistureThresh, double humidityThresh, double airTempThresh) {
-        if (soilTempCurrent != null) {
-            soilTempCurrent.setText("Current Threshold: " + String.format("%.0f", soilTempThresh) + "°C");
-        }
-        if (soilMoistureCurrent != null) {
-            soilMoistureCurrent.setText("Current Threshold: " +  String.format("%.0f", soilMoistureThresh) + "%");
-        }
-        if (humidityCurrent != null) {
-            humidityCurrent.setText("Current Threshold: " +  String.format("%.0f", humidityThresh) + "%");
-        }
-        if (airTempCurrent != null) {
-            airTempCurrent.setText("Current Threshold: " +  String.format("%.0f", airTempThresh) + "°C");
-        }
-        // Update UI elements based on the retrieved values
-        if (notifSwitch != null) {
-            // Update UI elements according to allowNotifs value
-            // Example:
-            notifSwitch.setChecked(notifsValue);
-        }
-
-        if (alertSwitch != null) {
-            // Update UI elements according to allowAlerts value
-            // Example:
-            alertSwitch.setChecked(alertsValue);
-        }
+                              double minSoilTempThresh, double maxSoilTempThresh, double minSoilMoistureThresh, double maxSoilMoistureThresh,
+                              double minHumidityThresh, double maxHumidityThresh, double minAirTempThresh, double maxAirTempThresh) {
+        // Call onDatabaseChange with the fetched data
+        double humidityValue = 0;
+        boolean ventiValue = false;
+        boolean waterValue = false;
+        double moistureValue = 0;
+        double tempValue = 0;
+        double airtempValue = 0;
+        onDatabaseChange(humidityValue, ventiValue, waterValue, moistureValue, tempValue, airtempValue, alertsValue, notifsValue,
+                minSoilTempThresh, maxSoilTempThresh, minSoilMoistureThresh, maxSoilMoistureThresh,
+                minHumidityThresh, maxHumidityThresh, minAirTempThresh, maxAirTempThresh);
     }
+
+
 
 }
