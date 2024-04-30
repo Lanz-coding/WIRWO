@@ -47,7 +47,7 @@ public class DatabaseHelper implements OnDataChangeListener {
         return instance;
     }
 
-    private DatabaseHelper() {
+    DatabaseHelper() {
         database = FirebaseDatabase.getInstance();
         databaseRef = database.getReference();
 
@@ -84,14 +84,14 @@ public class DatabaseHelper implements OnDataChangeListener {
 
                 DataSnapshot thresholdSnapshot = dataSnapshot.child("thresholds");
 
-                minSoilTempThreshold = getValueOrDefault(thresholdSnapshot.child("soilTempThreshold").child("min"), 0.0);
-                maxSoilTempThreshold = getValueOrDefault(thresholdSnapshot.child("soilTempThreshold").child("max"), 0.0);
-                minAirTempThreshold = getValueOrDefault(thresholdSnapshot.child("airTempThreshold").child("min"), 0.0);
-                maxAirTempThreshold = getValueOrDefault(thresholdSnapshot.child("airTempThreshold").child("max"), 0.0);
-                minSoilMoistureThreshold = getValueOrDefault(thresholdSnapshot.child("soilMoistureThreshold").child("min"), 0.0);
-                maxSoilMoistureThreshold = getValueOrDefault(thresholdSnapshot.child("soilMoistureThreshold").child("max"), 0.0);
-                minHumidityThreshold = getValueOrDefault(thresholdSnapshot.child("humidityThreshold").child("min"), 0.0);
-                maxHumidityThreshold = getValueOrDefault(thresholdSnapshot.child("humidityThreshold").child("max"), 0.0);
+                minSoilTempThreshold = getValueOrDefault(thresholdSnapshot.child("soilTempThreshold").child("min"), 20.0);
+                maxSoilTempThreshold = getValueOrDefault(thresholdSnapshot.child("soilTempThreshold").child("max"), 30.0);
+                minAirTempThreshold = getValueOrDefault(thresholdSnapshot.child("airTempThreshold").child("min"), 20.0);
+                maxAirTempThreshold = getValueOrDefault(thresholdSnapshot.child("airTempThreshold").child("max"), 32.0);
+                minSoilMoistureThreshold = getValueOrDefault(thresholdSnapshot.child("soilMoistureThreshold").child("min"), 50.0);
+                maxSoilMoistureThreshold = getValueOrDefault(thresholdSnapshot.child("soilMoistureThreshold").child("max"), 90.0);
+                minHumidityThreshold = getValueOrDefault(thresholdSnapshot.child("humidityThreshold").child("min"), 60.0);
+                maxHumidityThreshold = getValueOrDefault(thresholdSnapshot.child("humidityThreshold").child("max"), 90.0);
 
                 for (OnDataChangeListener listener : listeners) {
                     listener.onDatabaseChange(humidityValue, ventiValue, waterValue, moistureValue, tempValue, airtempValue, alertsValue, notifsValue,
@@ -297,6 +297,8 @@ public class DatabaseHelper implements OnDataChangeListener {
             callback.onEmailReceived("No user signed in");
         }
     }
+
+
 
     public interface EmailCallback {
         void onEmailReceived(String email);

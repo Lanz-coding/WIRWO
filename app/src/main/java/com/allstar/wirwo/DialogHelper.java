@@ -3,6 +3,7 @@ package com.allstar.wirwo;
 import android.app.Dialog;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -46,6 +47,50 @@ public class DialogHelper {
                 if (okClickListener != null) {
                     okClickListener.onOkClicked(); // Invoke onOkClicked method
                 }
+            }
+        });
+
+        // Show the dialog
+        dialog.show();
+    }
+
+    public static void showAlertDialog(Context context, String title, String message, boolean isMax) {
+        // Create and instantiate dialog
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_layout);
+
+        // Set dialog window attributes
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        layoutParams.copyFrom(dialog.getWindow().getAttributes());
+        layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        layoutParams.gravity = Gravity.CENTER;
+        dialog.getWindow().setAttributes(layoutParams);
+
+        // Initialize views from dialog layout
+        TextView dialogTitle = dialog.findViewById(R.id.dialog_title);
+        TextView dialogMessage = dialog.findViewById(R.id.dialog_message);
+        TextView dialogButton = dialog.findViewById(R.id.ok_button);
+
+        dialogButton.setText("GO TO DASHBOARD");
+
+        if (isMax = true) {
+            // Set title and message
+            dialogTitle.setText(title + "Threshold Reached!");
+            dialogMessage.setText("Sensor Readings went beyond the threshold. Take action now!");
+        } else {
+            // Set title and message
+            dialogTitle.setText(title + "Threshold Reached!");
+            dialogMessage.setText("Sensor Readings went below the threshold. Take action now!");
+    }
+        // Set button click listener
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Dismiss dialog when button is clicked
+                dialog.dismiss();
+                Intent intent = new Intent(context, DashboardActivity.class);
+                context.startActivity(intent);
             }
         });
 

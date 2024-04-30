@@ -26,7 +26,7 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
     private PopupWindowHelper popupMenuHelper;
     private DatabaseHelper helper;
 
-    private LinearLayout faqsLayout, aboutUsLayout;
+    private LinearLayout resetLayout, faqsLayout, aboutUsLayout;
     private TextView soilTempCurrent, soilMoistureCurrent, humidityCurrent, airTempCurrent, notifCurrent, alertCurrent;
 
     private DatabaseReference notifSettingsRef, thresholdsRef;
@@ -35,10 +35,6 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
 
     private int isNotifsFirstChanged = 0;
     private int isAlertsFirstChanged = 0;
-
-
-
-    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +66,8 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
         LinearLayout airTempThreshold = findViewById(R.id.air_temperature);
         airTempCurrent = findViewById(R.id.airTempCurrent);
 
+        resetLayout = findViewById(R.id.resetLayout);
+
         notifCurrent = findViewById(R.id.notifCurrent);
         alertCurrent = findViewById(R.id.alertCurrent);
 
@@ -81,6 +79,44 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
         faqsLayout = findViewById(R.id.faqs);
         aboutUsLayout = findViewById(R.id.aboutus);
 
+
+        resetLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogHelper.showDialogWithOkCancel(SettingsActivity.this,
+                        "Reset Threshold Values",
+                        "Are you sure to reset Threshold Values?",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // OK button clicked
+                                thresholdsRef.child("soilMoistureThreshold").child("min").setValue(50);
+                                thresholdsRef.child("soilMoistureThreshold").child("max").setValue(90);
+                                thresholdsRef.child("soilTempThreshold").child("min").setValue(20);
+                                thresholdsRef.child("soilTempThreshold").child("max").setValue(30);
+                                thresholdsRef.child("humidityThreshold").child("min").setValue(60);
+                                thresholdsRef.child("humidityThreshold").child("max").setValue(80);
+                                thresholdsRef.child("airTempThreshold").child("min").setValue(20);
+                                thresholdsRef.child("airTempThreshold").child("max").setValue(32)
+                                        .addOnSuccessListener(aVoid -> {
+                                            DialogHelper.showDialogWithTitle(SettingsActivity.this, "Threshold Updated.", "", null);
+                                            // Fetch data and update UI after setting the threshold
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            DialogHelper.showDialogWithTitle(SettingsActivity.this, "Error Updating Threshold.", "", null);
+                                        });
+                            }
+                        }, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // Cancel button clicked
+                                // Dismiss the dialog (nothing to do here)
+                            }
+                        });
+
+            }
+        });
         // Create an instance of FirebaseDatabase
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         usernameLayout.setOnClickListener(new View.OnClickListener() {
@@ -355,16 +391,16 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
 
         // Update UI elements based on the retrieved values
         if (soilTempCurrent != null) {
-            soilTempCurrent.setText("Current Threshold: " + String.format("%.0f", minSoilTemp) + "°C - " + String.format("%.0f", maxSoilTemp) + "°C");
+            soilTempCurrent.setText("Current Threshold Range: " + String.format("%.0f", minSoilTemp) + "°C - " + String.format("%.0f", maxSoilTemp) + "°C");
         }
         if (soilMoistureCurrent != null) {
-            soilMoistureCurrent.setText("Current Threshold: " + String.format("%.0f", minSoilMoisture) + "% - " + String.format("%.0f", maxSoilMoisture) + "%");
+            soilMoistureCurrent.setText("Current Threshold Range: " + String.format("%.0f", minSoilMoisture) + "% - " + String.format("%.0f", maxSoilMoisture) + "%");
         }
         if (humidityCurrent != null) {
-            humidityCurrent.setText("Current Threshold: " + String.format("%.0f", minHumidity) + "% - " + String.format("%.0f", maxHumidity) + "%");
+            humidityCurrent.setText("Current Threshold Range: " + String.format("%.0f", minHumidity) + "% - " + String.format("%.0f", maxHumidity) + "%");
         }
         if (airTempCurrent != null) {
-            airTempCurrent.setText("Current Threshold: " + String.format("%.0f", minAirTemp) + "°C - " + String.format("%.0f", maxAirTemp) + "°C");
+            airTempCurrent.setText("Current Threshold Range:" + String.format("%.0f", minAirTemp) + "°C - " + String.format("%.0f", maxAirTemp) + "°C");
         }
 
         // Update Switches based on the retrieved values
@@ -393,7 +429,5 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
                 minSoilTempThresh, maxSoilTempThresh, minSoilMoistureThresh, maxSoilMoistureThresh,
                 minHumidityThresh, maxHumidityThresh, minAirTempThresh, maxAirTempThresh);
     }
-
-
 
 }

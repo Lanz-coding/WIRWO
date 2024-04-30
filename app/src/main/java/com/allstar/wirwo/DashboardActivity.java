@@ -27,7 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class DashboardActivity extends Activity implements OnDataChangeListener {
-
+    private AlertsDialogHelper alertsDialogHelper;
     private FirebaseAuth auth;
     private DatabaseHelper helper;
 
@@ -51,6 +51,12 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
             // Show dialog indicating no internet connection
             DialogHelper.showNoIntenetDialog(DashboardActivity.this);
         }
+
+        // Initialize the AlertsDialogHelper
+        alertsDialogHelper = new AlertsDialogHelper(this);
+
+        // Add the AlertsDialogHelper as a listener for database changes
+        DatabaseHelper.getInstance().addOnDataChangeListener(alertsDialogHelper::onDatabaseChange);
 
         // Initialize FirebaseAuth instance
         auth = FirebaseAuth.getInstance();
@@ -136,6 +142,7 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
 
         // Unregister listener to avoid memory leaks
         helper.removeOnDataChangeListener(this);
+        DatabaseHelper.getInstance().removeOnDataChangeListener(alertsDialogHelper::onDatabaseChange);
     }
 
     public void onDatabaseChange(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue,
