@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class SettingsActivity extends Activity implements OnDataChangeListener {
 
+    private AlertsDialogHelper alertsDialogHelper;
     private PopupWindowHelper popupMenuHelper;
     private DatabaseHelper helper;
 
@@ -49,6 +50,12 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
 
         // Call method to retrieve initial data
         helper.retrieveSettingsInitialData(this);
+
+        // Initialize the AlertsDialogHelper
+        alertsDialogHelper = new AlertsDialogHelper(this);
+
+        // Add the AlertsDialogHelper as a listener for database changes
+        DatabaseHelper.getInstance().addOnDataChangeListener(alertsDialogHelper::onDatabaseChange);
 
 
         // Initialize PopupMenuHelper with context of your activity

@@ -40,7 +40,8 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
     private TextView soilTempText, airTempText, humidityText, moistureText, welcomeText;
     private ProgressBar soilTempBar, airTempBar, humidityBar, moistureBar;
 
-
+    private int isWaterPumpFirstChanged = 0;
+    private int isVentiFirstChanged = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,31 +103,46 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         // Initialize PopupMenuHelper with context of your activity
         PopupWindowHelper popupMenuHelper = new PopupWindowHelper(this);
 
+        // Initialize water switch
         waterSwitch = findViewById(R.id.waterPumpSwitch);
-        ventiSwitch = findViewById(R.id.ventiSwitch);
-
         waterSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Handle water switch state change
             if (isChecked) {
                 // Water pump switch is turned on
                 helper.setWaterValue(isChecked);
-                Toast.makeText(DashboardActivity.this, "Water Pump is turned on", Toast.LENGTH_SHORT).show();
+                if (isWaterPumpFirstChanged > 0) {
+                    DialogHelper.showDialogWithTitle(DashboardActivity.this, "SUCCESS", "Water Pump is turned on", null);
+                }
             } else {
                 // Water pump switch is turned off
                 helper.setWaterValue(false);
-                Toast.makeText(DashboardActivity.this, "Water Pump is turned off", Toast.LENGTH_SHORT).show();
+                if (isWaterPumpFirstChanged > 0) {
+                    DialogHelper.showDialogWithTitle(DashboardActivity.this, "SUCCESS", "Water Pump is turned off", null);
+                }
             }
+            // Increment the counter after the first state change
+            isWaterPumpFirstChanged += 1;
         });
 
+        // Initialize ventilation switch
+        ventiSwitch = findViewById(R.id.ventiSwitch);
         ventiSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Handle ventilation switch state change
             if (isChecked) {
-                // Ventilation switch is turned on, send "true" to Firebase
+                // Ventilation switch is turned on
                 helper.setVentiValue(isChecked);
-                Toast.makeText(DashboardActivity.this, "Ventilation is turned on and LED is lit", Toast.LENGTH_SHORT).show();
+                if (isVentiFirstChanged > 0) {
+                    DialogHelper.showDialogWithTitle(DashboardActivity.this, "SUCCESS", "Ventilation is turned on", null);
+                }
             } else {
-                // Ventilation switch is turned off, send "false" to Firebase
+                // Ventilation switch is turned off
                 helper.setVentiValue(false);
-                Toast.makeText(DashboardActivity.this.getApplicationContext(), "Ventilation is turned off and LED is off", Toast.LENGTH_SHORT).show();
+                if (isVentiFirstChanged > 0) {
+                    DialogHelper.showDialogWithTitle(DashboardActivity.this, "SUCCESS", "Ventilation is turned off", null);
+                }
             }
+            // Increment the counter after the first state change
+            isVentiFirstChanged += 1;
         });
 
         findViewById(R.id.back_icon).setOnClickListener(v -> {
@@ -168,12 +184,17 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
             // Change color based on thresholds
             if (tempValue >= maxSoilTempThresh) {
                 soilTempColorStateList = ColorStateList.valueOf(Color.RED);
-            } else if (tempValue >= maxSoilTempThresh - 5) { // Adjust threshold for orange color
+            } else if (tempValue >= maxSoilTempThresh - 3) { // Adjust threshold for orange color
                 soilTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
+            } else if (tempValue <= minSoilTempThresh) {
+                soilTempColorStateList = ColorStateList.valueOf(Color.BLUE); // Or any color for minimum threshold
+            } else if (tempValue <= minSoilTempThresh + 3) { // Adjust threshold for a different color
+                soilTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFFF00")); // Yellow color for nearing minimum threshold
             }
 
             // Set the progress tint list
             soilTempBar.setProgressTintList(soilTempColorStateList);
+
         }
 
         if (airTempText != null) {
@@ -181,10 +202,14 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
             airTempBar.setProgress((int) Math.round(airtempValue)); // Assuming progress bar max is 100
 
             // Change color based on thresholds
-            if (airtempValue >= maxAirTempThresh) {
+            if (airtempValue > maxAirTempThresh) {
                 airTempColorStateList = ColorStateList.valueOf(Color.RED);
-            } else if (airtempValue >= maxAirTempThresh - 5) { // Adjust threshold for orange color
+            } else if (airtempValue > maxAirTempThresh - 3) { // Adjust threshold for orange color
                 airTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
+            } else if (airtempValue < minAirTempThresh) {
+                airTempColorStateList = ColorStateList.valueOf(Color.BLUE); // Or any color for minimum threshold
+            } else if (airtempValue < minAirTempThresh + 5) { // Adjust threshold for a different color
+                airTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFFF00")); // Yellow color for nearing minimum threshold
             }
 
             // Set the progress tint list
@@ -197,10 +222,14 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
             humidityBar.setProgress((int) Math.round(humidity));
 
             // Change color based on thresholds
-            if (humidity >= maxHumidityThresh) {
+            if (humidity > maxHumidityThresh) {
                 humidityColorStateList = ColorStateList.valueOf(Color.RED);
-            } else if (humidity >= maxHumidityThresh - 5) { // Adjust threshold for orange color
+            } else if (humidity > maxHumidityThresh - 3) { // Adjust threshold for orange color
                 humidityColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
+            } else if (humidity < minHumidityThresh) {
+                humidityColorStateList = ColorStateList.valueOf(Color.BLUE); // Or any color for minimum threshold
+            } else if (humidity < minHumidityThresh + 3) { // Adjust threshold for a different color
+                humidityColorStateList = ColorStateList.valueOf(Color.parseColor("#FFFF00")); // Yellow color for nearing minimum threshold
             }
 
             // Set the progress tint list
@@ -213,10 +242,14 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
             moistureBar.setProgress((int) Math.round(moistureValue));
 
             // Change color based on thresholds
-            if (moistureValue >= maxSoilMoistureThresh) {
+            if (moistureValue > maxSoilMoistureThresh) {
                 moistureColorStateList = ColorStateList.valueOf(Color.RED);
-            } else if (moistureValue >= maxSoilMoistureThresh - 5) { // Adjust threshold for orange color
+            } else if (moistureValue > maxSoilMoistureThresh - 3) { // Adjust threshold for orange color
                 moistureColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
+            } else if (moistureValue < minSoilMoistureThresh) {
+                moistureColorStateList = ColorStateList.valueOf(Color.BLUE); // Or any color for minimum threshold
+            } else if (moistureValue < minSoilMoistureThresh + 3) { // Adjust threshold for a different color
+                moistureColorStateList = ColorStateList.valueOf(Color.parseColor("#FFFF00")); // Yellow color for nearing minimum threshold
             }
 
             // Set the progress tint list
@@ -225,6 +258,7 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
 
         // Set switch states
         if (ventiSwitch != null) {
+
             ventiSwitch.setChecked(ventiValue);
         }
 

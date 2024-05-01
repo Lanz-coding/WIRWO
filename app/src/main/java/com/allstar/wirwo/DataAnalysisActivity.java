@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataAnalysisActivity extends Activity {
+    private AlertsDialogHelper alertsDialogHelper;
     private HalfGauge gauge1;
     private HalfGauge gauge2;
     private LineChart lineChart1;
@@ -36,6 +37,20 @@ public class DataAnalysisActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_analytics);
+        // Initialize the AlertsDialogHelper
+        alertsDialogHelper = new AlertsDialogHelper(this);
+
+        // Add the AlertsDialogHelper as a listener for database changes
+        DatabaseHelper.getInstance().addOnDataChangeListener(alertsDialogHelper::onDatabaseChange);
+
+        // Initialize PopupMenuHelper with context of your activity
+        PopupWindowHelper popupMenuHelper = new PopupWindowHelper(this);
+
+        findViewById(R.id.back_icon).setOnClickListener(v -> {
+            // Call showPopup() method to show the popup
+            popupMenuHelper.showPopup(v);
+        });
+
 
         gauge1 = findViewById(R.id.halfGauge1);
         setupGauge(gauge1);

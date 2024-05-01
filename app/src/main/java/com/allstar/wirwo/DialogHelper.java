@@ -54,7 +54,7 @@ public class DialogHelper {
         dialog.show();
     }
 
-    public static void showAlertDialog(Context context, String title, String message, boolean isMax) {
+    public static void showAlertDialog(final Context context, String title, String message, boolean isMax) {
         // Create and instantiate dialog
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_layout);
@@ -74,29 +74,34 @@ public class DialogHelper {
 
         dialogButton.setText("GO TO DASHBOARD");
 
-        if (isMax = true) {
+        if (isMax) {
             // Set title and message
-            dialogTitle.setText(title + "Threshold Reached!");
-            dialogMessage.setText("Sensor Readings went beyond the threshold. Take action now!");
+            dialogTitle.setText(title);
+            dialogMessage.setText(message);
         } else {
             // Set title and message
-            dialogTitle.setText(title + "Threshold Reached!");
-            dialogMessage.setText("Sensor Readings went below the threshold. Take action now!");
-    }
+            dialogTitle.setText(title);
+            dialogMessage.setText(message);
+        }
+
         // Set button click listener
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Dismiss dialog when button is clicked
                 dialog.dismiss();
-                Intent intent = new Intent(context, DashboardActivity.class);
-                context.startActivity(intent);
+                // Check if the current activity is not DashboardActivity before navigating
+                if (!(context instanceof DashboardActivity)) {
+                    Intent intent = new Intent(context, DashboardActivity.class);
+                    context.startActivity(intent);
+                }
             }
         });
 
         // Show the dialog
         dialog.show();
     }
+
 
     public static void showSuccessChangePassDialog(final Activity activity, final OnOkClickListener okClickListener) {
         // Create and instantiate dialog
