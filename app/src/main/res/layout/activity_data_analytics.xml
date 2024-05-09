@@ -4,25 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
-
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="70dp"
         android:background="#4D2D18"
         android:elevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/PopupMenuOverlay">
 
-        <!-- Remove android:onClick attribute from here -->
         <ImageView
             android:id="@+id/back_icon"
-            android:onClick="ShowPopUp"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="start"
@@ -30,11 +26,12 @@
             android:paddingStart="16dp"
             android:src="@drawable/button_navbar"
             tools:ignore="RtlSymmetry" />
+
         <include
             android:id="@+id/custom_menu_popup"
             layout="@layout/custom_menu_popup"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:visibility="gone" />
 
         <ImageView
@@ -66,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="@string/data_analysis1"
+            android:text="Data Analytics"
             android:fontFamily="@font/montserrat_bold"
             android:textColor="@color/white"
             android:textSize="25sp"
@@ -86,381 +83,233 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/data_layout">
+            android:orientation="vertical">
 
-            <FrameLayout
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
 
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:padding="8dp"
+                        android:text="@string/soil_moisture"
+                        android:textColor="#825a5a"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="220dp"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:padding="8dp"
+                        android:text="@string/air_temperature"
+                        android:textColor="#825a5a"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/temp_soil"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="70dp"
+                        android:layout_marginTop="80dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:padding="8dp"
+                        android:text="@string/_38_c"
+                        android:textColor="#825a5a"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/date_soil"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="70dp"
+                        android:layout_marginTop="99dp"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:padding="8dp"
+                        android:text="@string/as_of_feb_24_2024"
+                        android:textColor="#825a5a"
+                        android:textSize="12sp" />
+
+                    <FrameLayout
+                        android:layout_width="95dp"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="62dp"
+                        android:background="@drawable/thermometer"
+                        android:layout_marginStart="2dp">
+
+                        <ProgressBar
+                            android:id="@+id/vertical_progressbar1"
+                            style="@style/Widget.ProgressBar.vertical"
+                            android:layout_width="10dp"
+                            android:layout_height="60dp"
+                            android:layout_marginStart="43dp"
+                            android:layout_marginTop="8dp"
+                            android:max="50"
+                            android:padding="2dp"
+                            android:progress="100" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="95dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="205dp"
+                        android:layout_marginTop="60dp"
+                        android:background="@drawable/thermometer"
+                        android:gravity="center">
+
+                        <ProgressBar
+                            android:id="@+id/vertical_progressbar2"
+                            style="@style/Widget.ProgressBar.vertical"
+                            android:layout_width="10dp"
+                            android:layout_height="60dp"
+                            android:layout_marginStart="43dp"
+                            android:layout_marginTop="10dp"
+                            android:elevation="3dp"
+                            android:max="50"
+                            android:padding="2dp"
+                            android:progress="50" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/temp_air"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="275dp"
+                        android:layout_marginTop="80dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:padding="8dp"
+                        android:text="@string/_28_c"
+                        android:textColor="#825a5a"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/date_air"
+                        android:layout_width="134dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="275dp"
+                        android:layout_marginTop="99dp"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:padding="8dp"
+                        android:text="@string/as_of_feb_24_2024"
+                        android:textColor="#825a5a"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/humidity"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="180dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:padding="8dp"
+                        android:text="@string/humidity"
+                        android:textColor="#825a5a"
+                        android:textSize="15sp" />
+
+                    <com.ekn.gruzer.gaugelibrary.HalfGauge
+                        android:id="@+id/halfGauge1"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="215dp" />
+
+                    <TextView
+                        android:id="@+id/soil_moisture"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="230dp"
+                        android:layout_marginTop="180dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:padding="8dp"
+                        android:text="@string/soil_moisture_a"
+                        android:textColor="#825a5a"
+                        android:textSize="15sp" />
+
+                    <com.ekn.gruzer.gaugelibrary.HalfGauge
+                        android:id="@+id/halfGauge2"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="250dp"
+                        android:layout_marginTop="215dp" />
+
+                </FrameLayout>
+            </LinearLayout>
+
+            <!-- Air Condition Section -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="714dp"
-                android:gravity="center"
-                android:layout_margin="10dp"
-                android:orientation="vertical"
-                android:layout_gravity="center"
-                android:layout_marginStart="1dp"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@id/data_layout"
-                tools:ignore="MissingConstraints,UselessParent">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-
-
+                <!-- Air Sensors TextView -->
                 <TextView
-
-                    android:id="@+id/textView5"
-
-                    android:layout_width="wrap_content"
-
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginStart="15dp"
-
-                    android:layout_marginTop="2dp"
-
-                    android:fontFamily="@font/montserrat_bold"
-
-                    android:padding="8dp"
-
-                    android:text="@string/soil_moisture"
-
-                    android:textColor="#825a5a"
-
-                    android:textSize="15sp" />
-
-
-
-
-
-                <TextView
-
-                    android:id="@+id/textView6"
-
-                    android:layout_width="wrap_content"
-
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginStart="220dp"
-
-                    android:layout_marginTop="2dp"
-
-                    android:fontFamily="@font/montserrat_bold"
-
-                    android:padding="8dp"
-
-                    android:text="@string/air_temperature"
-
-                    android:textColor="#825a5a"
-
-                    android:textSize="15sp" />
-
-
-
-
-
-                <TextView
-
-                    android:id="@+id/temp_soil"
-
-                    android:layout_width="match_parent"
-
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginStart="70dp"
-
-                    android:layout_marginTop="80dp"
-
-                    android:fontFamily="@font/montserrat_bold"
-
-                    android:padding="8dp"
-
-                    android:text="@string/_38_c"
-
-                    android:textColor="#825a5a"
-
-                    android:textSize="15sp" />
-
-
-
-                <TextView
-
-                    android:id="@+id/date_soil"
-
-                    android:layout_width="match_parent"
-
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginStart="70dp"
-
-                    android:layout_marginTop="99dp"
-
-                    android:fontFamily="@font/montserrat_regular"
-
-                    android:padding="8dp"
-
-                    android:text="@string/as_of_feb_24_2024"
-
-                    android:textColor="#825a5a"
-
-                    android:textSize="12sp" />
-
-
-
-                <FrameLayout
-                    android:layout_width="95dp"
-                    android:layout_height="80dp"
-                    android:layout_marginTop="62dp"
-                    android:background="@drawable/thermometer"
-                    android:layout_marginStart="2dp">
-
-                    <ProgressBar
-                        android:id="@+id/vertical_progressbar1"
-                        style="@style/Widget.ProgressBar.vertical"
-                        android:layout_width="10dp"
-                        android:layout_height="60dp"
-                        android:layout_marginStart="43dp"
-                        android:layout_marginTop="8dp"
-                        android:max="50"
-                        android:padding="2dp"
-                        android:progress="100"
-                        app:layout_constraintBottom_toBottomOf="@id/textView5"
-                        tools:ignore="MissingConstraints,NotSibling" />
-                </FrameLayout>
-
-
-                <FrameLayout
-                    android:layout_width="95dp"
-                    android:layout_height="80dp"
-                    android:layout_marginStart="205dp"
-                    android:layout_marginTop="60dp"
-                    android:background="@drawable/thermometer"
-                    android:gravity="center">
-
-                    <ProgressBar
-                        android:id="@+id/vertical_progressbar2"
-                        style="@style/Widget.ProgressBar.vertical"
-                        android:layout_width="10dp"
-                        android:layout_height="60dp"
-                        android:layout_marginStart="43dp"
-                        android:layout_marginTop="10dp"
-                        android:elevation="3dp"
-                        android:max="50"
-                        android:padding="2dp"
-                        android:progress="50" />
-                </FrameLayout>
-
-                <TextView
-
-                    android:id="@+id/temp_air"
-
-                    android:layout_width="match_parent"
-
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginStart="275dp"
-
-                    android:layout_marginTop="80dp"
-
-                    android:fontFamily="@font/montserrat_bold"
-
-                    android:padding="8dp"
-
-                    android:text="@string/_28_c"
-
-                    android:textColor="#825a5a"
-
-                    android:textSize="15sp" />
-
-
-
-                <TextView
-
-                    android:id="@+id/date_air"
-
-                    android:layout_width="134dp"
-
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginStart="275dp"
-
-                    android:layout_marginTop="99dp"
-
-                    android:fontFamily="@font/montserrat_regular"
-
-                    android:padding="8dp"
-
-                    android:text="@string/as_of_feb_24_2024"
-
-                    android:textColor="#825a5a"
-
-                    android:textSize="12sp" />
-
-
-
-
-
-                <TextView
-
-                    android:id="@+id/humidity"
-
-                    android:layout_width="100dp"
-
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginStart="30dp"
-
-                    android:layout_marginTop="180dp"
-
-                    android:fontFamily="@font/montserrat_bold"
-
-                    android:padding="8dp"
-
-                    android:text="@string/humidity"
-
-                    android:textColor="#825a5a"
-
-                    android:textSize="15sp" />
-
-
-
-                <com.ekn.gruzer.gaugelibrary.HalfGauge
-
-                    android:id="@+id/halfGauge1"
-
-                    android:layout_width="100dp"
-
-                    android:layout_height="100dp"
-
-                    android:layout_marginStart="30dp"
-
-                    android:layout_marginTop="215dp" />
-
-
-
-                <TextView
-
-                    android:id="@+id/soil_moisture"
-
-                    android:layout_width="170dp"
-
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginStart="230dp"
-
-                    android:layout_marginTop="180dp"
-
-                    android:fontFamily="@font/montserrat_bold"
-
-                    android:padding="8dp"
-
-                    android:text="@string/soil_moisture_a"
-
-                    android:textColor="#825a5a"
-
-                    android:textSize="15sp" />
-
-
-
-                <com.ekn.gruzer.gaugelibrary.HalfGauge
-
-                    android:id="@+id/halfGauge2"
-
-                    android:layout_width="100dp"
-
-                    android:layout_height="100dp"
-
-                    android:layout_marginStart="250dp"
-
-                    android:layout_marginTop="215dp" />
-
-
-
-                <TextView
-
                     android:id="@+id/air_sensors"
-
                     android:layout_width="300dp"
-
                     android:layout_height="wrap_content"
-
                     android:layout_marginStart="20dp"
-
-                    android:layout_marginTop="360dp"
-
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/montserrat_bold"
-
                     android:padding="8dp"
-
                     android:text="@string/air_condition_sensors"
-
                     android:textColor="#825a5a"
-
                     android:textSize="15sp" />
 
-
-
+                <!-- LineChart for Air -->
                 <com.github.mikephil.charting.charts.LineChart
-
                     android:id="@+id/lineChart1"
-
-                    android:layout_width="367dp"
-
-                    android:layout_height="100dp"
-
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
                     android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp" />
+            </LinearLayout>
 
-                    android:layout_marginTop="410dp" />
+            <!-- Soil Condition Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
 
-
-
+                <!-- Soil Sensors TextView -->
                 <TextView
-
                     android:id="@+id/soil_sensors"
-
                     android:layout_width="300dp"
-
                     android:layout_height="wrap_content"
-
                     android:layout_marginStart="20dp"
-
-                    android:layout_marginTop="520dp"
-
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/montserrat_bold"
-
                     android:padding="8dp"
-
                     android:text="@string/soil_condition_sensor"
-
                     android:textColor="#825a5a"
-
                     android:textSize="15sp" />
 
-
-
+                <!-- LineChart for Soil -->
                 <com.github.mikephil.charting.charts.LineChart
-
                     android:id="@+id/lineChart2"
-
-                    android:layout_width="340dp"
-
-                    android:layout_height="100dp"
-
-                    android:layout_marginStart="20dp"
-
-                    android:layout_marginTop="580dp" />
-
-
-
-
-
-            </FrameLayout>
-
-            <!-- Add your content here -->
-            <!-- FrameLayout and its child views -->
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp" />
+            </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

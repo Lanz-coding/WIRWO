@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import com.ekn.gruzer.gaugelibrary.HalfGauge;
 import com.ekn.gruzer.gaugelibrary.Range;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -64,9 +65,21 @@ public class DataAnalysisActivity extends Activity {
         lineChart2 = findViewById(R.id.lineChart2);
         setupLineChart(lineChart2);
 
-        readHumidityData();
-        readDsb18Temperature();
-        listenToSensorDataChanges();
+        List<Entry> samplePoints = new ArrayList<>();
+        for (int i = 0; i <= 10; i++) {
+            samplePoints.add(new Entry(i, i*2));
+        }
+
+        LineDataSet sampleDataSet = new LineDataSet(samplePoints, "sample data");
+        sampleDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+        List<ILineDataSet> iLineDataSets = new ArrayList<>();
+        iLineDataSets.add(sampleDataSet);
+        LineData sampleLineData = new LineData(iLineDataSets);
+        lineChart1.setData(sampleLineData);
+
+//        readHumidityData();
+//        readDsb18Temperature();
+//        listenToSensorDataChanges();
     }
 
     private void readDsb18Temperature() {
@@ -141,33 +154,33 @@ public class DataAnalysisActivity extends Activity {
     }
 
     private void setupLineChart(LineChart chart) {
-        chart.getDescription().setEnabled(false);
-        chart.setTouchEnabled(true);
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(false);
-        chart.setPinchZoom(false);
-        chart.setDrawGridBackground(false);
-        chart.setBackgroundColor(Color.WHITE);
+        chart.getDescription().setEnabled(true);
+//        chart.setTouchEnabled(true);
+//        chart.setDragEnabled(true);
+//        chart.setScaleEnabled(false);
+//        chart.setPinchZoom(false);
+//        chart.setDrawGridBackground(false);
+        chart.setBackgroundColor(Color.parseColor("#CABA9C"));
 
-        LineData lineData = chart.getData();
-        if (lineData == null) {
-            lineData = new LineData();
-            chart.setData(lineData);
-        }
-
-        if (chart.getId() == R.id.lineChart1) {
-            ILineDataSet dataSet1 = lineData.getDataSetByIndex(0);
-            if (dataSet1 == null) {
-                dataSet1 = createLineDataSet("Air Temperature", Color.BLUE);
-                lineData.addDataSet(dataSet1);
-            }
-        } else if (chart.getId() == R.id.lineChart2) {
-            ILineDataSet dataSet2 = lineData.getDataSetByIndex(1);
-            if (dataSet2 == null) {
-                dataSet2 = createLineDataSet("Soil Moisture", Color.GREEN);
-                lineData.addDataSet(dataSet2);
-            }
-        }
+//        LineData lineData = chart.getData();
+//        if (lineData == null) {
+//            lineData = new LineData();
+//            chart.setData(lineData);
+//        }
+//
+//        if (chart.getId() == R.id.lineChart1) {
+//            ILineDataSet dataSet1 = lineData.getDataSetByIndex(0);
+//            if (dataSet1 == null) {
+//                dataSet1 = createLineDataSet("Air Temperature", Color.BLUE);
+//                lineData.addDataSet(dataSet1);
+//            }
+//        } else if (chart.getId() == R.id.lineChart2) {
+//            ILineDataSet dataSet2 = lineData.getDataSetByIndex(1);
+//            if (dataSet2 == null) {
+//                dataSet2 = createLineDataSet("Soil Moisture", Color.GREEN);
+//                lineData.addDataSet(dataSet2);
+//            }
+//        }
 
         chart.invalidate();
     }
