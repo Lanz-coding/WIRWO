@@ -247,6 +247,14 @@ public class DataAnalysisActivity extends Activity implements OnDataChangeListen
 
         }
 
+        if (gauge1 != null) {
+            gauge1.setValue((int) humidity);
+        }
+
+        if (gauge2 != null) {
+            gauge2.setValue((int) moistureValue);
+        }
+
     }
 
     public void updateUIElements(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue,
