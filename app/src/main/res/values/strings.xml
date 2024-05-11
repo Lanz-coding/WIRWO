@@ -60,6 +60,11 @@
     <string name="thermometer2" />
     <string name="thermometer1" />
     <string name="data_analysis1">Data Analysis</string>
+    <string name="export">Export</string>
+    <string name="export_data">EXPORT DATA</string>
+    <string name="actuator_activations">ACTUATOR ACTIVATIONS</string>
+    <string name="moisture_humidity_and_temperature_readings">MOISTURE, HUMIDITY, AND TEMPERATURE READINGS</string>
+    <string name="history_text">History</string>
 
 
 </resources>

@@ -38,6 +38,7 @@
         <activity android:name=".ChangePasswordActivity"/>
         <activity android:name=".ChangeUsernameActivity"/>
         <activity android:name=".LineChartTest"/>
+        <activity android:name=".HistoryActivity"/>
     </application>
 
 </manifest>
