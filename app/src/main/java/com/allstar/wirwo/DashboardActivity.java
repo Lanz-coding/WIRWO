@@ -47,8 +47,6 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        SaveToDB.saveUserData();
-
         // Check for internet connection
         if (!isNetworkAvailable()) {
             // Show dialog indicating no internet connection
@@ -184,6 +182,8 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         ColorStateList airTempColorStateList = defaultColorStateList;
         ColorStateList humidityColorStateList = defaultColorStateList;
         ColorStateList moistureColorStateList = defaultColorStateList;
+
+        SaveToDB.saveUserData(tempValue, moistureValue, humidity, airtempValue);
 
         // Update UI elements based on the received data
         if (soilTempText != null) {

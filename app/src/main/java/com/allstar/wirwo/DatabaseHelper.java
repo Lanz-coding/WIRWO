@@ -23,11 +23,11 @@ public class DatabaseHelper implements OnDataChangeListener {
 
     private String username;
 
-    private double humidityValue;
+    private static double humidityValue;
     private boolean ventiValue, waterValue;
-    private double moistureValue;
-    private double tempValue;
-    private double airtempValue;
+    private static double moistureValue;
+    private static double tempValue;
+    private static double airtempValue;
     private boolean alertsValue;
     private boolean notifsValue;
 
@@ -197,6 +197,11 @@ public class DatabaseHelper implements OnDataChangeListener {
     public static double getMaxHumidityThreshold() {
         return maxHumidityThreshold;
     }
+
+    public static double getSoilTempValue() {return tempValue;}
+    public static double getSoilMoistureValue() {return moistureValue;}
+    public static double getHumidityValue() {return humidityValue;}
+    public static double getAirTempValue() {return airtempValue;}
 
     public void retrieveDashboardInitialData(DashboardActivity activity) {
         databaseRef.addValueEventListener(new ValueEventListener() {

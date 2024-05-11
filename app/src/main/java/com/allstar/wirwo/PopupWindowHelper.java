@@ -111,7 +111,7 @@ public class PopupWindowHelper {
             case "SettingsActivity":
                 activeItem = settings;
                 break;
-            case "Data_Analysis":
+            case "DataAnalysisActivity":
                 activeItem = data_analysis;
                 break;
         }
