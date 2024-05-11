@@ -224,11 +224,11 @@ public class DataAnalysisActivity extends Activity implements OnDataChangeListen
         }
 
         if (airTempText != null) {
-            airTempText.setText(String.format("%.1f", tempValue) + "°C");
+            airTempText.setText(String.format("%.1f", airtempValue) + "°C");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date currentDate = new Date(); // or whatever date you want to format
             String formattedDate = sdf.format(currentDate);
-            soilDateText.setText(formattedDate);
+            airDateText.setText(formattedDate);
             vertical_progressbar2.setProgress((int) Math.round(airtempValue)); // Assuming progress bar max is 100
 
             // Change color based on thresholds
@@ -245,6 +245,14 @@ public class DataAnalysisActivity extends Activity implements OnDataChangeListen
             // Set the progress tint list
             vertical_progressbar2.setProgressTintList(airTempColorStateList);
 
+        }
+
+        if (gauge1 != null) {
+            gauge1.setValue((int) humidity);
+        }
+
+        if (gauge2 != null) {
+            gauge2.setValue((int) moistureValue);
         }
 
     }
