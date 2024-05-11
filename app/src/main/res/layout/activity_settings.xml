@@ -116,7 +116,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="5dp"
-                    android:src="@drawable/icon_email_24"
+                    android:src="@drawable/settings_soil_temp"
                     android:layout_gravity="center_vertical" />
 
                 <LinearLayout
@@ -162,7 +162,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="5dp"
-                    android:src="@drawable/wirwo_mascot"
+                    android:src="@drawable/settings_soil_moisture"
                     android:layout_gravity="center_vertical" />
 
                 <LinearLayout
@@ -208,7 +208,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="5dp"
-                    android:src="@drawable/wirwo_mascot"
+                    android:src="@drawable/settings_humidity"
                     android:layout_gravity="center_vertical" />
 
                 <LinearLayout
@@ -254,7 +254,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="5dp"
-                    android:src="@drawable/wirwo_mascot"
+                    android:src="@drawable/settings_air_temp"
                     android:layout_gravity="center_vertical" />
 
                 <LinearLayout
@@ -313,7 +313,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="Reset to Default"
+                        android:text="Reset to Defaults"
                         android:fontFamily="@font/montserrat_bold"
                         android:textColor="@color/darkBrown"
                         android:textSize="20sp"
@@ -364,7 +364,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="5dp"
-                    android:src="@drawable/wirwo_mascot"
+                    android:src="@drawable/settings_notifs"
                     android:layout_gravity="center_vertical" />
 
                 <LinearLayout
@@ -421,7 +421,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="5dp"
-                    android:src="@drawable/wirwo_mascot"
+                    android:src="@drawable/settings_alerts"
                     android:layout_gravity="center_vertical" />
 
                 <LinearLayout
@@ -541,7 +541,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="5dp"
-                    android:src="@drawable/wirwo_mascot"
+                    android:src="@drawable/settings_email"
                     android:layout_gravity="center_vertical" />
 
                 <LinearLayout
@@ -586,7 +586,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="5dp"
-                    android:src="@drawable/wirwo_mascot"
+                    android:src="@drawable/settings_password"
                     android:layout_gravity="center_vertical" />
 
                 <LinearLayout
@@ -651,7 +651,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="10dp"
-                    android:src="@drawable/wirwo_mascot"
+                    android:src="@drawable/settings_faqs"
                     android:layout_gravity="center_vertical" />
 
                 <LinearLayout
@@ -696,7 +696,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="10dp"
-                    android:src="@drawable/wirwo_mascot"
+                    android:src="@drawable/settings_about_us"
                     android:layout_gravity="center_vertical" />
 
                 <LinearLayout

@@ -54,7 +54,7 @@ public class DialogHelper {
         dialog.show();
     }
 
-    public static void showAlertDialog(final Context context, String title, String message, boolean isMax) {
+    public static void showAlertDialog(final Context context, String title, String message) {
         // Create and instantiate dialog
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_layout);
@@ -74,15 +74,15 @@ public class DialogHelper {
 
         dialogButton.setText("GO TO DASHBOARD");
 
-        if (isMax) {
+        // if (isMax) {
             // Set title and message
             dialogTitle.setText(title);
             dialogMessage.setText(message);
-        } else {
-            // Set title and message
-            dialogTitle.setText(title);
-            dialogMessage.setText(message);
-        }
+//        } else {
+//            // Set title and message
+//            dialogTitle.setText(title);
+//            dialogMessage.setText(message);
+//        }
 
         // Set button click listener
         dialogButton.setOnClickListener(new View.OnClickListener() {

@@ -409,7 +409,7 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
             humidityCurrent.setText("Current Threshold Range: " + String.format("%.0f", minHumidity) + "% - " + String.format("%.0f", maxHumidity) + "%");
         }
         if (airTempCurrent != null) {
-            airTempCurrent.setText("Current Threshold Range:" + String.format("%.0f", minAirTemp) + "°C - " + String.format("%.0f", maxAirTemp) + "°C");
+            airTempCurrent.setText("Current Threshold Range: " + String.format("%.0f", minAirTemp) + "°C - " + String.format("%.0f", maxAirTemp) + "°C");
         }
 
         // Update Switches based on the retrieved values
@@ -433,8 +433,8 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
         boolean waterValue = false;
         double moistureValue = 0;
         double tempValue = 0;
-        double airtempValue = 0;
-        onDatabaseChange(humidityValue, ventiValue, waterValue, moistureValue, tempValue, airtempValue, alertsValue, notifsValue,
+        double airTempValue = 0;
+        onDatabaseChange(humidityValue, ventiValue, waterValue, moistureValue, tempValue, airTempValue, alertsValue, notifsValue,
                 minSoilTempThresh, maxSoilTempThresh, minSoilMoistureThresh, maxSoilMoistureThresh,
                 minHumidityThresh, maxHumidityThresh, minAirTempThresh, maxAirTempThresh);
     }
