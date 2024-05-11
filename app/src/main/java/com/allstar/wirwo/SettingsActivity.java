@@ -57,7 +57,6 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
         // Add the AlertsDialogHelper as a listener for database changes
         DatabaseHelper.getInstance().addOnDataChangeListener(alertsDialogHelper::onDatabaseChange);
 
-
         // Initialize PopupMenuHelper with context of your activity
         popupMenuHelper = new PopupWindowHelper(this);
 
@@ -175,7 +174,7 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
         });
 
 
-        // Get a reference to the 'notifSettings' node
+        // Get a reference to the 'thresholds' node
         thresholdsRef = FirebaseDatabase.getInstance().getReference().child("thresholds");
 
         // Set an OnClickListener on the LinearLayout
@@ -269,7 +268,6 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
         }
 
 
-
         // Set an OnClickListener on the LinearLayout
         if (faqsLayout != null) {
             faqsLayout.setOnClickListener(new View.OnClickListener() {
@@ -287,6 +285,7 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
                 }
             });
         }
+
         if (aboutUsLayout != null) {
             aboutUsLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -304,12 +303,15 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
             });
         }
 
-        findViewById(R.id.back_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Call showPopup() method to show the popup
-                popupMenuHelper.showPopup(v);
-            }
+        findViewById(R.id.back_icon).setOnClickListener(v -> {
+            // Get the coordinates of the toolbar navigation icon
+            int[] location = new int[2];
+            v.getLocationOnScreen(location);
+            int xOffset = location[0]; // x coordinate
+            int yOffset = location[1]; // y coordinate plus the height of the icon
+
+            // Call showPopup() method to show the popup
+            popupMenuHelper.showPopup(v, xOffset, yOffset);
         });
 
 

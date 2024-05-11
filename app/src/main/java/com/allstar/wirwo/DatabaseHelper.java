@@ -77,13 +77,11 @@ public class DatabaseHelper implements OnDataChangeListener {
                     username = "User";
                 }
 
-
                 DataSnapshot notifSettingsSnapshot = dataSnapshot.child("notifSettings");
                 alertsValue = getValueOrDefault(notifSettingsSnapshot.child("allowAlerts"), false);
                 notifsValue = getValueOrDefault(notifSettingsSnapshot.child("allowNotifs"), false);
 
                 DataSnapshot thresholdSnapshot = dataSnapshot.child("thresholds");
-
                 minSoilTempThreshold = getValueOrDefault(thresholdSnapshot.child("soilTempThreshold").child("min"), 20.0);
                 maxSoilTempThreshold = getValueOrDefault(thresholdSnapshot.child("soilTempThreshold").child("max"), 30.0);
                 minAirTempThreshold = getValueOrDefault(thresholdSnapshot.child("airTempThreshold").child("min"), 20.0);
@@ -150,30 +148,12 @@ public class DatabaseHelper implements OnDataChangeListener {
         myRef.setValue(value); // ventiValue is a boolean
     }
 
-    public static void setSoilTempThreshold(double minValue, double maxValue){
-        // Get a reference to the Firebase Database
-        DatabaseReference myRef = databaseRef.child("thresholds").child("soilTempThreshold");
-
-        // Set the values
-        myRef.child("min").setValue(minValue);
-        myRef.child("max").setValue(maxValue);
-    }
-
     public static double getMinSoilTempThreshold() {
         return minSoilTempThreshold;
     }
 
     public static double getMaxSoilTempThreshold() {
         return maxSoilTempThreshold;
-    }
-
-    public static void setAirTempThreshold(double minValue, double maxValue){
-        // Get a reference to the Firebase Database
-        DatabaseReference myRef = databaseRef.child("thresholds").child("airTempThreshold");
-
-        // Set the values
-        myRef.child("min").setValue(minValue);
-        myRef.child("max").setValue(maxValue);
     }
 
     public static double getMinAirTempThreshold() {
@@ -284,23 +264,24 @@ public class DatabaseHelper implements OnDataChangeListener {
         }
     }
 
-    public static void getUserEmail(FirebaseAuth auth, EmailCallback callback) {
-        FirebaseUser currentUser = auth.getCurrentUser();
-        if (currentUser != null) {
-            String email = currentUser.getEmail();
-            if (email != null) {
-                callback.onEmailReceived(email);
-            } else {
-                callback.onEmailReceived("No email found");
+
+    public void retrieveDataAnalysisInitialData(DataAnalysisActivity activity) {
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (activity != null) {
+                    activity.updateUIElements(humidityValue, ventiValue, waterValue, moistureValue, tempValue, airtempValue, alertsValue, notifsValue,
+                            minSoilTempThreshold, maxSoilTempThreshold,
+                            minSoilMoistureThreshold, maxSoilMoistureThreshold,
+                            minHumidityThreshold, maxHumidityThreshold,
+                            minAirTempThreshold, maxAirTempThreshold);
+                }
             }
-        } else {
-            callback.onEmailReceived("No user signed in");
-        }
-    }
 
-
-
-    public interface EmailCallback {
-        void onEmailReceived(String email);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle errors
+            }
+        });
     }
 }
