@@ -47,6 +47,8 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        SaveToDB.saveUserData();
+
         // Check for internet connection
         if (!isNetworkAvailable()) {
             // Show dialog indicating no internet connection
@@ -146,9 +148,16 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         });
 
         findViewById(R.id.back_icon).setOnClickListener(v -> {
+            // Get the coordinates of the toolbar navigation icon
+            int[] location = new int[2];
+            v.getLocationOnScreen(location);
+            int xOffset = location[0]; // x coordinate
+            int yOffset = location[1]; // y coordinate plus the height of the icon
+
             // Call showPopup() method to show the popup
-            popupMenuHelper.showPopup(v);
+            popupMenuHelper.showPopup(v, xOffset, yOffset);
         });
+
 
     }
 

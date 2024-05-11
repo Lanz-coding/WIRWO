@@ -1,13 +1,13 @@
 package com.allstar.wirwo;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.ekn.gruzer.gaugelibrary.HalfGauge;
 import com.ekn.gruzer.gaugelibrary.Range;
@@ -17,22 +17,29 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class DataAnalysisActivity extends Activity {
+public class DataAnalysisActivity extends Activity implements OnDataChangeListener{
     private AlertsDialogHelper alertsDialogHelper;
     private HalfGauge gauge1;
     private HalfGauge gauge2;
     private LineChart lineChart1;
     private LineChart lineChart2;
+
+    private ProgressBar vertical_progressbar1, vertical_progressbar2;
+
+    private TextView soilTempText, soilDateText, airTempText, airDateText;
     private DatabaseReference database;
+    private DatabaseHelper helper;
+
+    public DataAnalysisActivity() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +55,32 @@ public class DataAnalysisActivity extends Activity {
         PopupWindowHelper popupMenuHelper = new PopupWindowHelper(this);
 
         findViewById(R.id.back_icon).setOnClickListener(v -> {
+            // Get the coordinates of the toolbar navigation icon
+            int[] location = new int[2];
+            v.getLocationOnScreen(location);
+            int xOffset = location[0]; // x coordinate
+            int yOffset = location[1]; // y coordinate plus the height of the icon
+
             // Call showPopup() method to show the popup
-            popupMenuHelper.showPopup(v);
+            popupMenuHelper.showPopup(v, xOffset, yOffset);
         });
 
+
+        // Get an instance of DatabaseHelper
+        helper = DatabaseHelper.getInstance();
+
+        // Register this activity as a listener for data changes
+        helper.addOnDataChangeListener((OnDataChangeListener) this);
+        // Call method to retrieve initial data
+        helper.retrieveDataAnalysisInitialData(this);
+
+        // Get references to TextViews and ProgressBars
+        soilTempText = findViewById(R.id.temp_soil);
+        airTempText = findViewById(R.id.temp_air);
+        soilDateText = findViewById(R.id.date_soil);
+        airDateText = findViewById(R.id.date_air);
+        vertical_progressbar1 = findViewById(R.id.vertical_progressbar1);
+        vertical_progressbar2 = findViewById(R.id.vertical_progressbar2);
 
         gauge1 = findViewById(R.id.halfGauge1);
         setupGauge(gauge1);
@@ -67,7 +96,7 @@ public class DataAnalysisActivity extends Activity {
 
         List<Entry> samplePoints = new ArrayList<>();
         for (int i = 0; i <= 10; i++) {
-            samplePoints.add(new Entry(i, i*2));
+            samplePoints.add(new Entry(i, i * 2));
         }
 
         LineDataSet sampleDataSet = new LineDataSet(samplePoints, "sample data");
@@ -77,56 +106,16 @@ public class DataAnalysisActivity extends Activity {
         LineData sampleLineData = new LineData(iLineDataSets);
         lineChart1.setData(sampleLineData);
 
-//        readHumidityData();
-//        readDsb18Temperature();
-//        listenToSensorDataChanges();
+
     }
 
-    private void readDsb18Temperature() {
-        database = FirebaseDatabase.getInstance().getReference("SensorData").child("Temperature_DS18B20");
-        database.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    Double temperature = dataSnapshot.getValue(Double.class);
-                    updateGauge(gauge2, temperature);
-                } else {
-                    updateGauge(gauge2, 0.0);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("Firebase", "Error reading data: " + databaseError.getMessage());
-            }
-        });
-    }
-
-    private void readHumidityData() {
-        database = FirebaseDatabase.getInstance().getReference("SensorData").child("Humidity");
-        database.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    Double humidity = dataSnapshot.getValue(Double.class);
-                    updateGauge(gauge1, humidity);
-                } else {
-                    updateGauge(gauge1, 0.0);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("Firebase", "Error reading data: " + databaseError.getMessage());
-            }
-        });
-    }
 
     private void setupGauge(HalfGauge gauge) {
         gauge.setMaxValue(100);
         gauge.setBackgroundColor(Color.WHITE);
         gauge.setMinValue(0);
         gauge.setValue(0);
+
 
         Range range1 = new Range();
         range1.setColor(Color.parseColor("#00b20b"));
@@ -149,9 +138,6 @@ public class DataAnalysisActivity extends Activity {
         gauge.setBackgroundColor(Color.parseColor("#CABA9C"));
     }
 
-    private void updateGauge(HalfGauge gauge, double data) {
-        gauge.setValue((float) data);
-    }
 
     private void setupLineChart(LineChart chart) {
         chart.getDescription().setEnabled(true);
@@ -196,65 +182,83 @@ public class DataAnalysisActivity extends Activity {
     }
 
 
-    private void listenToSensorDataChanges() {
-        DatabaseReference sensorDataRef = FirebaseDatabase.getInstance().getReference("SensorData");
-        sensorDataRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    new FirebaseDataAsyncTask().execute(dataSnapshot);
-                }
+    public void onDatabaseChange(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue,
+                                 double minSoilTempThresh, double maxSoilTempThresh,
+                                 double minSoilMoistureThresh, double maxSoilMoistureThresh,
+                                 double minHumidityThresh, double maxHumidityThresh,
+                                 double minAirTempThresh, double maxAirTempThresh) {
+
+        // Initialize default color
+        int defaultColor = ContextCompat.getColor(DataAnalysisActivity.this, R.color.lighterGreen);
+        ColorStateList defaultColorStateList = ColorStateList.valueOf(defaultColor);
+
+        // Initialize ColorStateList for each progress bar
+        ColorStateList soilTempColorStateList = defaultColorStateList;
+        ColorStateList airTempColorStateList = defaultColorStateList;
+
+
+        // Update UI elements based on the received data
+        if (soilTempText != null) {
+            soilTempText.setText(String.format("%.1f", tempValue) + "°C");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date currentDate = new Date(); // or whatever date you want to format
+            String formattedDate = sdf.format(currentDate);
+            soilDateText.setText(formattedDate);
+            vertical_progressbar1.setProgress((int) Math.round(tempValue)); // Assuming progress bar max is 100
+
+            // Change color based on thresholds
+            if (tempValue >= maxSoilTempThresh) {
+                soilTempColorStateList = ColorStateList.valueOf(Color.RED);
+            } else if (tempValue >= maxSoilTempThresh - 3) { // Adjust threshold for orange color
+                soilTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
+            } else if (tempValue <= minSoilTempThresh) {
+                soilTempColorStateList = ColorStateList.valueOf(Color.BLUE); // Or any color for minimum threshold
+            } else if (tempValue <= minSoilTempThresh + 3) { // Adjust threshold for a different color
+                soilTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFFF00")); // Yellow color for nearing minimum threshold
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("Firebase", "Error reading data: " + databaseError.getMessage());
+            // Set the progress tint list
+            vertical_progressbar1.setProgressTintList(soilTempColorStateList);
+
+
+        }
+
+        if (airTempText != null) {
+            airTempText.setText(String.format("%.1f", tempValue) + "°C");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date currentDate = new Date(); // or whatever date you want to format
+            String formattedDate = sdf.format(currentDate);
+            soilDateText.setText(formattedDate);
+            vertical_progressbar2.setProgress((int) Math.round(airtempValue)); // Assuming progress bar max is 100
+
+            // Change color based on thresholds
+            if (tempValue >= maxAirTempThresh) {
+                airTempColorStateList = ColorStateList.valueOf(Color.RED);
+            } else if (tempValue >= maxAirTempThresh - 3) { // Adjust threshold for orange color
+                airTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
+            } else if (tempValue <= minAirTempThresh) {
+                airTempColorStateList = ColorStateList.valueOf(Color.BLUE); // Or any color for minimum threshold
+            } else if (tempValue <= minAirTempThresh + 3) { // Adjust threshold for a different color
+                airTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFFF00")); // Yellow color for nearing minimum threshold
             }
-        });
+
+            // Set the progress tint list
+            vertical_progressbar2.setProgressTintList(airTempColorStateList);
+
+        }
+
     }
 
-    private class FirebaseDataAsyncTask extends AsyncTask<DataSnapshot, Void, Void> {
-        @Override
-        protected Void doInBackground(DataSnapshot... snapshots) {
-            DataSnapshot snapshot = snapshots[0];
-
-            if (snapshot.exists()) {
-                // Extract sensor data from snapshot
-                Double airTemp = snapshot.child("Temperature").getValue(Double.class);
-                Double humidity = snapshot.child("Humidity").getValue(Double.class);
-                Double soilTemp = snapshot.child("Temperature_DS18B20").getValue(Double.class);
-                Double soilMoisture = snapshot.child("Soil_Moisture").getValue(Double.class);
-
-                // Update line charts on the main thread
-                runOnUiThread(() -> {
-                    // Update line chart 1 (Air Temp and Humidity)
-                    LineData lineData1 = lineChart1.getLineData();
-                    if (lineData1 != null) {
-                        ILineDataSet dataSet1 = lineData1.getDataSetByIndex(0);
-                        if (dataSet1 != null) {
-                            lineData1.addEntry(new Entry(dataSet1.getEntryCount(), airTemp.floatValue()), 0);
-                            lineData1.addEntry(new Entry(dataSet1.getEntryCount(), humidity.floatValue()), 1);
-                            lineData1.notifyDataChanged();
-                            lineChart1.notifyDataSetChanged();
-                            lineChart1.invalidate();
-                        }
-                    }
-
-                    // Update line chart 2 (Soil Temp and Soil Moisture)
-                    LineData lineData2 = lineChart2.getLineData();
-                    if (lineData2 != null) {
-                        ILineDataSet dataSet2 = lineData2.getDataSetByIndex(0);
-                        if (dataSet2 != null) {
-                            lineData2.addEntry(new Entry(dataSet2.getEntryCount(), soilTemp.floatValue()), 0);
-                            lineData2.addEntry(new Entry(dataSet2.getEntryCount(), soilMoisture.floatValue()), 1);
-                            lineData2.notifyDataChanged();
-                            lineChart2.notifyDataSetChanged();
-                            lineChart2.invalidate();
-                        }
-                    }
-                });
-            }
-            return null;
-        }
+    public void updateUIElements(double humidity, boolean ventiValue, boolean waterValue, double moistureValue, double tempValue, double airtempValue, boolean alertsValue, boolean notifsValue,
+                                 double minSoilTempThresh, double maxSoilTempThresh,
+                                 double minSoilMoistureThresh, double maxSoilMoistureThresh,
+                                 double minHumidityThresh, double maxHumidityThresh,
+                                 double minAirTempThresh, double maxAirTempThresh) {
+        // Call onDatabaseChange with the provided parameters
+        onDatabaseChange(humidity, ventiValue, waterValue, moistureValue, tempValue, airtempValue, alertsValue, notifsValue,
+                minSoilTempThresh, maxSoilTempThresh,
+                minSoilMoistureThresh, maxSoilMoistureThresh,
+                minHumidityThresh, maxHumidityThresh,
+                minAirTempThresh, maxAirTempThresh);
     }
 }
