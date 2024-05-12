@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,8 +27,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataAnalyticsActivity extends Activity implements OnDataChangeListener {
@@ -44,6 +46,8 @@ public class DataAnalyticsActivity extends Activity implements OnDataChangeListe
     private TextView humidityValue;
     private TextView soilMoistureValue;
     private TextView timeText;
+    private Handler handler = new Handler();
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yy HH:mm:ss", Locale.getDefault());
 
     // Firestore
     private FirebaseFirestore db;
@@ -56,6 +60,20 @@ public class DataAnalyticsActivity extends Activity implements OnDataChangeListe
 
         // Initialize the AlertsDialogHelper
         alertsDialogHelper = new AlertsDialogHelper(this);
+
+        // Initialize PopupMenuHelper with context of your activity
+        PopupWindowHelper popupMenuHelper = new PopupWindowHelper(this);
+
+        findViewById(R.id.back_icon).setOnClickListener(v -> {
+            // Get the coordinates of the toolbar navigation icon
+            int[] location = new int[2];
+            v.getLocationOnScreen(location);
+            int xOffset = location[0]; // x coordinate
+            int yOffset = location[1]; // y coordinate plus the height of the icon
+
+            // Call showPopup() method to show the popup
+            popupMenuHelper.showPopup(v, xOffset, yOffset);
+        });
 
         // Initialize Firestore
         db = FirebaseFirestore.getInstance();
@@ -72,24 +90,6 @@ public class DataAnalyticsActivity extends Activity implements OnDataChangeListe
         // Add the AlertsDialogHelper as a listener for database changes
         DatabaseHelper.getInstance().addOnDataChangeListener(alertsDialogHelper::onDatabaseChange);
 
-        // Get the current date and time
-        LocalDateTime currentDateTime = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            currentDateTime = LocalDateTime.now();
-        }
-
-        // Define a format for the date and time
-        DateTimeFormatter formatter = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            formatter = DateTimeFormatter.ofPattern("MM-dd-yy_HH:mm:ss");
-        }
-
-        // Format the date and time using the defined format
-        String formattedDateTime = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            formattedDateTime = currentDateTime.format(formatter);
-        }
-
         // Get references to UI elements
         soilTempTextView = findViewById(R.id.temp_soil);
         airTempTextView = findViewById(R.id.temp_air);
@@ -104,7 +104,8 @@ public class DataAnalyticsActivity extends Activity implements OnDataChangeListe
 
         timeText = findViewById(R.id.time_text);
 
-        timeText.setText("As of " + formattedDateTime);
+        // Start updating the time
+        startClock();
 
         // Setup line charts
         airLineChart = findViewById(R.id.air_linechart);
@@ -325,6 +326,30 @@ public class DataAnalyticsActivity extends Activity implements OnDataChangeListe
                 minSoilMoistureThresh, maxSoilMoistureThresh,
                 minHumidityThresh, maxHumidityThresh,
                 minAirTempThresh, maxAirTempThresh);
+    }
+
+    private void startClock() {
+        // Run a new thread to update the time continuously
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                // Get the current time
+                String currentTime = dateFormat.format(new Date());
+
+                // Update the TextView with the current time
+                timeText.setText("As of " + currentTime);
+
+                // Schedule the next update after 1 second
+                handler.postDelayed(this, 1000);
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Remove any pending callbacks to avoid memory leaks
+        handler.removeCallbacksAndMessages(null);
     }
 }
 
