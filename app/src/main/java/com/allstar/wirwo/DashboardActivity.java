@@ -192,13 +192,13 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
 
             // Change color based on thresholds
             if (tempValue >= maxSoilTempThresh) {
-                soilTempColorStateList = ColorStateList.valueOf(Color.RED);
+                soilTempColorStateList = ColorStateList.valueOf(Color.parseColor("#F44336"));
             } else if (tempValue >= maxSoilTempThresh - 3) { // Adjust threshold for orange color
-                soilTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
+                soilTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFAD00")); // Orange color
             } else if (tempValue <= minSoilTempThresh) {
-                soilTempColorStateList = ColorStateList.valueOf(Color.BLUE); // Or any color for minimum threshold
+                soilTempColorStateList = ColorStateList.valueOf(Color.parseColor("#03A9F4")); // Or any color for minimum threshold
             } else if (tempValue <= minSoilTempThresh + 3) { // Adjust threshold for a different color
-                soilTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFFF00")); // Yellow color for nearing minimum threshold
+                soilTempColorStateList = ColorStateList.valueOf(Color.parseColor("#ADD8E6")); // Yellow color for nearing minimum threshold
             }
 
             // Set the progress tint list
@@ -212,13 +212,13 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
 
             // Change color based on thresholds
             if (airtempValue > maxAirTempThresh) {
-                airTempColorStateList = ColorStateList.valueOf(Color.RED);
+                airTempColorStateList = ColorStateList.valueOf(Color.parseColor("#F44336")); // Red
             } else if (airtempValue > maxAirTempThresh - 3) { // Adjust threshold for orange color
-                airTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
+                airTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFAD00")); // Orange
             } else if (airtempValue < minAirTempThresh) {
-                airTempColorStateList = ColorStateList.valueOf(Color.BLUE); // Or any color for minimum threshold
+                airTempColorStateList = ColorStateList.valueOf(Color.parseColor("#03A9F4")); // Blue
             } else if (airtempValue < minAirTempThresh + 5) { // Adjust threshold for a different color
-                airTempColorStateList = ColorStateList.valueOf(Color.parseColor("#FFFF00")); // Yellow color for nearing minimum threshold
+                airTempColorStateList = ColorStateList.valueOf(Color.parseColor("#ADD8E6")); // Light Blue
             }
 
             // Set the progress tint list
@@ -232,13 +232,13 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
 
             // Change color based on thresholds
             if (humidity > maxHumidityThresh) {
-                humidityColorStateList = ColorStateList.valueOf(Color.RED);
+                humidityColorStateList = ColorStateList.valueOf(Color.parseColor("#F44336"));
             } else if (humidity > maxHumidityThresh - 3) { // Adjust threshold for orange color
-                humidityColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
+                humidityColorStateList = ColorStateList.valueOf(Color.parseColor("#FFAD00")); // Orange color
             } else if (humidity < minHumidityThresh) {
-                humidityColorStateList = ColorStateList.valueOf(Color.BLUE); // Or any color for minimum threshold
+                humidityColorStateList = ColorStateList.valueOf(Color.parseColor("#03A9F4")); // Or any color for minimum threshold
             } else if (humidity < minHumidityThresh + 3) { // Adjust threshold for a different color
-                humidityColorStateList = ColorStateList.valueOf(Color.parseColor("#FFFF00")); // Yellow color for nearing minimum threshold
+                humidityColorStateList = ColorStateList.valueOf(Color.parseColor("#ADD8E6")); // Yellow color for nearing minimum threshold
             }
 
             // Set the progress tint list
@@ -252,13 +252,13 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
 
             // Change color based on thresholds
             if (moistureValue > maxSoilMoistureThresh) {
-                moistureColorStateList = ColorStateList.valueOf(Color.RED);
+                moistureColorStateList = ColorStateList.valueOf(Color.parseColor("#F44336"));
             } else if (moistureValue > maxSoilMoistureThresh - 3) { // Adjust threshold for orange color
-                moistureColorStateList = ColorStateList.valueOf(Color.parseColor("#FFA500")); // Orange color
+                moistureColorStateList = ColorStateList.valueOf(Color.parseColor("#FFAD00")); // Orange color
             } else if (moistureValue < minSoilMoistureThresh) {
-                moistureColorStateList = ColorStateList.valueOf(Color.BLUE); // Or any color for minimum threshold
+                moistureColorStateList = ColorStateList.valueOf(Color.parseColor("#03A9F4")); // Or any color for minimum threshold
             } else if (moistureValue < minSoilMoistureThresh + 3) { // Adjust threshold for a different color
-                moistureColorStateList = ColorStateList.valueOf(Color.parseColor("#FFFF00")); // Yellow color for nearing minimum threshold
+                moistureColorStateList = ColorStateList.valueOf(Color.parseColor("#ADD8E6")); // Yellow color for nearing minimum threshold
             }
 
             // Set the progress tint list

@@ -270,7 +270,7 @@ public class DatabaseHelper implements OnDataChangeListener {
     }
 
 
-    public void retrieveDataAnalysisInitialData(DataAnalysisActivity activity) {
+    public void retrieveDataAnalysisInitialData(DataAnalyticsActivity activity) {
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

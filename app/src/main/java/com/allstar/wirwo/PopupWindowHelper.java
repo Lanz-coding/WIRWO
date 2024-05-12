@@ -111,7 +111,7 @@ public class PopupWindowHelper {
             case "SettingsActivity":
                 activeItem = settings;
                 break;
-            case "DataAnalysisActivity":
+            case "DataAnalyticsActivity":
                 activeItem = data_analysis;
                 break;
         }
@@ -177,7 +177,7 @@ public class PopupWindowHelper {
             if (!currentActivity.equals("Data_Analysis")) { // Check if not on the current page
                 try {
                     // Handle button1 click
-                    Intent intent = new Intent(context, DataAnalysisActivity.class);
+                    Intent intent = new Intent(context, DataAnalyticsActivity.class);
                     context.startActivity(intent);
 
                 } catch (ActivityNotFoundException e) {
