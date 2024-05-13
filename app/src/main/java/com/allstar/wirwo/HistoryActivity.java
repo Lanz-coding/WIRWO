@@ -81,13 +81,13 @@ public class HistoryActivity extends Activity {
         AirReadingsSummaryChart = findViewById(R.id.AirSummaryReadings_chart);
 
         // Setup line charts
-        setupLineChart(ActuatorsActivationChart);
+        /*setupLineChart(ActuatorsActivationChart);*/
         setupLineChart(SoilReadingsSummaryChart);
         setupLineChart(AirReadingsSummaryChart);
 
 
         // Fetch sensor data from Firestore
-        fetchDataAndPopulateActuatorsLineChart();
+       /* fetchDataAndPopulateActuatorsLineChart();*/
         fetchDataAndPopulateAirLineChart();
         fetchDataAndPopulateSoilLineChart();
     }
@@ -98,7 +98,7 @@ public class HistoryActivity extends Activity {
         chart.invalidate();
     }
 
-    private void fetchDataAndPopulateActuatorsLineChart() {
+   /* private void fetchDataAndPopulateActuatorsLineChart() {
         db.collection("sensorHistory")
                 .orderBy("timestamp")
                 .limitToLast(10)
@@ -160,7 +160,7 @@ public class HistoryActivity extends Activity {
                         Log.d("Firestore", "No data found.");
                     }
                 });
-    }
+    }*/
 
     private void fetchDataAndPopulateAirLineChart() {
         db.collection("sensorHistory")
