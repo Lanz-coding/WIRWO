@@ -65,6 +65,9 @@
     <string name="actuator_activations">ACTUATOR ACTIVATIONS</string>
     <string name="moisture_humidity_and_temperature_readings">MOISTURE, HUMIDITY, AND TEMPERATURE READINGS</string>
     <string name="history_text">History</string>
+    <string name="create_pdf">CREATE PDF</string>
+    <string name="air_readings_summary_chart">AIR READINGS SUMMARY CHART</string>
+    <string name="soil_readings_summary_chart">SOIL READINGS SUMMARY CHART</string>
 
 
 </resources>

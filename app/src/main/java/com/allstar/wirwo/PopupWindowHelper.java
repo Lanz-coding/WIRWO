@@ -114,6 +114,9 @@ public class PopupWindowHelper {
             case "DataAnalyticsActivity":
                 activeItem = data_analysis;
                 break;
+
+            case "HistoryActivity":
+                activeItem = history;
         }
 
         // Set a darker background color for the active item
@@ -186,6 +189,22 @@ public class PopupWindowHelper {
                 }
 
                 // Dismiss the popup window
+                dialog.dismiss();
+            }
+        });
+
+        history.setOnClickListener(v -> {
+            if (!currentActivity.equals("HistoryActivity")) { // Check if not on the current page
+                try {
+                    // Handle button1 click
+                    Intent intent = new Intent(context, HistoryActivity.class);
+                    context.startActivity(intent);
+
+                } catch (ActivityNotFoundException e) {
+                    // Handle the exception appropriately, e.g., show an error message
+                    Toast.makeText(context, "Error starting History's activity", Toast.LENGTH_SHORT).show();
+                }
+                // Dismiss the dialog
                 dialog.dismiss();
             }
         });
