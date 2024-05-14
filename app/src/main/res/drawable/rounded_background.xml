@@ -3,7 +3,7 @@
     <!-- Background with corner radius -->
     <item android:top="4dp" android:right="4dp" android:left="4dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/white" /> <!-- Background color -->
+            <solid android:color="#FFF0CC" /> <!-- Background color -->
             <corners android:radius="10dp" /> <!-- Corner radius -->
         </shape>
     </item>

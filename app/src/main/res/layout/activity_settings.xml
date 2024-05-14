@@ -300,7 +300,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="5dp"
-                    android:src="@drawable/wirwo_mascot"
+                    android:src="@drawable/settings_defaults"
                     android:layout_gravity="center_vertical" />
 
                 <LinearLayout
@@ -496,7 +496,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="5dp"
-                    android:src="@drawable/wirwo_mascot"
+                    android:src="@drawable/settings_username"
                     android:layout_gravity="center_vertical" />
 
                 <LinearLayout

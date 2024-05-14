@@ -41,5 +41,10 @@
         <item name="android:popupBackground">@color/colorPopupMenuBackground</item>
     </style>
 
+    <style name="CustomMaterial3Button" parent="@style/Widget.Material3.Button">
+        <item name="android:background">@color/darkGreen</item>
+        <item name="android:radius">4dp</item>
+    </style>
+
 
 </resources>

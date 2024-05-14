@@ -50,7 +50,6 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-
     <LinearLayout
         android:id="@+id/data_layout"
         android:layout_width="match_parent"
@@ -71,19 +70,21 @@
             android:textSize="25sp"
             android:textStyle="bold" />
 
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
         <Button
             android:id="@+id/export_button"
+            style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginStart="140dp"
-            android:layout_marginBottom="5dp"
-            android:backgroundTint="#102820"
-            android:elevation="3dp"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_bold"
+            android:text="EXPORT DATA"
+            android:backgroundTint="@color/darkGreen"
             android:textColor="@color/white"
-            android:text="@string/export_data"
-            app:layout_constraintBottom_toBottomOf="@id/toolbar"
-            app:layout_constraintEnd_toEndOf="@id/toolbar" />
+            />
 
     </LinearLayout>
 

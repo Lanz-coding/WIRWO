@@ -119,14 +119,14 @@ public class DataAnalyticsActivity extends Activity implements OnDataChangeListe
 
     private void setupLineChart(LineChart chart) {
         chart.getDescription().setEnabled(false);
-        chart.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        chart.setBackgroundColor(Color.parseColor("#FFF0CC"));
         chart.invalidate();
     }
 
     private void fetchDataAndPopulateAirLineChart() {
         db.collection("sensorHistory")
                 .orderBy("timestamp")
-                .limitToLast(10)
+                .limitToLast(18)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Log.e("Firestore", "Listen failed.", error);
@@ -190,7 +190,7 @@ public class DataAnalyticsActivity extends Activity implements OnDataChangeListe
     private void fetchDataAndPopulateSoilLineChart() {
         db.collection("sensorHistory")
                 .orderBy("timestamp")
-                .limitToLast(10)
+                .limitToLast(18)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Log.e("Firestore", "Listen failed.", error);

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class HistoryActivity extends Activity {
+public class    HistoryActivity extends Activity {
 
     private AlertsDialogHelper alertsDialogHelper;
     private DatabaseHelper helper;
