@@ -75,16 +75,14 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-        <Button
-            android:id="@+id/export_button"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_bold"
-            android:text="EXPORT DATA"
-            android:backgroundTint="@color/darkGreen"
-            android:textColor="@color/white"
-            />
+        <ImageView
+            android:id="@+id/download_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/icon_download"
+            android:elevation="4dp"
+            android:layout_gravity="center_vertical" />
 
     </LinearLayout>
 
@@ -101,68 +99,67 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/actuators_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:padding="8dp"
-                android:text="@string/actuator_activations"
-                android:textColor="#825a5a"
-                android:textSize="15sp" />
-
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/actuators_chart"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp" />
-
-            <TextView
-                android:id="@+id/SoilSummaryReadings_text"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:orientation="vertical"
                 android:layout_marginTop="20dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:padding="8dp"
-                android:text="@string/soil_readings_summary_chart"
-                android:textColor="#825a5a"
-                android:textSize="15sp" />
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/rounded_background">
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/SoilSummaryReadings_chart"
+                <TextView
+                    android:id="@+id/soil_conditions_summary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="SOIL CONDITIONS SUMMARY"
+                    android:textColor="@color/darkBrown"
+                    android:textSize="20sp" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/soil_summary_linechart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp" />
-
-            <TextView
-                android:id="@+id/AirReadingsSummaryChart"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:orientation="vertical"
                 android:layout_marginTop="20dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:padding="8dp"
-                android:text = "@string/air_readings_summary_chart"
-                android:textColor="#825a5a"
-                android:textSize="15sp" />
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/rounded_background">
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/AirSummaryReadings_chart"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp" />
+                <TextView
+                    android:id="@+id/air_conditions_summary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="SOIL CONDITIONS SUMMARY"
+                    android:textColor="@color/darkBrown"
+                    android:textSize="20sp" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/air_summary_linechart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
