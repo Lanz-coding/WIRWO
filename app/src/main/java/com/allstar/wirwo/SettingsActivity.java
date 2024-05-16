@@ -325,11 +325,11 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
                     .addOnSuccessListener(aVoid -> {
                         if (isChecked) {
                             if (isNotifsFirstChanged > 0) {
-                                DialogHelper.showDialogWithTitle(SettingsActivity.this, "Notifications", "Notifications successfully turned on.", null);
+                                DialogHelper.showDialogWithTitle(SettingsActivity.this, "Notifications", "Notifications successfully turned on. Take Note that this feature is coming soon.", null);
                             }
                             notifCurrent.setText("Notifications are turned on");
                         } else {
-                            DialogHelper.showDialogWithTitle(SettingsActivity.this, "Notifications", "Notifications successfully turned off.", null);
+                            DialogHelper.showDialogWithTitle(SettingsActivity.this, "Notifications", "Notifications successfully turned off. Take Note that this feature is coming soon.", null);
                             notifCurrent.setText("Notifications are turned off");
                         }
                         // Increment after setting the value

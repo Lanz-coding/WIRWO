@@ -244,7 +244,7 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
 
         if (airTempText != null) {
             airTempText.setText(String.format("%.1f", airtempValue) + "°C");
-            airTempProgressBar.setProgress((int) Math.round(airtempValue)); // Assuming progress bar max is 100
+            airTempProgressBar.setProgress((int) Math.round(airtempValue));
 
             // Change color based on thresholds
             if (airtempValue > maxAirTempThresh) {
@@ -268,19 +268,18 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
 
             // Change color based on thresholds
             int progressColor;
-            if (moistureValue > maxSoilMoistureThresh) {
+            if (humidity > maxHumidityThresh) {
                 progressColor = Color.parseColor("#F44336");
-            } else if (moistureValue > maxSoilMoistureThresh - 3) { // Adjust threshold for orange color
+            } else if (humidity > maxHumidityThresh - 3) { // Adjust threshold for orange color
                 progressColor = Color.parseColor("#FFAD00"); // Orange color
-            } else if (moistureValue < minSoilMoistureThresh) {
+            } else if (humidity < minHumidityThresh) {
                 progressColor = Color.parseColor("#03A9F4"); // Or any color for minimum threshold
-            } else if (moistureValue < minSoilMoistureThresh + 3) { // Adjust threshold for a different color
+            } else if (humidity < minHumidityThresh + 3) { // Adjust threshold for a different color
                 progressColor = Color.parseColor("#ADD8E6"); // Yellow color for nearing minimum threshold
             } else {
                 // Default color when no conditions match
                 progressColor = Color.parseColor("#4c6444"); // Default white color
             }
-
             // Set the progress tint list
             humidityProgressBar.setProgressColor(progressColor);
         }
@@ -292,13 +291,13 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
 
             // Change color based on thresholds
             int progressColor;
-            if (humidity > maxHumidityThresh) {
+            if (moistureValue > maxSoilMoistureThresh) {
                 progressColor = Color.parseColor("#F44336");
-            } else if (humidity > maxHumidityThresh - 3) { // Adjust threshold for orange color
+            } else if (moistureValue > maxSoilMoistureThresh - 3) { // Adjust threshold for orange color
                 progressColor = Color.parseColor("#FFAD00"); // Orange color
-            } else if (humidity < minHumidityThresh) {
+            } else if (moistureValue < minSoilMoistureThresh) {
                 progressColor = Color.parseColor("#03A9F4"); // Or any color for minimum threshold
-            } else if (humidity < minHumidityThresh + 3) { // Adjust threshold for a different color
+            } else if (moistureValue < minSoilMoistureThresh + 3) { // Adjust threshold for a different color
                 progressColor = Color.parseColor("#ADD8E6"); // Yellow color for nearing minimum threshold
             } else {
                 // Default color when no conditions match
