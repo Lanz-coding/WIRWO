@@ -105,6 +105,7 @@ public class    HistoryActivity extends Activity {
     private void fetchDataAndPopulateAirLineChart() {
         db.collection("sensorHistory")
                 .orderBy("timestamp")
+                .limitToLast(30)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Log.e("Firestore", "Listen failed.", error);
@@ -185,6 +186,7 @@ public class    HistoryActivity extends Activity {
     private void fetchDataAndPopulateSoilLineChart() {
         db.collection("sensorHistory")
                 .orderBy("timestamp")
+                .limitToLast(30)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Log.e("Firestore", "Listen failed.", error);

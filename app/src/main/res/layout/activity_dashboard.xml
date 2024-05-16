@@ -216,279 +216,233 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/soiltemp_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="180dp"
+                    android:layout_height="150dp"
+                    android:background="@drawable/rounded_background"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/soil_temperature_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="SOIL TEMPERATURE"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal">
+
+                        <FrameLayout
+                            android:layout_width="35dp"
+                            android:layout_height="80dp"
+                            android:background="@drawable/thermometer_cropped">
+
+                            <ProgressBar
+                                android:id="@+id/soil_temp_progress_bar"
+                                style="@style/Widget.ProgressBar.vertical"
+                                android:layout_width="10dp"
+                                android:layout_height="60dp"
+                                android:layout_marginStart="13.5dp"
+                                android:layout_marginTop="8dp"
+                                android:max="50"
+                                android:padding="2dp"
+                                android:progress="100" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/temp_soil"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="0.0°C"
+                            android:layout_marginTop="25dp"
+                            android:textColor="@color/darkBrown"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="180dp"
+                    android:layout_height="150dp"
+                    android:layout_marginStart="7dp"
+                    android:background="@drawable/rounded_background"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/air_temperature_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="AIR TEMPERATURE"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal">
+
+
+                        <FrameLayout
+                            android:layout_width="35dp"
+                            android:layout_height="80dp"
+                            android:background="@drawable/thermometer_cropped">
+
+                            <ProgressBar
+                                android:id="@+id/air_temp_progress_bar"
+                                style="@style/Widget.ProgressBar.vertical"
+                                android:layout_width="10dp"
+                                android:layout_height="60dp"
+                                android:layout_marginStart="13.5dp"
+                                android:layout_marginTop="8dp"
+                                android:max="50"
+                                android:padding="2dp"
+                                android:progress="100" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/temp_air"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="0.0°C"
+                            android:layout_marginTop="25dp"
+                            android:textColor="@color/darkBrown"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    tools:ignore="UselessParent">
+                    android:layout_width="180dp"
+                    android:layout_height="150dp"
+                    android:background="@drawable/rounded_background"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/humidity_text"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="HUMIDITY"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="15sp" />
 
-                        <LinearLayout
-                            android:layout_width="285dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="0.1dp"
-                            android:orientation="vertical">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="-10dp">
 
-                            <TextView
-                                android:id="@+id/soiltemp_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:text="Soil Temperature"
-                                android:fontFamily="@font/montserrat_medium"
-                                android:textColor="#000000"
-                                android:textSize="17.5sp" />
-
-
-                            <!-- ProgressBar -->
-                            <ProgressBar
-                                android:id="@+id/soiltemp_bar"
-                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                                android:layout_width="270dp"
-                                android:layout_height="10dp"
-                                android:layout_marginTop="5dp"
-                                android:max="50"
-                                android:progress="0"
-                                android:progressDrawable="@drawable/progress_bar"
-                                android:progressTint="#4C6444"
-                                app:layout_constraintTop_toBottomOf="@id/soiltemp_text" />
-
-                        </LinearLayout>
+                        <com.juanarton.arcprogressbar.ArcProgressBar
+                            android:id="@+id/humidity_progress_bar"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerInParent="true"
+                            app:progress="50"
+                            app:progressMax="100"
+                            app:progressMin="0"
+                            app:progressColor="@color/lighterGreen"
+                            app:trackColor="@color/white"
+                            app:startAngle="140"
+                            app:sweepAngle="260"
+                            app:trackWidth="10dp"
+                            app:progressWidth="10dp" />
 
                         <TextView
-                            android:id="@+id/soiltemp_meter"
-                            android:layout_width="70dp"
+                            android:id="@+id/humidity_value"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0.00°C"
-                            android:textColor="#000000"
-                            android:textAlignment="center"
-                            android:textSize="20sp"
-                            android:layout_gravity="bottom"
-                            tools:ignore="RtlCompat" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/moisture_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical"
-                    tools:ignore="UselessParent">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="285dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="0.1dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/moisture_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:text="Soil Moisture"
-                                android:fontFamily="@font/montserrat_medium"
-                                android:textColor="#000000"
-                                android:textSize="17.5sp" />
-
-
-                            <!-- ProgressBar -->
-                            <ProgressBar
-                                android:id="@+id/moisture_bar"
-                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                                android:layout_width="270dp"
-                                android:layout_height="10dp"
-                                android:layout_marginTop="5dp"
-                                android:max="100"
-                                android:progress="0"
-                                android:progressDrawable="@drawable/progress_bar"
-                                android:progressTint="#4C6444"
-                                app:layout_constraintTop_toBottomOf="@id/soiltemp_text" />
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/moisture_meter"
-                            android:layout_width="70dp"
-                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_bold"
                             android:text="0.00%"
-                            android:textAlignment="center"
-                            android:textColor="#000000"
-                            android:textSize="20sp"
-                            android:layout_gravity="bottom"
-                            tools:ignore="RtlCompat" />
+                            android:textColor="@color/darkBrown"
+                            android:textSize="15sp"
+                            android:layout_centerInParent="true" />
 
-                    </LinearLayout>
+                    </RelativeLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/humidity_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
+                    android:layout_width="180dp"
+                    android:layout_height="150dp"
+                    android:background="@drawable/rounded_background"
                     android:orientation="vertical"
-                    tools:ignore="UselessParent">
+                    android:layout_marginStart="8dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/moisture_text"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal">
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="SOIL MOISTURE"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="15sp" />
 
-                        <LinearLayout
-                            android:layout_width="285dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="0.1dp"
-                            android:orientation="vertical">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="-10dp">
 
-                            <TextView
-                                android:id="@+id/humidity_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:text="Humidity"
-                                android:fontFamily="@font/montserrat_medium"
-                                android:textColor="#000000"
-                                android:textSize="17.5sp" />
-
-
-                            <!-- ProgressBar -->
-                            <ProgressBar
-                                android:id="@+id/humidity_bar"
-                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                                android:layout_width="270dp"
-                                android:layout_height="10dp"
-                                android:layout_marginTop="5dp"
-                                android:max="100"
-                                android:progress="0"
-                                android:progressDrawable="@drawable/progress_bar"
-                                android:progressTint="#4C6444"
-                                app:layout_constraintTop_toBottomOf="@id/soiltemp_text" />
-
-                        </LinearLayout>
+                        <com.juanarton.arcprogressbar.ArcProgressBar
+                            android:id="@+id/moisture_progress_bar"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerInParent="true"
+                            app:progress="50"
+                            app:progressMax="100"
+                            app:progressMin="0"
+                            app:progressColor="@color/lighterGreen"
+                            app:trackColor="@color/white"
+                            app:startAngle="140"
+                            app:sweepAngle="260"
+                            app:trackWidth="10dp"
+                            app:progressWidth="10dp" />
 
                         <TextView
-                            android:id="@+id/humidity_meter"
-                            android:layout_width="70dp"
+                            android:id="@+id/moisture_value"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_bold"
                             android:text="0.00%"
-                            android:textColor="#000000"
-                            android:textAlignment="center"
-                            android:textSize="20sp"
-                            android:layout_gravity="bottom"
-                            tools:ignore="RtlCompat" />
+                            android:textColor="@color/darkBrown"
+                            android:textSize="15sp"
+                            android:layout_centerInParent="true" />
 
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/airtemp_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical"
-                    tools:ignore="UselessParent">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="285dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="0.1dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/airtemp_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:text="Air Temperature"
-                                android:fontFamily="@font/montserrat_medium"
-                                android:textColor="#000000"
-                                android:textSize="17.5sp" />
-
-                            <!-- ProgressBar -->
-                            <ProgressBar
-                                android:id="@+id/airtemp_bar"
-                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                                android:layout_width="270dp"
-                                android:layout_height="10dp"
-                                android:layout_marginTop="5dp"
-                                android:max="50"
-                                android:progress="0"
-                                android:progressDrawable="@drawable/progress_bar"
-                                android:progressTint="#4C6444"
-                                app:layout_constraintTop_toBottomOf="@id/soiltemp_text" />
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/airtemp_meter"
-                            android:layout_width="70dp"
-                            android:layout_height="wrap_content"
-                            android:text="0.0°C"
-                            android:textAlignment="center"
-                            android:textColor="#000000"
-                            android:textSize="20sp"
-                            android:layout_gravity="bottom"
-                            tools:ignore="RtlCompat" />
-
-                    </LinearLayout>
+                    </RelativeLayout>
 
                 </LinearLayout>
 

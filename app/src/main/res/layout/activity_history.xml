@@ -115,9 +115,21 @@
                     android:layout_marginTop="10dp"
                     android:layout_gravity="center_horizontal"
                     android:fontFamily="@font/montserrat_bold"
-                    android:text="SOIL CONDITIONS SUMMARY"
+                    android:text="SOIL CONDITIONS 30-DAY SUMMARY"
                     android:textColor="@color/darkBrown"
                     android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/soil_range_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:layout_marginTop="-5dp"
+                    android:text="Data from: 01-01-1970 to 01-30-1970"
+                    android:textColor="@color/darkBrown"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="10dp"/>
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/soil_summary_linechart"
@@ -146,9 +158,21 @@
                     android:layout_marginTop="10dp"
                     android:layout_gravity="center_horizontal"
                     android:fontFamily="@font/montserrat_bold"
-                    android:text="SOIL CONDITIONS SUMMARY"
+                    android:text="AIR CONDITIONS 30-DAY SUMMARY"
                     android:textColor="@color/darkBrown"
                     android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/air_range_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:layout_marginTop="-5dp"
+                    android:text="Data from: 01-01-1970 to 01-30-1970"
+                    android:textColor="@color/darkBrown"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="10dp"/>
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/air_summary_linechart"

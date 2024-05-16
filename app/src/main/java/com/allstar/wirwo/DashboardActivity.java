@@ -25,6 +25,7 @@ import android.net.NetworkInfo;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.juanarton.arcprogressbar.ArcProgressBar;
 
 public class DashboardActivity extends Activity implements OnDataChangeListener {
     private AlertsDialogHelper alertsDialogHelper;
@@ -38,7 +39,10 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
     private Handler handler;
 
     private TextView soilTempText, airTempText, humidityText, moistureText, welcomeText;
-    private ProgressBar soilTempBar, airTempBar, humidityBar, moistureBar;
+    private ProgressBar soilTempProgressBar;
+    private ProgressBar airTempProgressBar;
+    private ArcProgressBar humidityProgressBar;
+    private ArcProgressBar soilMoistureProgressBar;
 
     private int isWaterPumpFirstChanged = 0;
     private int isVentiFirstChanged = 0;
@@ -67,14 +71,14 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         handler = new Handler();
 
         // Get references to TextViews and ProgressBars
-        soilTempText = findViewById(R.id.soiltemp_meter);
-        soilTempBar = findViewById(R.id.soiltemp_bar);
-        airTempText = findViewById(R.id.airtemp_meter);
-        airTempBar = findViewById(R.id.airtemp_bar);
-        humidityText = findViewById(R.id.humidity_meter);
-        humidityBar = findViewById(R.id.humidity_bar);
-        moistureText = findViewById(R.id.moisture_meter);
-        moistureBar = findViewById(R.id.moisture_bar);
+        soilTempText = findViewById(R.id.temp_soil);
+        soilTempProgressBar = findViewById(R.id.soil_temp_progress_bar);
+        airTempText = findViewById(R.id.temp_air);
+        airTempProgressBar = findViewById(R.id.air_temp_progress_bar);
+        humidityText = findViewById(R.id.humidity_value);
+        humidityProgressBar = findViewById(R.id.humidity_progress_bar);
+        moistureText = findViewById(R.id.moisture_value);
+        soilMoistureProgressBar = findViewById(R.id.moisture_progress_bar);
 
         welcomeText = findViewById(R.id.welcome_text);
 
@@ -188,7 +192,7 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         // Update UI elements based on the received data
         if (soilTempText != null) {
             soilTempText.setText(String.format("%.1f", tempValue) + "°C");
-            soilTempBar.setProgress((int) Math.round(tempValue)); // Assuming progress bar max is 100
+            soilTempProgressBar.setProgress((int) Math.round(tempValue)); // Assuming progress bar max is 100
 
             // Change color based on thresholds
             if (tempValue >= maxSoilTempThresh) {
@@ -202,13 +206,13 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
             }
 
             // Set the progress tint list
-            soilTempBar.setProgressTintList(soilTempColorStateList);
+            soilTempProgressBar.setProgressTintList(soilTempColorStateList);
 
         }
 
         if (airTempText != null) {
             airTempText.setText(String.format("%.1f", airtempValue) + "°C");
-            airTempBar.setProgress((int) Math.round(airtempValue)); // Assuming progress bar max is 100
+            airTempProgressBar.setProgress((int) Math.round(airtempValue)); // Assuming progress bar max is 100
 
             // Change color based on thresholds
             if (airtempValue > maxAirTempThresh) {
@@ -222,47 +226,55 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
             }
 
             // Set the progress tint list
-            airTempBar.setProgressTintList(airTempColorStateList);
+            airTempProgressBar.setProgressTintList(airTempColorStateList);
         }
 
         if (humidityText != null) {
             humidityText.setText(String.format("%.2f", humidity) + "%");
             // Convert humidity to int before setting progress (assuming progress bar max is 100)
-            humidityBar.setProgress((int) Math.round(humidity));
+            humidityProgressBar.setProgress((int) Math.round(humidity));
 
             // Change color based on thresholds
-            if (humidity > maxHumidityThresh) {
-                humidityColorStateList = ColorStateList.valueOf(Color.parseColor("#F44336"));
-            } else if (humidity > maxHumidityThresh - 3) { // Adjust threshold for orange color
-                humidityColorStateList = ColorStateList.valueOf(Color.parseColor("#FFAD00")); // Orange color
-            } else if (humidity < minHumidityThresh) {
-                humidityColorStateList = ColorStateList.valueOf(Color.parseColor("#03A9F4")); // Or any color for minimum threshold
-            } else if (humidity < minHumidityThresh + 3) { // Adjust threshold for a different color
-                humidityColorStateList = ColorStateList.valueOf(Color.parseColor("#ADD8E6")); // Yellow color for nearing minimum threshold
+            int progressColor;
+            if (moistureValue > maxSoilMoistureThresh) {
+                progressColor = Color.parseColor("#F44336");
+            } else if (moistureValue > maxSoilMoistureThresh - 3) { // Adjust threshold for orange color
+                progressColor = Color.parseColor("#FFAD00"); // Orange color
+            } else if (moistureValue < minSoilMoistureThresh) {
+                progressColor = Color.parseColor("#03A9F4"); // Or any color for minimum threshold
+            } else if (moistureValue < minSoilMoistureThresh + 3) { // Adjust threshold for a different color
+                progressColor = Color.parseColor("#ADD8E6"); // Yellow color for nearing minimum threshold
+            } else {
+                // Default color when no conditions match
+                progressColor = Color.parseColor("#4c6444"); // Default white color
             }
 
             // Set the progress tint list
-            humidityBar.setProgressTintList(humidityColorStateList);
+            humidityProgressBar.setProgressColor(progressColor);
         }
 
         if (moistureText != null) {
             moistureText.setText(String.format("%.2f", moistureValue) + "%");
             // Convert moistureValue to int before setting progress (assuming progress bar max is 100)
-            moistureBar.setProgress((int) Math.round(moistureValue));
+            soilMoistureProgressBar.setProgress((int) Math.round(moistureValue));
 
             // Change color based on thresholds
-            if (moistureValue > maxSoilMoistureThresh) {
-                moistureColorStateList = ColorStateList.valueOf(Color.parseColor("#F44336"));
-            } else if (moistureValue > maxSoilMoistureThresh - 3) { // Adjust threshold for orange color
-                moistureColorStateList = ColorStateList.valueOf(Color.parseColor("#FFAD00")); // Orange color
-            } else if (moistureValue < minSoilMoistureThresh) {
-                moistureColorStateList = ColorStateList.valueOf(Color.parseColor("#03A9F4")); // Or any color for minimum threshold
-            } else if (moistureValue < minSoilMoistureThresh + 3) { // Adjust threshold for a different color
-                moistureColorStateList = ColorStateList.valueOf(Color.parseColor("#ADD8E6")); // Yellow color for nearing minimum threshold
+            int progressColor;
+            if (humidity > maxHumidityThresh) {
+                progressColor = Color.parseColor("#F44336");
+            } else if (humidity > maxHumidityThresh - 3) { // Adjust threshold for orange color
+                progressColor = Color.parseColor("#FFAD00"); // Orange color
+            } else if (humidity < minHumidityThresh) {
+                progressColor = Color.parseColor("#03A9F4"); // Or any color for minimum threshold
+            } else if (humidity < minHumidityThresh + 3) { // Adjust threshold for a different color
+                progressColor = Color.parseColor("#ADD8E6"); // Yellow color for nearing minimum threshold
+            } else {
+                // Default color when no conditions match
+                progressColor = Color.parseColor("#4c6444"); // Default white color
             }
 
             // Set the progress tint list
-            moistureBar.setProgressTintList(moistureColorStateList);
+            soilMoistureProgressBar.setProgressColor(progressColor);
         }
 
         // Set switch states
@@ -356,10 +368,6 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
                 minHumidityThresh, maxHumidityThresh,
                 minAirTempThresh, maxAirTempThresh);
     }
-
-
-
-
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
