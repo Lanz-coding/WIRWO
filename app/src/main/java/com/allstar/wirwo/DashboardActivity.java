@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,8 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
     private ProgressBar airTempProgressBar;
     private ArcProgressBar humidityProgressBar;
     private ArcProgressBar soilMoistureProgressBar;
+
+    private LinearLayout dataAnalytics, history, settings;
 
     private int isWaterPumpFirstChanged = 0;
     private int isVentiFirstChanged = 0;
@@ -80,6 +83,10 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
         moistureText = findViewById(R.id.moisture_value);
         soilMoistureProgressBar = findViewById(R.id.moisture_progress_bar);
 
+        dataAnalytics = findViewById(R.id.dashboard_to_analytics);
+        history = findViewById(R.id.dashboard_to_history);
+        settings = findViewById(R.id.dashboard_to_settings);
+
         welcomeText = findViewById(R.id.welcome_text);
 
         // Create an instance of FirebaseDatabase
@@ -92,6 +99,31 @@ public class DashboardActivity extends Activity implements OnDataChangeListener 
                 // Use the retrieved username here
                 welcomeText.setText("Ciao, " + username + "! Check your Wireless Worms Today!");
 
+            }
+        });
+
+        dataAnalytics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this, DataAnalyticsActivity.class);
+                DashboardActivity.this.startActivity(intent);
+            }
+        });
+
+
+        history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this, HistoryActivity.class);
+                DashboardActivity.this.startActivity(intent);
+            }
+        });
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this, SettingsActivity.class);
+                DashboardActivity.this.startActivity(intent);
             }
         });
 

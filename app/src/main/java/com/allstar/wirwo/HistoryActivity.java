@@ -1,11 +1,13 @@
 package com.allstar.wirwo;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -17,24 +19,24 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class    HistoryActivity extends Activity {
 
     private AlertsDialogHelper alertsDialogHelper;
     private DatabaseHelper helper;
 
-    private LineChart soilReadingsSummaryChart;
+    private LineChart ActuatorsActivationChart;
+    private LineChart SoilReadingsSummaryChart;
 
-    private LineChart airReadingsSummaryChart;
+    private LineChart AirReadingsSummaryChart;
 
-    private ImageView downloadIcon;
+    private TextView soilTempText, soilDateText, airTempText, airDateText;
 
     // Firestore
     private FirebaseFirestore db;
@@ -74,38 +76,32 @@ public class    HistoryActivity extends Activity {
         DatabaseHelper.getInstance().addOnDataChangeListener(alertsDialogHelper::onDatabaseChange);
 
         // Get references to UI elements
-        soilReadingsSummaryChart = findViewById(R.id.soil_summary_linechart);
-        airReadingsSummaryChart = findViewById(R.id.air_summary_linechart);
-
-        downloadIcon = findViewById(R.id.download_icon);
+        ActuatorsActivationChart = findViewById(R.id.actuators_chart);
+        SoilReadingsSummaryChart = findViewById(R.id.SoilSummaryReadings_chart);
+        AirReadingsSummaryChart = findViewById(R.id.AirSummaryReadings_chart);
 
         // Setup line charts
-        setupLineChart(soilReadingsSummaryChart);
-        setupLineChart(airReadingsSummaryChart);
-
-        downloadIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogHelper.showDialogWithTitle(HistoryActivity.this, "Download", "Coming Soon!", null);
-            }
-        });
+        /*setupLineChart(ActuatorsActivationChart);*/
+        setupLineChart(SoilReadingsSummaryChart);
+        setupLineChart(AirReadingsSummaryChart);
 
 
         // Fetch sensor data from Firestore
+       /* fetchDataAndPopulateActuatorsLineChart();*/
         fetchDataAndPopulateAirLineChart();
         fetchDataAndPopulateSoilLineChart();
     }
 
     private void setupLineChart(LineChart chart) {
         chart.getDescription().setEnabled(false);
-        chart.setBackgroundColor(Color.parseColor("#FFF0CC"));
+        chart.setBackgroundColor(Color.parseColor("#FFFFFF"));
         chart.invalidate();
     }
 
-    private void fetchDataAndPopulateAirLineChart() {
+   /* private void fetchDataAndPopulateActuatorsLineChart() {
         db.collection("sensorHistory")
                 .orderBy("timestamp")
-                .limitToLast(30)
+                .limitToLast(10)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Log.e("Firestore", "Listen failed.", error);
@@ -113,9 +109,12 @@ public class    HistoryActivity extends Activity {
                     }
 
                     if (value != null && !value.isEmpty()) {
-                        Map<String, List<Float>> dailyReadingsMap = new HashMap<>();
+                        List<Entry> airTempEntries = new ArrayList<>();
+                        List<Entry> humidityEntries = new ArrayList<>();
+                        List<String> timestamps = new ArrayList<>();
+
                         SimpleDateFormat inputFormat = new SimpleDateFormat("MM-dd-yy_HH:mm:ss");
-                        SimpleDateFormat outputFormat = new SimpleDateFormat("MM-dd-yyyy");
+                        SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm");
 
                         for (QueryDocumentSnapshot document : value) {
                             String timestamp = document.getString("timestamp");
@@ -124,35 +123,79 @@ public class    HistoryActivity extends Activity {
 
                             try {
                                 Date date = inputFormat.parse(timestamp);
-                                String day = outputFormat.format(date);
-
-                                // Add or update daily readings
-                                List<Float> dailyReadings = dailyReadingsMap.getOrDefault(day, new ArrayList<>());
-                                dailyReadings.add((float) airTemp);
-                                dailyReadings.add((float) humidity);
-                                dailyReadingsMap.put(day, dailyReadings);
+                                String time = outputFormat.format(date);
+                                timestamps.add(time);
+                                airTempEntries.add(new Entry(airTempEntries.size(), (float) airTemp));
+                                humidityEntries.add(new Entry(humidityEntries.size(), (float) humidity));
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
 
+                        LineDataSet airTempDataSet = new LineDataSet(airTempEntries, "Water Pump Switch Switch");
+                        airTempDataSet.setColor(Color.parseColor("#8A6240"));
+                        airTempDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+                        LineDataSet humidityDataSet = new LineDataSet(humidityEntries, "Ventilation Switch");
+                        humidityDataSet.setColor(Color.parseColor("#4C6444"));
+                        humidityDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+                        List<ILineDataSet> dataSets = new ArrayList<>();
+                        dataSets.add(airTempDataSet);
+                        dataSets.add(humidityDataSet);
+
+                        LineData lineData = new LineData(dataSets);
+
+                        XAxis xAxis = ActuatorsActivationChart.getXAxis();
+                        xAxis.setValueFormatter(new IndexAxisValueFormatter(timestamps));
+                        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                        xAxis.setGranularity(1f);
+
+                        ActuatorsActivationChart.setData(lineData);
+                        ActuatorsActivationChart.invalidate();
+
+                        // Setup line charts after setting up data
+                        setupLineChart(ActuatorsActivationChart);
+                    } else {
+                        Log.d("Firestore", "No data found.");
+                    }
+                });
+    }*/
+
+    private void fetchDataAndPopulateAirLineChart() {
+        db.collection("sensorHistory")
+                .orderBy("timestamp")
+                .limitToLast(10)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.e("Firestore", "Listen failed.", error);
+                        return;
+                    }
+
+                    if (value != null && !value.isEmpty()) {
                         List<Entry> airTempEntries = new ArrayList<>();
                         List<Entry> humidityEntries = new ArrayList<>();
                         List<String> timestamps = new ArrayList<>();
 
-                        // Calculate daily averages and prepare data for chart
-                        for (Map.Entry<String, List<Float>> entry : dailyReadingsMap.entrySet()) {
-                            String day = entry.getKey();
-                            List<Float> readings = entry.getValue();
-                            float airTempAvg = calculateAverage(readings.subList(0, readings.size() / 2));
-                            float humidityAvg = calculateAverage(readings.subList(readings.size() / 2, readings.size()));
+                        SimpleDateFormat inputFormat = new SimpleDateFormat("MM-dd-yy_HH:mm:ss");
+                        SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm");
 
-                            airTempEntries.add(new Entry(timestamps.size(), airTempAvg));
-                            humidityEntries.add(new Entry(timestamps.size(), humidityAvg));
-                            timestamps.add(day);
+                        for (QueryDocumentSnapshot document : value) {
+                            String timestamp = document.getString("timestamp");
+                            double airTemp = document.getDouble("airTemp");
+                            double humidity = document.getDouble("humidity");
+
+                            try {
+                                Date date = inputFormat.parse(timestamp);
+                                String time = outputFormat.format(date);
+                                timestamps.add(time);
+                                airTempEntries.add(new Entry(airTempEntries.size(), (float) airTemp));
+                                humidityEntries.add(new Entry(humidityEntries.size(), (float) humidity));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
 
-                        // Prepare data sets and update chart
                         LineDataSet airTempDataSet = new LineDataSet(airTempEntries, "Air Temperature");
                         airTempDataSet.setColor(Color.parseColor("#ADD8E6"));
                         airTempDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -167,26 +210,25 @@ public class    HistoryActivity extends Activity {
 
                         LineData lineData = new LineData(dataSets);
 
-                        XAxis xAxis = airReadingsSummaryChart.getXAxis();
+                        XAxis xAxis = AirReadingsSummaryChart.getXAxis();
                         xAxis.setValueFormatter(new IndexAxisValueFormatter(timestamps));
                         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                         xAxis.setGranularity(1f);
 
-                        airReadingsSummaryChart.setData(lineData);
-                        airReadingsSummaryChart.invalidate();
+                        AirReadingsSummaryChart.setData(lineData);
+                        AirReadingsSummaryChart.invalidate();
 
                         // Setup line charts after setting up data
-                        setupLineChart(airReadingsSummaryChart);
+                        setupLineChart(AirReadingsSummaryChart);
                     } else {
                         Log.d("Firestore", "No data found.");
                     }
                 });
     }
-
     private void fetchDataAndPopulateSoilLineChart() {
         db.collection("sensorHistory")
                 .orderBy("timestamp")
-                .limitToLast(30)
+                .limitToLast(10)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Log.e("Firestore", "Listen failed.", error);
@@ -194,9 +236,12 @@ public class    HistoryActivity extends Activity {
                     }
 
                     if (value != null && !value.isEmpty()) {
-                        Map<String, List<Float>> dailyReadingsMap = new HashMap<>();
+                        List<Entry> soilTempEntries = new ArrayList<>();
+                        List<Entry> soilMoistureEntries = new ArrayList<>();
+                        List<String> timestamps = new ArrayList<>();
+
                         SimpleDateFormat inputFormat = new SimpleDateFormat("MM-dd-yy_HH:mm:ss");
-                        SimpleDateFormat outputFormat = new SimpleDateFormat("MM-dd-yyyy");
+                        SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm");
 
                         for (QueryDocumentSnapshot document : value) {
                             String timestamp = document.getString("timestamp");
@@ -205,35 +250,15 @@ public class    HistoryActivity extends Activity {
 
                             try {
                                 Date date = inputFormat.parse(timestamp);
-                                String day = outputFormat.format(date);
-
-                                // Add or update daily readings
-                                List<Float> dailyReadings = dailyReadingsMap.getOrDefault(day, new ArrayList<>());
-                                dailyReadings.add((float) soilTemp);
-                                dailyReadings.add((float) soilMoisture);
-                                dailyReadingsMap.put(day, dailyReadings);
+                                String time = outputFormat.format(date);
+                                timestamps.add(time);
+                                soilTempEntries.add(new Entry(soilTempEntries.size(), (float) soilTemp));
+                                soilMoistureEntries.add(new Entry(soilMoistureEntries.size(), (float) soilMoisture));
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
 
-                        List<Entry> soilTempEntries = new ArrayList<>();
-                        List<Entry> soilMoistureEntries = new ArrayList<>();
-                        List<String> timestamps = new ArrayList<>();
-
-                        // Calculate daily averages and prepare data for chart
-                        for (Map.Entry<String, List<Float>> entry : dailyReadingsMap.entrySet()) {
-                            String day = entry.getKey();
-                            List<Float> readings = entry.getValue();
-                            float soilTempAvg = calculateAverage(readings.subList(0, readings.size() / 2));
-                            float soilMoistureAvg = calculateAverage(readings.subList(readings.size() / 2, readings.size()));
-
-                            soilTempEntries.add(new Entry(timestamps.size(), soilTempAvg));
-                            soilMoistureEntries.add(new Entry(timestamps.size(), soilMoistureAvg));
-                            timestamps.add(day);
-                        }
-
-                        // Prepare data sets and update chart
                         LineDataSet soilTempDataSet = new LineDataSet(soilTempEntries, "Soil Temperature");
                         soilTempDataSet.setColor(Color.parseColor("#F44336"));
                         soilTempDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -248,16 +273,16 @@ public class    HistoryActivity extends Activity {
 
                         LineData lineData = new LineData(dataSets);
 
-                        XAxis xAxis = soilReadingsSummaryChart.getXAxis();
+                        XAxis xAxis = SoilReadingsSummaryChart.getXAxis();
                         xAxis.setValueFormatter(new IndexAxisValueFormatter(timestamps));
                         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                         xAxis.setGranularity(1f);
 
-                        soilReadingsSummaryChart.setData(lineData);
-                        soilReadingsSummaryChart.invalidate();
+                        SoilReadingsSummaryChart.setData(lineData);
+                        SoilReadingsSummaryChart.invalidate();
 
                         // Setup line chart after setting up data
-                        setupLineChart(soilReadingsSummaryChart);
+                        setupLineChart(SoilReadingsSummaryChart);
                     } else {
                         Log.d("Firestore", "No data found.");
                     }
@@ -265,12 +290,5 @@ public class    HistoryActivity extends Activity {
     }
 
 
-    private float calculateAverage(List<Float> values) {
-        float sum = 0;
-        for (Float value : values) {
-            sum += value;
-        }
-        return sum / values.size();
-    }
 
 }
