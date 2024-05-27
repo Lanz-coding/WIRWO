@@ -52,9 +52,6 @@ import com.itextpdf.layout.properties.BorderRadius;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
 
 public class    HistoryActivity extends Activity {
 
@@ -526,20 +523,20 @@ public class    HistoryActivity extends Activity {
 
 
  class SensorSummary {
-    private double averageAirTemp;
-    private double averageHumidity;
-    private double averageSoilTemp;
-    private double averageSoilMoisture;
+    private final double averageAirTemp;
+    private final double averageHumidity;
+    private final double averageSoilTemp;
+    private final double averageSoilMoisture;
 
-    private double maxAirTemp;
-    private double maxHumidity;
-    private double maxSoilTemp;
-    private double maxSoilMoisture;
+    private final double maxAirTemp;
+    private final double maxHumidity;
+    private final double maxSoilTemp;
+    private final double maxSoilMoisture;
 
-    private double minAirTemp;
-    private double minHumidity;
-    private double minSoilTemp;
-    private double minSoilMoisture;
+    private final double minAirTemp;
+    private final double minHumidity;
+    private final double minSoilTemp;
+    private final double minSoilMoisture;
 
     public SensorSummary(double averageAirTemp, double averageHumidity, double averageSoilTemp, double averageSoilMoisture,
                          double maxAirTemp, double maxHumidity, double maxSoilTemp, double maxSoilMoisture,
