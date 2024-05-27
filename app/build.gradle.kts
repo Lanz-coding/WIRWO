@@ -42,6 +42,7 @@ dependencies {
     implementation("com.google.firebase:firebase-database:21.0.0")
     implementation("androidx.core:core:1.6.0")
     implementation("com.github.JuanArton:Android-ArcProgressBar:0.7")
+    implementation("com.itextpdf.android:itext7-core-android:7.2.3")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

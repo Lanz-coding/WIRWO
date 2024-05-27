@@ -1,12 +1,20 @@
 package com.allstar.wirwo;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -16,15 +24,37 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.BorderRadius;
+import com.itextpdf.layout.properties.HorizontalAlignment;
+import com.itextpdf.layout.properties.TextAlignment;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+
 
 public class    HistoryActivity extends Activity {
 
@@ -37,6 +67,8 @@ public class    HistoryActivity extends Activity {
 
     private ImageView downloadIcon;
 
+    private static final int REQUEST_CODE = 1232;
+
     // Firestore
     private FirebaseFirestore db;
 
@@ -44,6 +76,7 @@ public class    HistoryActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        askForPermission();
 
 
         // Initialize PopupMenuHelper with context of your activity
@@ -90,7 +123,7 @@ public class    HistoryActivity extends Activity {
         downloadIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogHelper.showDialogWithTitle(HistoryActivity.this, "Download", "Coming Soon!", null);
+                convertDataToPDF();
             }
         });
 
@@ -98,6 +131,150 @@ public class    HistoryActivity extends Activity {
         // Fetch sensor data from Firestore
         fetchDataAndPopulateAirLineChart();
         fetchDataAndPopulateSoilLineChart();
+    }
+
+    private void askForPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+    }
+
+    private void convertDataToPDF() {
+        db.collection("sensorHistory")
+                .orderBy("timestamp")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+
+                        List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
+                        SensorSummary sensorSummary = generateSummary(documents);
+                        formatSummaryDataToPDF(sensorSummary);
+                    } else {
+                        Toast.makeText(this, "No data found in Firestore", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to fetch data from Firestore", Toast.LENGTH_SHORT).show();
+                    Log.e("Firestore", "Error fetching data", e);
+                });
+    }
+    private void formatSummaryDataToPDF(SensorSummary summary) {
+        File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File summaryFile = new File(downloadsDir, "Wirwo Readings Summary.pdf");
+
+        try {
+            PdfWriter writer = new PdfWriter(summaryFile);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.icon_wirwo_transparent, null);
+            BitmapDrawable bitDw = ((BitmapDrawable) d);
+            Bitmap bmp = bitDw.getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            Image image = new Image(ImageDataFactory.create(stream.toByteArray()));
+            image.setWidth(70);
+            image.setHeight(70);
+            image.setHorizontalAlignment(HorizontalAlignment.CENTER);
+
+            document.add(image);
+
+
+            Paragraph appName = new Paragraph("WiRWO")
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setFontColor(new DeviceRgb(0, 128, 64))
+                    .setBold()
+                    .setFontSize(24);
+
+            document.add(appName);
+
+            Paragraph title = new Paragraph("Readings Summary")
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setFontColor(new DeviceRgb(0, 128, 64))
+                    .setBold()
+                    .setFontSize(20)
+                    .setMarginBottom(2);
+
+            document.add(title);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            String timestamp = dateFormat.format(new Date());
+            document.add(new Paragraph("As of " + timestamp)
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setMarginBottom(20)
+                    .setItalic());
+
+            float[] columnsWidth = {200f, 200f};
+            Table table = new Table(columnsWidth);
+
+            table.addCell(new Cell()
+                    .add(new Paragraph("Property"))
+                    .setFontColor(new DeviceRgb(255, 255, 255))
+                    .setBackgroundColor(new DeviceRgb(0, 128, 64))
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setBold());
+
+            table.addCell(new Cell().add(new Paragraph("Value"))
+                    .setFontColor(new DeviceRgb(255, 255, 255))
+                    .setBackgroundColor(new DeviceRgb(0, 128, 64))
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setBold());
+
+            table.addCell(new Cell().add(new Paragraph("Average Air Temperature")));
+            table.addCell(new Cell().add(new Paragraph(String.format(Locale.US, "%.2f", summary.getAverageAirTemp())))
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            table.addCell(new Cell().add(new Paragraph("Average Humidity")));
+            table.addCell(new Cell().add(new Paragraph(String.format(Locale.US, "%.2f",summary.getAverageHumidity())))
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            table.addCell(new Cell().add(new Paragraph("Average Soil Temperature")));
+            table.addCell(new Cell().add(new Paragraph(String.format(Locale.US, "%.2f",summary.getAverageSoilTemp())))
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            table.addCell(new Cell().add(new Paragraph("Average Soil Moisture")));
+            table.addCell(new Cell().add(new Paragraph(String.format(Locale.US, "%.2f",summary.getAverageSoilMoisture())))
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            table.addCell(new Cell().add(new Paragraph("Max Air Temperature")));
+            table.addCell(new Cell().add(new Paragraph(String.format(Locale.US, "%.2f",summary.getMaxAirTemp())))
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            table.addCell(new Cell().add(new Paragraph("Max Humidity")));
+            table.addCell(new Cell().add(new Paragraph(String.format(Locale.US, "%.2f",summary.getMaxHumidity())))
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            table.addCell(new Cell().add(new Paragraph("Max Soil Temperature")));
+            table.addCell(new Cell().add(new Paragraph(String.format(Locale.US, "%.2f",summary.getMaxSoilTemp())))
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            table.addCell(new Cell().add(new Paragraph("Max Soil Moisture")));
+            table.addCell(new Cell().add(new Paragraph(String.format(Locale.US, "%.2f",summary.getMaxSoilMoisture())))
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            table.addCell(new Cell().add(new Paragraph("Min Air Temperature")));
+            table.addCell(new Cell().add(new Paragraph(String.format(Locale.US, "%.2f",summary.getMinAirTemp())))
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            table.addCell(new Cell().add(new Paragraph("Min Humidity")));
+            table.addCell(new Cell().add(new Paragraph(String.format(Locale.US, "%.2f",summary.getMinHumidity())))
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            table.addCell(new Cell().add(new Paragraph("Min Soil Temperature")));
+            table.addCell(new Cell().add(new Paragraph(String.format(Locale.US, "%.2f",summary.getMinSoilTemp())))
+                    .setTextAlignment(TextAlignment.CENTER));
+            table.addCell(new Cell().add(new Paragraph("Min Soil Moisture")));
+            table.addCell(new Cell().add(new Paragraph(String.format(Locale.US, "%.2f",summary.getMinSoilMoisture())))
+                    .setTextAlignment(TextAlignment.CENTER));
+            table.setHorizontalAlignment(HorizontalAlignment.CENTER)
+                    .setBorderRadius(new BorderRadius(20));
+
+            document.add(table);
+
+            document.close();
+            Toast.makeText(this, "Summary PDF created successfully. See your Downloads Folder.", Toast.LENGTH_SHORT).show();
+        } catch (FileNotFoundException e) {
+            Log.e("PDF", "File not found.", e);
+            throw new RuntimeException(e);
+        }
     }
 
     private void setupLineChart(LineChart chart) {
@@ -288,5 +465,145 @@ public class    HistoryActivity extends Activity {
         }
         return sum / values.size();
     }
+    private SensorSummary generateSummary(List<DocumentSnapshot> documents) {
+        int count = documents.size();
+
+        double sumAirTemp = 0.0;
+        double sumHumidity = 0.0;
+        double sumSoilTemp = 0.0;
+        double sumSoilMoisture = 0.0;
+
+        double maxAirTemp = Double.MIN_VALUE;
+        double maxHumidity = Double.MIN_VALUE;
+        double maxSoilTemp = Double.MIN_VALUE;
+        double maxSoilMoisture = Double.MIN_VALUE;
+
+        double minAirTemp = Double.MAX_VALUE;
+        double minHumidity = Double.MAX_VALUE;
+        double minSoilTemp = Double.MAX_VALUE;
+        double minSoilMoisture = Double.MAX_VALUE;
+
+        for (DocumentSnapshot document : documents) {
+            double airTemp = document.getDouble("airTemp");
+            double humidity = document.getDouble("humidity");
+            double soilTemp = document.getDouble("soilTemp");
+            double soilMoisture = document.getDouble("soilMoisture");
+
+            // Sum for calculating average
+            sumAirTemp += airTemp;
+            sumHumidity += humidity;
+            sumSoilTemp += soilTemp;
+            sumSoilMoisture += soilMoisture;
+
+            // Update maximum values
+            maxAirTemp = Math.max(maxAirTemp, airTemp);
+            maxHumidity = Math.max(maxHumidity, humidity);
+            maxSoilTemp = Math.max(maxSoilTemp, soilTemp);
+            maxSoilMoisture = Math.max(maxSoilMoisture, soilMoisture);
+
+            // Update minimum values
+            minAirTemp = Math.min(minAirTemp, airTemp);
+            minHumidity = Math.min(minHumidity, humidity);
+            minSoilTemp = Math.min(minSoilTemp, soilTemp);
+            minSoilMoisture = Math.min(minSoilMoisture, soilMoisture);
+        }
+
+        // Calculate averages
+        double avgAirTemp = sumAirTemp / count;
+        double avgHumidity = sumHumidity / count;
+        double avgSoilTemp = sumSoilTemp / count;
+        double avgSoilMoisture = sumSoilMoisture / count;
+
+        // Create and return SensorSummary object
+        return new SensorSummary(avgAirTemp, avgHumidity, avgSoilTemp, avgSoilMoisture,
+                maxAirTemp, maxHumidity, maxSoilTemp, maxSoilMoisture,
+                minAirTemp, minHumidity, minSoilTemp, minSoilMoisture);
+    }
+
 
 }
+
+
+
+ class SensorSummary {
+    private double averageAirTemp;
+    private double averageHumidity;
+    private double averageSoilTemp;
+    private double averageSoilMoisture;
+
+    private double maxAirTemp;
+    private double maxHumidity;
+    private double maxSoilTemp;
+    private double maxSoilMoisture;
+
+    private double minAirTemp;
+    private double minHumidity;
+    private double minSoilTemp;
+    private double minSoilMoisture;
+
+    public SensorSummary(double averageAirTemp, double averageHumidity, double averageSoilTemp, double averageSoilMoisture,
+                         double maxAirTemp, double maxHumidity, double maxSoilTemp, double maxSoilMoisture,
+                         double minAirTemp, double minHumidity, double minSoilTemp, double minSoilMoisture) {
+        this.averageAirTemp = averageAirTemp;
+        this.averageHumidity = averageHumidity;
+        this.averageSoilTemp = averageSoilTemp;
+        this.averageSoilMoisture = averageSoilMoisture;
+        this.maxAirTemp = maxAirTemp;
+        this.maxHumidity = maxHumidity;
+        this.maxSoilTemp = maxSoilTemp;
+        this.maxSoilMoisture = maxSoilMoisture;
+        this.minAirTemp = minAirTemp;
+        this.minHumidity = minHumidity;
+        this.minSoilTemp = minSoilTemp;
+        this.minSoilMoisture = minSoilMoisture;
+    }
+
+    public double getAverageAirTemp() {
+        return averageAirTemp;
+    }
+
+    public double getAverageHumidity() {
+        return averageHumidity;
+    }
+
+    public double getAverageSoilTemp() {
+        return averageSoilTemp;
+    }
+
+    public double getAverageSoilMoisture() {
+        return averageSoilMoisture;
+    }
+
+    public double getMaxAirTemp() {
+        return maxAirTemp;
+    }
+
+    public double getMaxHumidity() {
+        return maxHumidity;
+    }
+
+    public double getMaxSoilTemp() {
+        return maxSoilTemp;
+    }
+
+    public double getMaxSoilMoisture() {
+        return maxSoilMoisture;
+    }
+
+    public double getMinAirTemp() {
+        return minAirTemp;
+    }
+
+    public double getMinHumidity() {
+        return minHumidity;
+    }
+
+    public double getMinSoilTemp() {
+        return minSoilTemp;
+    }
+
+    public double getMinSoilMoisture() {
+        return minSoilMoisture;
+    }
+}
+
