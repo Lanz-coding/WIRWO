@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.DeviceRgb;
@@ -135,6 +136,13 @@ public class    HistoryActivity extends Activity {
     }
 
     private void convertDataToPDF() {
+        // Get the current date and time
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yy_HH-mm-ss", Locale.getDefault());
+        String timestamp = dateFormat.format(new Date());
+
+        // Construct the filename with the desired format
+        String filename = "WirWo_Readings_" + timestamp + ".pdf";
+
         db.collection("sensorHistory")
                 .orderBy("timestamp")
                 .get()
@@ -143,7 +151,7 @@ public class    HistoryActivity extends Activity {
 
                         List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
                         SensorSummary sensorSummary = generateSummary(documents);
-                        formatSummaryDataToPDF(sensorSummary);
+                        formatSummaryDataToPDF(sensorSummary, filename);
                     } else {
                         Toast.makeText(this, "No data found in Firestore", Toast.LENGTH_SHORT).show();
                     }
@@ -153,9 +161,10 @@ public class    HistoryActivity extends Activity {
                     Log.e("Firestore", "Error fetching data", e);
                 });
     }
-    private void formatSummaryDataToPDF(SensorSummary summary) {
+
+    private void formatSummaryDataToPDF(SensorSummary summary, String filename) {
         File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        File summaryFile = new File(downloadsDir, "Wirwo Readings Summary.pdf");
+        File summaryFile = new File(downloadsDir, filename);
 
         try {
             PdfWriter writer = new PdfWriter(summaryFile);
@@ -267,7 +276,7 @@ public class    HistoryActivity extends Activity {
             document.add(table);
 
             document.close();
-            Toast.makeText(this, "Summary PDF created successfully. See your Downloads Folder.", Toast.LENGTH_SHORT).show();
+            DialogHelper.showDialogWithTitle(this,"PDF created successfully!" ,"Filename: \n" + filename + "\nSee your Downloads Folder.", null);
         } catch (FileNotFoundException e) {
             Log.e("PDF", "File not found.", e);
             throw new RuntimeException(e);
@@ -282,7 +291,7 @@ public class    HistoryActivity extends Activity {
 
     private void fetchDataAndPopulateAirLineChart() {
         db.collection("sensorHistory")
-                .orderBy("timestamp")
+                .orderBy("timestamp") // Sort data by timestamp
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Log.e("Firestore", "Listen failed.", error);
@@ -290,7 +299,7 @@ public class    HistoryActivity extends Activity {
                     }
 
                     if (value != null && !value.isEmpty()) {
-                        Map<String, List<Float>> dailyReadingsMap = new HashMap<>();
+                        Map<String, List<Float>> dailyReadingsMap = new TreeMap<>(); // Use TreeMap to automatically sort by key (timestamp)
                         SimpleDateFormat inputFormat = new SimpleDateFormat("MM-dd-yy_HH:mm:ss");
                         SimpleDateFormat outputFormat = new SimpleDateFormat("MM-dd-yyyy");
 
@@ -356,7 +365,7 @@ public class    HistoryActivity extends Activity {
                         if (!timestamps.isEmpty()) {
                             String startDate = timestamps.get(0);
                             String endDate = timestamps.get(timestamps.size() - 1);
-                            airTime.setText(String.format("Date Range: %s - %s", startDate, endDate));
+                            runOnUiThread(() -> airTime.setText(String.format("Date Range: %s - %s", startDate, endDate)));
                         }
 
                         // Setup line charts after setting up data
@@ -369,7 +378,7 @@ public class    HistoryActivity extends Activity {
 
     private void fetchDataAndPopulateSoilLineChart() {
         db.collection("sensorHistory")
-                .orderBy("timestamp")
+                .orderBy("timestamp") // Sort data by timestamp
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Log.e("Firestore", "Listen failed.", error);
@@ -377,7 +386,7 @@ public class    HistoryActivity extends Activity {
                     }
 
                     if (value != null && !value.isEmpty()) {
-                        Map<String, List<Float>> dailyReadingsMap = new HashMap<>();
+                        Map<String, List<Float>> dailyReadingsMap = new TreeMap<>(); // Use TreeMap to automatically sort by key (timestamp)
                         SimpleDateFormat inputFormat = new SimpleDateFormat("MM-dd-yy_HH:mm:ss");
                         SimpleDateFormat outputFormat = new SimpleDateFormat("MM-dd-yyyy");
 
@@ -443,7 +452,7 @@ public class    HistoryActivity extends Activity {
                         if (!timestamps.isEmpty()) {
                             String startDate = timestamps.get(0);
                             String endDate = timestamps.get(timestamps.size() - 1);
-                            soilTime.setText(String.format("Date Range: %s - %s", startDate, endDate));
+                            runOnUiThread(() -> soilTime.setText(String.format("Date Range: %s - %s", startDate, endDate)));
                         }
 
                         // Setup line chart after setting up data

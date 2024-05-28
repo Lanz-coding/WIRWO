@@ -28,7 +28,7 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
     private DatabaseHelper helper;
 
     private LinearLayout resetLayout, faqsLayout, aboutUsLayout;
-    private TextView soilTempCurrent, soilMoistureCurrent, humidityCurrent, airTempCurrent, notifCurrent, alertCurrent;
+    private TextView soilTempCurrent, soilMoistureCurrent, humidityCurrent, airTempCurrent, alertCurrent;
 
     private DatabaseReference notifSettingsRef, thresholdsRef;
 
@@ -60,7 +60,6 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
         // Initialize PopupMenuHelper with context of your activity
         popupMenuHelper = new PopupWindowHelper(this);
 
-        notifSwitch = findViewById(R.id.notifSwitch);
         alertSwitch = findViewById(R.id.alertSwitch);
 
         LinearLayout soilTempThreshold = findViewById(R.id.soil_temperature);
@@ -74,7 +73,6 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
 
         resetLayout = findViewById(R.id.resetLayout);
 
-        notifCurrent = findViewById(R.id.notifCurrent);
         alertCurrent = findViewById(R.id.alertCurrent);
 
         LinearLayout usernameLayout = findViewById(R.id.username);
@@ -317,26 +315,6 @@ public class SettingsActivity extends Activity implements OnDataChangeListener {
 
         // Get a reference to the 'notifSettings' node
         notifSettingsRef = FirebaseDatabase.getInstance().getReference().child("notifSettings");
-
-        // Add a listener to 'allowNotifs' switch
-        notifSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            // Write the value to Firebase Realtime Database
-            notifSettingsRef.child("allowNotifs").setValue(isChecked)
-                    .addOnSuccessListener(aVoid -> {
-                        if (isChecked) {
-                            if (isNotifsFirstChanged > 0) {
-                                DialogHelper.showDialogWithTitle(SettingsActivity.this, "Notifications", "Notifications successfully turned on. Take Note that this feature is coming soon.", null);
-                            }
-                            notifCurrent.setText("Notifications are turned on");
-                        } else {
-                            DialogHelper.showDialogWithTitle(SettingsActivity.this, "Notifications", "Notifications successfully turned off. Take Note that this feature is coming soon.", null);
-                            notifCurrent.setText("Notifications are turned off");
-                        }
-                        // Increment after setting the value
-                        isNotifsFirstChanged += 1;
-                    })
-                    .addOnFailureListener(e -> Toast.makeText(SettingsActivity.this, "Failed to update allowNotifs value", Toast.LENGTH_SHORT).show());
-        });
 
         // Add a listener to 'allowAlerts' switch
         alertSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {

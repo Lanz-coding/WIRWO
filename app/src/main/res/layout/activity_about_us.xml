@@ -11,26 +11,34 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        app:layout_collapseMode="pin"
         android:background="#4D2D18"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/PopupMenuOverlay">
 
+        <ImageView
+            android:id="@+id/back_icon"
+            android:onClick="ShowPopUp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="start"
+            android:contentDescription=""
+            android:src="@drawable/arrow_left"
+            tools:ignore="RtlSymmetry" />
+
         <TextView
-            android:id="@+id/aboutUsText"
+            android:id="@+id/FAQSText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
             android:layout_gravity="center_horizontal"
             android:fontFamily="@font/montserrat_bold"
             android:text="About Us"
             android:textColor="@color/white"
-            android:textSize="35sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
-
 
     </androidx.appcompat.widget.Toolbar>
 

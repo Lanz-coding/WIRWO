@@ -36,7 +36,6 @@ public class LoginActivity extends Activity {
     private TextView forgotPasswordTextView;
     private TextView faqsTextView;
     private TextView abousUsTextView;
-    private CheckBox rememberMeSwitch;
 
     private FirebaseAuth auth;
     private SharedPreferences sharedPreferences;
@@ -69,7 +68,6 @@ public class LoginActivity extends Activity {
         loginButton = findViewById(R.id.login_button);
         forgotPasswordTextView = findViewById(R.id.forgotPassword);
         createAccountTextView = findViewById(R.id.create);
-        rememberMeSwitch = findViewById(R.id.rememberMeSwitch);
         faqsTextView = findViewById(R.id.faqs_btn_login);
         abousUsTextView = findViewById(R.id.about_us_btn_login);
 
@@ -112,11 +110,6 @@ public class LoginActivity extends Activity {
         String savedPassword = sharedPreferences.getString(KEY_PASSWORD, "");
         usernameEditText.setText(savedUsername);
         passwordEditText.setText(savedPassword);
-
-        // Check switch state for debugging purposes (remove later)
-        if (rememberMeSwitch.isChecked()) {
-            Toast.makeText(LoginActivity.this, "Remember Me is checked", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void login() {
@@ -175,10 +168,6 @@ public class LoginActivity extends Activity {
             String username = usernameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
             loginButton.setEnabled(!username.isEmpty() && !password.isEmpty());
-            // Save credentials immediately if "Remember Me" is checked
-            if (rememberMeSwitch.isChecked()) {
-                saveCredentials(username, password);
-            }
         }
     };
 
