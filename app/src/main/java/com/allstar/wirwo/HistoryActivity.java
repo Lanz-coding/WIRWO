@@ -172,14 +172,14 @@ public class    HistoryActivity extends Activity {
             Document document = new Document(pdf);
 
 
-            Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.wirwo_wordmark_darktext, null);
+            Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.wirwo_header, null);
             BitmapDrawable bitDw = ((BitmapDrawable) d);
             Bitmap bmp = bitDw.getBitmap();
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
             Image image = new Image(ImageDataFactory.create(stream.toByteArray()));
-            image.setWidth(200);
-            image.setHeight(137);
+            image.setWidth(7.2f * 72);
+            image.setHeight(110);
             image.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
             document.add(image);
@@ -267,6 +267,7 @@ public class    HistoryActivity extends Activity {
                     .setBorderRadius(new BorderRadius(20));
 
             document.add(table);
+
 
             document.close();
             DialogHelper.showDialogWithTitle(this,"PDF created successfully!" ,"Filename: \n" + filename + "\nSee your Downloads Folder.", null);
