@@ -171,26 +171,19 @@ public class    HistoryActivity extends Activity {
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
 
-            Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.icon_wirwo_transparent, null);
+
+            Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.wirwo_wordmark_darktext, null);
             BitmapDrawable bitDw = ((BitmapDrawable) d);
             Bitmap bmp = bitDw.getBitmap();
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
             Image image = new Image(ImageDataFactory.create(stream.toByteArray()));
-            image.setWidth(70);
-            image.setHeight(70);
+            image.setWidth(200);
+            image.setHeight(137);
             image.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
             document.add(image);
 
-
-            Paragraph appName = new Paragraph("WirWo")
-                    .setTextAlignment(TextAlignment.CENTER)
-                    .setFontColor(new DeviceRgb(0, 128, 64))
-                    .setBold()
-                    .setFontSize(24);
-
-            document.add(appName);
 
             Paragraph title = new Paragraph("Readings Summary")
                     .setTextAlignment(TextAlignment.CENTER)
