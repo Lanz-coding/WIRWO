@@ -184,7 +184,7 @@ public class    HistoryActivity extends Activity {
             document.add(image);
 
 
-            Paragraph appName = new Paragraph("WiRWO")
+            Paragraph appName = new Paragraph("WirWo")
                     .setTextAlignment(TextAlignment.CENTER)
                     .setFontColor(new DeviceRgb(0, 128, 64))
                     .setBold()
